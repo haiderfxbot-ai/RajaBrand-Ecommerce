@@ -9,9 +9,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
-    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    :root{--primary:#16A34A;--primary-dark:#15803D;--primary-light:#DCFCE7;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
-    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;min-height:100vh;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:80px;min-height:100vh;overflow-x:hidden;overflow-y:auto;}
     h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
     .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
     .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
@@ -20,6 +20,8 @@
     .header-blur{background:rgba(255,255,255,0.85);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);}
     .glass-nav{background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);}
     .btn-press:active{transform:scale(0.96);}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .notif-item{animation:fadeUp .35s ease forwards;}
   </style>
 </head>
 <body>
@@ -55,19 +57,20 @@
   document.addEventListener('contextmenu',e=>e.preventDefault());
   document.addEventListener('selectstart',e=>e.preventDefault());
   document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
-  document.querySelectorAll('img').forEach(img=>img.setAttribute('draggable','false'));
+
+  const user=JSON.parse(localStorage.getItem('raja_current_user'));
+  if(!user){window.location.href='login.html';}
 
   const STORE={notifications:'raja_notifications'};
   function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
   function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
 
   function seedNotifs(){
-    let notifs=getLS(STORE.notifications);
-    if(notifs&&notifs.length>0)return;
-    notifs=[
+    if(getLS(STORE.notifications)&&getLS(STORE.notifications).length>0)return;
+    const notifs=[
       {id:'n1',type:'order',title:'Welcome to Raja Brand!',message:'Thank you for joining. Start shopping our latest collection!',read:false,created_at:new Date(Date.now()-100000).toISOString()},
       {id:'n2',type:'offer',title:'FLASH SALE Live!',message:'Up to 50% off on electronics. Limited time only!',read:false,created_at:new Date(Date.now()-200000).toISOString()},
-      {id:'n3',type:'system',title:'Free Delivery',message:'Free shipping on all orders above ₹499.',read:true,created_at:new Date(Date.now()-300000).toISOString()},
+      {id:'n3',type:'system',title:'Free Delivery',message:'Free shipping on all orders above Rs. 499.',read:true,created_at:new Date(Date.now()-300000).toISOString()},
       {id:'n4',type:'offer',title:'New Arrivals',message:'Check out our latest summer collection.',read:true,created_at:new Date(Date.now()-400000).toISOString()}
     ];
     setLS(STORE.notifications,notifs);
@@ -78,15 +81,12 @@
     const notifs=getLS(STORE.notifications)||[];
     const list=document.getElementById('notifList');
     const empty=document.getElementById('emptyNotif');
-
     if(notifs.length===0){list.innerHTML='';empty.classList.remove('hidden');return;}
     empty.classList.add('hidden');
-
     const iconMap={order:'shopping_bag',offer:'local_offer',system:'settings'};
     const colorMap={order:'var(--primary)',offer:'var(--warning)',system:'var(--info)'};
-
     list.innerHTML=notifs.map((n,i)=>`
-      <div class="flex gap-3 p-4 rounded-xl ${n.read?'bg-white':'bg-orange-50 border border-orange-100'} shadow-sm border ${n.read?'border-gray-50':'border-orange-100'}" data-id="${n.id}">
+      <div class="notif-item flex gap-3 p-4 rounded-xl cursor-pointer ${n.read?'bg-white':'bg-green-50 border border-green-100'} shadow-sm border ${n.read?'border-gray-50':'border-green-100'}" onclick="markRead('${n.id}')">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:${n.read?'#f5f5f5':colorMap[n.type]+'20'};color:${n.read?'#999':colorMap[n.type]};">
           <span class="material-symbols-rounded text-xl ${n.read?'':'icon-fill'}">${iconMap[n.type]||'notifications'}</span>
         </div>
@@ -95,7 +95,7 @@
             <h4 class="font-bold text-sm line-clamp-1">${n.title}</h4>
             <div class="flex items-center gap-1 flex-shrink-0">
               ${!n.read?'<span class="w-2 h-2 rounded-full" style="background:var(--primary);"></span>':''}
-              <button onclick="deleteNotif('${n.id}')" class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-200 btn-press"><span class="material-symbols-rounded text-sm text-gray-400">close</span></button>
+              <button onclick="event.stopPropagation();deleteNotif('${n.id}')" class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-200 btn-press"><span class="material-symbols-rounded text-sm text-gray-400">close</span></button>
             </div>
           </div>
           <p class="text-sm text-gray-500 mt-0.5 line-clamp-2">${n.message}</p>
@@ -103,21 +103,24 @@
         </div>
       </div>
     `).join('');
-
     const unread=notifs.filter(n=>!n.read).length;
-    if(unread>0)document.title=`(${unread}) Notifications — Raja Brand`;
-    else document.title='Notifications — Raja Brand';
+    document.title=unread>0?`(${unread}) Notifications — Raja Brand`:'Notifications — Raja Brand';
   }
 
   function timeAgo(dateStr){
     const diff=Date.now()-new Date(dateStr).getTime();
     const mins=Math.floor(diff/60000);
-    if(mins<1)return 'Just now';
+    if(mins<1)return'Just now';
     if(mins<60)return mins+'m ago';
     const hrs=Math.floor(mins/60);
     if(hrs<24)return hrs+'h ago';
-    const days=Math.floor(hrs/24);
-    return days+'d ago';
+    return Math.floor(hrs/24)+'d ago';
+  }
+
+  function markRead(id){
+    const notifs=getLS(STORE.notifications)||[];
+    const n=notifs.find(n=>n.id===id);
+    if(n&&!n.read){n.read=true;setLS(STORE.notifications,notifs);renderNotifs();}
   }
 
   function markAllRead(){

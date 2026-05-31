@@ -8,9 +8,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    :root{--primary:#16A34A;--primary-dark:#15803D;--primary-light:#DCFCE7;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
-    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:80px;min-height:100vh;overflow-x:hidden;overflow-y:auto;}
     h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
     .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
     .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
@@ -19,6 +19,10 @@
     .header-blur{background:rgba(255,255,255,0.85);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);}
     .glass-nav{background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);}
     .btn-press:active{transform:scale(0.96);}
+    .card-hover{transition:all .3s ease;}
+    .card-hover:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.1);}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    .animate-fadeUp{animation:fadeUp .5s ease forwards;}
   </style>
 </head>
 <body>
@@ -26,7 +30,7 @@
   <div class="flex items-center justify-between px-4 h-16 safe-top">
     <button onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></button>
     <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">About Us</span>
-    <a href="cart.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press relative"><span class="material-symbols-rounded text-gray-700 text-2xl">shopping_bag</span><span id="cartBadge" class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 hidden">0</span></a>
+    <div class="w-10"></div>
   </div>
 </header>
 
@@ -40,81 +44,71 @@
   </div>
 </nav>
 
-<div class="relative h-56 flex items-center justify-center" style="background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);">
-  <div class="text-center text-white px-4">
-    <h1 class="text-3xl font-extrabold" style="font-family:'Plus Jakarta Sans',sans-serif;">About Raja Brand</h1>
+<div class="relative h-56 flex items-center justify-center" style="background:linear-gradient(135deg,var(--primary) 0%,#15803D 100%);">
+  <div class="text-center text-white px-4 animate-fadeUp">
+    <span class="text-6xl font-extrabold tracking-tight" style="font-family:'Plus Jakarta Sans',sans-serif;">RAJA</span>
     <p class="text-sm text-white/80 mt-2">Your trusted shopping destination since 2020</p>
   </div>
 </div>
 
 <div class="px-4 -mt-8">
-  <div class="p-6 rounded-2xl bg-white shadow-sm border border-gray-50">
+  <div class="p-6 rounded-2xl bg-white shadow-sm border border-gray-50 card-hover">
     <h2 class="text-lg font-bold mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Our Story</h2>
-    <p class="text-sm text-gray-600 leading-relaxed">Raja Brand was founded in 2020 with a simple mission: to provide high-quality products at affordable prices. What started as a small collection of curated items has grown into a comprehensive marketplace serving thousands of happy customers across India.</p>
+    <p class="text-sm text-gray-600 leading-relaxed">Raja Brand was founded in 2020 with a simple mission: to provide high-quality products at affordable prices across Pakistan. What started as a small collection of curated items has grown into a comprehensive marketplace serving thousands of happy customers nationwide.</p>
     <p class="text-sm text-gray-600 leading-relaxed mt-3">We believe everyone deserves access to premium products without breaking the bank. Our team works tirelessly to source the best products from trusted manufacturers, ensuring every item meets our strict quality standards.</p>
   </div>
 </div>
 
 <div class="grid grid-cols-3 gap-3 px-4 mt-4">
-  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center">
+  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center card-hover">
     <span class="text-2xl font-extrabold" style="color:var(--primary);font-family:'Plus Jakarta Sans',sans-serif;">10K+</span>
     <p class="text-xs text-gray-500 mt-1">Happy Customers</p>
   </div>
-  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center">
+  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center card-hover">
     <span class="text-2xl font-extrabold" style="color:var(--primary);font-family:'Plus Jakarta Sans',sans-serif;">500+</span>
     <p class="text-xs text-gray-500 mt-1">Products</p>
   </div>
-  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center">
+  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center card-hover">
     <span class="text-2xl font-extrabold" style="color:var(--primary);font-family:'Plus Jakarta Sans',sans-serif;">5★</span>
     <p class="text-xs text-gray-500 mt-1">Rated</p>
   </div>
 </div>
 
 <div class="px-4 mt-6">
-  <h2 class="text-lg font-bold mb-4" style="font-family:'Plus Jakarta Sans',sans-serif;">Our Team</h2>
+  <h2 class="text-lg font-bold mb-4" style="font-family:'Plus Jakarta Sans',sans-serif;">Mission & Vision</h2>
   <div class="grid grid-cols-2 gap-3">
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center">
-      <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-white font-bold text-xl" style="background:var(--primary);">R</div>
-      <h3 class="font-bold text-sm mt-2">Raja Sharma</h3>
-      <p class="text-xs text-gray-400">Founder & CEO</p>
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center card-hover">
+      <div class="w-12 h-12 rounded-xl mx-auto flex items-center justify-center mb-2" style="background:var(--primary-light);"><span class="material-symbols-rounded text-2xl" style="color:var(--primary);">rocket_launch</span></div>
+      <h3 class="font-bold text-sm">Our Mission</h3>
+      <p class="text-xs text-gray-500 mt-1">To make quality shopping accessible and affordable for every Pakistani.</p>
     </div>
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center">
-      <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-white font-bold text-xl" style="background:var(--secondary);">P</div>
-      <h3 class="font-bold text-sm mt-2">Priya Patel</h3>
-      <p class="text-xs text-gray-400">Head of Operations</p>
-    </div>
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center">
-      <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-white font-bold text-xl" style="background:var(--success);">A</div>
-      <h3 class="font-bold text-sm mt-2">Arun Kumar</h3>
-      <p class="text-xs text-gray-400">Product Manager</p>
-    </div>
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center">
-      <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-white font-bold text-xl" style="background:var(--info);">S</div>
-      <h3 class="font-bold text-sm mt-2">Sneha Reddy</h3>
-      <p class="text-xs text-gray-400">Customer Lead</p>
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center card-hover">
+      <div class="w-12 h-12 rounded-xl mx-auto flex items-center justify-center mb-2" style="background:var(--primary-light);"><span class="material-symbols-rounded text-2xl" style="color:var(--primary);">visibility</span></div>
+      <h3 class="font-bold text-sm">Our Vision</h3>
+      <p class="text-xs text-gray-500 mt-1">To be Pakistan's most trusted e-commerce platform by 2028.</p>
     </div>
   </div>
 </div>
 
-<div class="px-4 mt-6 mb-6">
-  <h2 class="text-lg font-bold mb-4" style="font-family:'Plus Jakarta Sans',sans-serif;">Why Choose Us</h2>
+<div class="px-4 mt-6">
+  <h2 class="text-lg font-bold mb-4" style="font-family:'Plus Jakarta Sans',sans-serif;">Our Values</h2>
   <div class="grid grid-cols-2 gap-3">
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50">
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 card-hover">
       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-2" style="background:var(--primary-light);"><span class="material-symbols-rounded" style="color:var(--primary);">verified</span></div>
       <h3 class="font-bold text-sm">100% Authentic</h3>
       <p class="text-xs text-gray-500 mt-1">Every product is verified for quality and authenticity.</p>
     </div>
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50">
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 card-hover">
       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-2" style="background:var(--primary-light);"><span class="material-symbols-rounded" style="color:var(--primary);">local_shipping</span></div>
       <h3 class="font-bold text-sm">Fast Delivery</h3>
-      <p class="text-xs text-gray-500 mt-1">Free delivery on orders above ₹499. Track your order live.</p>
+      <p class="text-xs text-gray-500 mt-1">Free delivery on orders above Rs. 499. Track your order live.</p>
     </div>
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50">
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 card-hover">
       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-2" style="background:var(--primary-light);"><span class="material-symbols-rounded" style="color:var(--primary);">autorenew</span></div>
       <h3 class="font-bold text-sm">Easy Returns</h3>
       <p class="text-xs text-gray-500 mt-1">Hassle-free 7-day return & exchange policy.</p>
     </div>
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50">
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 card-hover">
       <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-2" style="background:var(--primary-light);"><span class="material-symbols-rounded" style="color:var(--primary);">support</span></div>
       <h3 class="font-bold text-sm">24/7 Support</h3>
       <p class="text-xs text-gray-500 mt-1">Dedicated customer support team always ready to help.</p>
@@ -122,11 +116,49 @@
   </div>
 </div>
 
-<div class="px-4 pb-4">
-  <div class="flex justify-center gap-4">
-    <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center border border-gray-200 hover:bg-gray-50 btn-press"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-    <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center border border-gray-200 hover:bg-gray-50 btn-press"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg></a>
-    <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center border border-gray-200 hover:bg-gray-50 btn-press"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678a6.162 6.162 0 100 12.324 6.162 6.162 0 100-12.324zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405a1.441 1.441 0 11-2.882 0 1.441 1.441 0 012.882 0z"/></svg></a>
+<div class="px-4 mt-6">
+  <h2 class="text-lg font-bold mb-4" style="font-family:'Plus Jakarta Sans',sans-serif;">Our Team</h2>
+  <div class="grid grid-cols-2 gap-3">
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center card-hover">
+      <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-white font-bold text-xl" style="background:var(--primary);">R</div>
+      <h3 class="font-bold text-sm mt-2">Raja Ahmed</h3>
+      <p class="text-xs text-gray-400">Founder & CEO</p>
+    </div>
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center card-hover">
+      <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-white font-bold text-xl" style="background:var(--secondary);">F</div>
+      <h3 class="font-bold text-sm mt-2">Fatima Ali</h3>
+      <p class="text-xs text-gray-400">Head of Operations</p>
+    </div>
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center card-hover">
+      <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-white font-bold text-xl" style="background:var(--info);">U</div>
+      <h3 class="font-bold text-sm mt-2">Usman Khan</h3>
+      <p class="text-xs text-gray-400">Product Manager</p>
+    </div>
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center card-hover">
+      <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-white font-bold text-xl" style="background:var(--success);">Z</div>
+      <h3 class="font-bold text-sm mt-2">Zara Malik</h3>
+      <p class="text-xs text-gray-400">Customer Lead</p>
+    </div>
+  </div>
+</div>
+
+<div class="px-4 mt-6 mb-6">
+  <h2 class="text-lg font-bold mb-4" style="font-family:'Plus Jakarta Sans',sans-serif;">Contact Information</h2>
+  <div class="p-5 rounded-xl bg-white shadow-sm border border-gray-50">
+    <div class="space-y-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--primary-light);"><span class="material-symbols-rounded" style="color:var(--primary);">mail</span></div>
+        <div><p class="text-xs text-gray-400">Email</p><p class="text-sm font-medium">support@rajabrand.pk</p></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--primary-light);"><span class="material-symbols-rounded" style="color:var(--primary);">phone</span></div>
+        <div><p class="text-xs text-gray-400">Phone</p><p class="text-sm font-medium">+92 300 1234567</p></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--primary-light);"><span class="material-symbols-rounded" style="color:var(--primary);">location_on</span></div>
+        <div><p class="text-xs text-gray-400">Address</p><p class="text-sm font-medium">Karachi, Sindh, Pakistan</p></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -135,8 +167,6 @@
   document.addEventListener('selectstart',e=>e.preventDefault());
   document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
   document.querySelectorAll('img').forEach(img=>img.setAttribute('draggable','false'));
-  function updateCartBadge(){const c=JSON.parse(localStorage.getItem('raja_cart')||'[]');const b=document.getElementById('cartBadge');if(c.length>0){b.textContent=c.length;b.classList.remove('hidden');}else b.classList.add('hidden');}
-  updateCartBadge();
 </script>
 </body>
 </html>

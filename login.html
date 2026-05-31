@@ -1,264 +1,486 @@
 <!DOCTYPE html>
-<html lang="en" class="select-none overflow-x-hidden">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Login — Raja Brand</title>
+  <title>Raja Brand - Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
-    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;min-height:100vh;display:flex;flex-direction:column;}
-    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
-    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
-    .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
-    ::-webkit-scrollbar{display:none;}
-    .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px);}
-    .btn-press:active{transform:scale(0.96);}
-    .toast{position:fixed;top:80px;right:16px;z-index:9999;padding:12px 20px;border-radius:12px;color:#fff;font-weight:500;box-shadow:0 4px 24px rgba(0,0,0,0.15);transform:translateX(120%);transition:transform .3s;max-width:320px;}
-    .toast.show{transform:translateX(0);}
-    .toast.success{background:var(--success);}
-    .toast.error{background:var(--error);}
-    .toast.info{background:var(--info);}
-    .form-tab{flex:1;padding:12px;text-align:center;font-weight:600;font-size:14px;cursor:pointer;border-bottom:2px solid transparent;transition:all .3s;}
-    .form-tab.active{color:var(--primary);border-bottom-color:var(--primary);}
-    .form-panel{display:none;animation:fadeUp .35s ease;}
-    .form-panel.active{display:block;}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-    .shake{animation:shake .4s ease;}
-    .strength-bar{height:4px;border-radius:2px;transition:all .3s;}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #f8fafc;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding-bottom: 60px;
+      min-height: 100vh;
+    }
+    input, button, select, textarea { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .brand-gradient { background: linear-gradient(135deg, #16A34A 0%, #15803D 100%); }
+    .tab-btn { transition: all 0.3s ease; }
+    .tab-btn.active { color: #16A34A; border-bottom-color: #16A34A; }
+    .tab-btn.active span { color: #16A34A; }
+    .eye-btn { cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .eye-btn svg { width: 22px; height: 22px; }
+    .strength-bar { height: 4px; border-radius: 4px; transition: all 0.3s ease; }
+    .strength-bar.weak { width: 25%; background: #ef4444; }
+    .strength-bar.fair { width: 50%; background: #f97316; }
+    .strength-bar.good { width: 75%; background: #eab308; }
+    .strength-bar.strong { width: 100%; background: #16A34A; }
+    .strength-text { font-size: 11px; font-weight: 600; transition: all 0.3s ease; }
+    .btn-primary {
+      background: linear-gradient(135deg, #16A34A, #15803D);
+      color: white; border: none; border-radius: 14px;
+      min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center;
+    }
+    .btn-primary:active { transform: scale(0.95); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-outline {
+      background: transparent; color: #16A34A; border: 2px solid #16A34A;
+      border-radius: 14px; min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-outline:active { transform: scale(0.95); }
+    .btn-google {
+      background: white; color: #333; border: 1.5px solid #e2e8f0;
+      border-radius: 14px; min-height: 52px; padding: 0 24px; font-weight: 500; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-google:active { transform: scale(0.95); }
+    .btn-phone {
+      background: #f1f5f9; color: #1e293b; border: none;
+      border-radius: 14px; min-height: 52px; padding: 0 24px; font-weight: 500; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-phone:active { transform: scale(0.95); }
+    .input-field {
+      width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0;
+      border-radius: 12px; font-size: 15px; outline: none;
+      transition: border-color 0.2s ease; background: white;
+    }
+    .input-field:focus { border-color: #16A34A; }
+    .input-field.error { border-color: #ef4444; }
+    .input-group { position: relative; }
+    .input-group .eye-btn { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); }
+    .input-group .input-field { padding-right: 44px; }
+    .floating-label {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      font-size: 15px; color: #94a3b8; transition: all 0.2s ease; pointer-events: none;
+      background: white; padding: 0 4px;
+    }
+    .input-field:focus + .floating-label,
+    .input-field:not(:placeholder-shown) + .floating-label {
+      top: 0; font-size: 11px; color: #16A34A;
+    }
+    .checkbox-custom {
+      width: 20px; height: 20px; border: 2px solid #cbd5e1;
+      border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease; flex-shrink: 0;
+    }
+    .checkbox-custom.checked { background: #16A34A; border-color: #16A34A; }
+    .checkbox-custom.checked svg { display: block; }
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;
+      display: none; align-items: center; justify-content: center; padding: 24px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: white; border-radius: 20px; padding: 28px 24px;
+      max-width: 360px; width: 100%; text-align: center;
+    }
+    .toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      background: #1e293b; color: white; padding: 12px 24px; border-radius: 12px;
+      font-size: 14px; font-weight: 500; z-index: 999;
+      opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { animation: spin 1s linear infinite; }
+    @media (max-width: 400px) {
+      .container { padding-left: 16px; padding-right: 16px; }
+    }
   </style>
 </head>
 <body>
-<div id="toastContainer"></div>
 
-<div class="flex-1 flex flex-col justify-center px-6 py-8 max-w-md mx-auto w-full">
-  <div class="text-center mb-8">
-    <div class="flex items-center justify-center gap-2 mb-2">
-      <span class="text-3xl font-extrabold tracking-tight" style="color:var(--primary);font-family:'Plus Jakarta Sans',sans-serif;">RAJA</span>
-      <span class="text-xl font-semibold" style="color:var(--secondary);font-family:'Plus Jakarta Sans',sans-serif;">Brand</span>
-    </div>
-    <p class="text-sm text-gray-500">Shop the best, live the best.</p>
-  </div>
+  <div class="min-h-screen flex items-center justify-center px-4 py-6">
+    <div class="w-full max-w-md">
 
-  <div class="flex border-b border-gray-200 mb-6">
-    <div class="form-tab active" onclick="switchFormTab('login')">Login</div>
-    <div class="form-tab" onclick="switchFormTab('signup')">Sign Up</div>
-  </div>
-
-  <div class="form-panel active" id="loginPanel">
-    <div class="space-y-4">
-      <div>
-        <label class="text-sm font-medium mb-1 block">Email Address</label>
-        <input type="email" id="loginEmail" placeholder="you@email.com" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400">
-        <p class="text-xs mt-1 hidden" id="loginEmailErr" style="color:var(--error);">Please enter a valid email</p>
-      </div>
-      <div>
-        <label class="text-sm font-medium mb-1 block">Password</label>
-        <div class="relative">
-          <input type="password" id="loginPass" placeholder="••••••••" class="w-full px-3 py-2.5 pr-10 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400">
-          <button onclick="togglePass('loginPass',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 btn-press" type="button"><span class="material-symbols-rounded text-lg">visibility_off</span></button>
+      <!-- Logo -->
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 brand-gradient rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-green-200">
+          <span class="material-symbols-rounded text-white text-3xl">store</span>
         </div>
-        <p class="text-xs mt-1 hidden" id="loginPassErr" style="color:var(--error);">Please enter your password</p>
+        <h1 class="text-2xl font-bold text-gray-900" style="font-family:'DM Sans',sans-serif;">Raja Brand</h1>
+        <p class="text-sm text-gray-500 mt-1">Premium shopping experience</p>
       </div>
-      <button onclick="loginUser()" class="w-full py-3 rounded-xl text-sm font-bold text-white btn-press flex items-center justify-center gap-2" style="background:var(--primary);" id="loginBtn">Login <span class="material-symbols-rounded">arrow_forward</span></button>
-      <div class="flex items-center gap-3 text-xs text-gray-400"><hr class="flex-1 border-gray-200"><span>Or continue with</span><hr class="flex-1 border-gray-200"></div>
-      <div class="flex gap-3">
-        <button onclick="googleSignIn()" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-medium btn-press flex items-center justify-center gap-2"><svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Google</button>
-        <button onclick="phoneSignIn()" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm font-medium btn-press flex items-center justify-center gap-2"><span class="material-symbols-rounded text-lg">smartphone</span> Phone</button>
+
+      <!-- Tab Buttons -->
+      <div class="flex bg-white rounded-xl p-1 mb-6 shadow-sm border border-gray-100">
+        <button class="tab-btn active flex-1 py-3 text-center font-semibold text-sm border-b-2 border-green-600 text-green-600 transition-all" onclick="switchTab('login')" id="tabLogin">Login</button>
+        <button class="tab-btn flex-1 py-3 text-center font-semibold text-sm border-b-2 border-transparent text-gray-400 transition-all" onclick="switchTab('signup')" id="tabSignup">Sign Up</button>
       </div>
-      <p class="text-xs text-center text-gray-400 mt-2"><a href="forgot-password.html" style="color:var(--primary);">Forgot Password?</a></p>
+
+      <!-- LOGIN FORM -->
+      <div id="loginForm">
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <form id="loginFormElement" onsubmit="handleLogin(event)">
+            <div class="input-group mb-4">
+              <input type="email" id="loginEmail" class="input-field" placeholder=" " required autocomplete="email">
+              <label for="loginEmail" class="floating-label">Email Address</label>
+            </div>
+            <div class="input-group mb-1">
+              <input type="password" id="loginPassword" class="input-field" placeholder=" " required autocomplete="current-password" minlength="6">
+              <label for="loginPassword" class="floating-label">Password</label>
+              <button type="button" class="eye-btn" onclick="togglePassword('loginPassword', 'loginEyeIcon')" tabindex="-1" id="loginEyeBtn">
+                <svg id="loginEyeIcon" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <div class="text-right mb-5">
+              <a href="forgot-password.html" class="text-sm font-medium text-green-600 hover:text-green-700">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn-primary mb-4" id="loginBtn">
+              <span id="loginBtnText">Login</span>
+              <svg id="loginBtnSpinner" class="spinner hidden ml-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </button>
+          </form>
+
+          <div class="relative my-5">
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+            <div class="relative flex justify-center"><span class="bg-white px-3 text-xs text-gray-400 font-medium">or continue with</span></div>
+          </div>
+
+          <button class="btn-google mb-3" onclick="handleGoogleLogin()">
+            <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 0 1 9.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 0 0 0 24c0 3.77.88 7.35 2.56 10.56l7.97-5.97z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 5.97C6.51 42.62 14.62 48 24 48z"/></svg>
+            Continue with Google
+          </button>
+          <button class="btn-phone" onclick="showToast('Phone login coming soon!')">
+            <span class="material-symbols-rounded text-green-600">phone_iphone</span>
+            Continue with Phone
+          </button>
+        </div>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div id="signupForm" class="hidden">
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <form id="signupFormElement" onsubmit="handleSignup(event)">
+            <div class="input-group mb-4">
+              <input type="text" id="signupName" class="input-field" placeholder=" " required>
+              <label for="signupName" class="floating-label">Full Name</label>
+            </div>
+            <div class="input-group mb-4">
+              <input type="tel" id="signupPhone" class="input-field" placeholder=" " required pattern="03[0-9]{9}">
+              <label for="signupPhone" class="floating-label">Phone (03XXXXXXXXX)</label>
+            </div>
+            <div class="input-group mb-4">
+              <input type="email" id="signupEmail" class="input-field" placeholder=" " required>
+              <label for="signupEmail" class="floating-label">Email Address</label>
+            </div>
+            <div class="input-group mb-2">
+              <input type="password" id="signupPassword" class="input-field" placeholder=" " required minlength="6" oninput="checkPasswordStrength(this.value)">
+              <label for="signupPassword" class="floating-label">Password</label>
+              <button type="button" class="eye-btn" onclick="togglePassword('signupPassword', 'signupEyeIcon')" tabindex="-1">
+                <svg id="signupEyeIcon" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <div class="flex items-center gap-2 mb-1">
+              <div class="flex-1 h-1 bg-gray-200 rounded-full overflow-hidden">
+                <div class="strength-bar" id="strengthBar"></div>
+              </div>
+              <span class="strength-text" id="strengthText" style="min-width:50px;text-align:right;"></span>
+            </div>
+            <div class="input-group mb-4">
+              <input type="password" id="signupConfirm" class="input-field" placeholder=" " required minlength="6">
+              <label for="signupConfirm" class="floating-label">Confirm Password</label>
+              <button type="button" class="eye-btn" onclick="togglePassword('signupConfirm', 'confirmEyeIcon')" tabindex="-1">
+                <svg id="confirmEyeIcon" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <div class="flex items-start gap-3 mb-5">
+              <div class="checkbox-custom" id="termsCheck" onclick="toggleTerms()">
+                <svg class="hidden" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <label class="text-sm text-gray-600 cursor-pointer select-none" onclick="toggleTerms()">
+                I agree to the <a href="#" class="text-green-600 font-medium" onclick="event.stopPropagation()">Terms of Service</a> & <a href="#" class="text-green-600 font-medium" onclick="event.stopPropagation()">Privacy Policy</a>
+              </label>
+            </div>
+            <button type="submit" class="btn-primary" id="signupBtn">
+              <span id="signupBtnText">Create Account</span>
+              <svg id="signupBtnSpinner" class="spinner hidden ml-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <p class="text-center text-xs text-gray-400 mt-6">&copy; 2026 Raja Brand. All rights reserved.</p>
+
     </div>
   </div>
 
-  <div class="form-panel hidden" id="signupPanel">
-    <div class="space-y-3">
-      <div><label class="text-sm font-medium mb-1 block">Full Name</label><input type="text" id="signupName" placeholder="John Doe" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"><p class="text-xs mt-1 hidden" id="signupNameErr" style="color:var(--error);">Name is required</p></div>
-      <div><label class="text-sm font-medium mb-1 block">Phone Number</label><input type="tel" id="signupPhone" placeholder="9876543210" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" maxlength="10"><p class="text-xs mt-1 hidden" id="signupPhoneErr" style="color:var(--error);">Enter valid 10-digit number</p></div>
-      <div><label class="text-sm font-medium mb-1 block">Email Address</label><input type="email" id="signupEmail" placeholder="you@email.com" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"><p class="text-xs mt-1 hidden" id="signupEmailErr" style="color:var(--error);">Valid email required</p></div>
-      <div><label class="text-sm font-medium mb-1 block">Password</label><div class="relative"><input type="password" id="signupPass" placeholder="At least 6 characters" class="w-full px-3 py-2.5 pr-10 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" oninput="checkStrength()"><button onclick="togglePass('signupPass',this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 btn-press" type="button"><span class="material-symbols-rounded text-lg">visibility_off</span></button></div><div class="strength-bar mt-1" id="strengthBar"></div><p class="text-xs text-gray-400 mt-1" id="strengthLabel"></p></div>
-      <div><label class="text-sm font-medium mb-1 block">Confirm Password</label><input type="password" id="signupConfirm" placeholder="Repeat password" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" oninput="checkMatch()"><p class="text-xs mt-1 hidden" id="signupConfirmErr" style="color:var(--error);">Passwords do not match</p></div>
-      <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="signupTerms" class="accent-orange-500"> I agree to the <a href="#" style="color:var(--primary);">Terms & Conditions</a></label>
-      <button onclick="signupUser()" class="w-full py-3 rounded-xl text-sm font-bold text-white btn-press flex items-center justify-center gap-2" style="background:var(--primary);" id="signupBtn">Create Account <span class="material-symbols-rounded">person_add</span></button>
-    </div>
-  </div>
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 
+  <script>
+    // Initialize EmailJS
+    emailjs.init('y1nL04AHOFQQ7iffn');
 
-</div>
-
-<script>
-  document.addEventListener('contextmenu',e=>e.preventDefault());
-  document.addEventListener('selectstart',e=>e.preventDefault());
-  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
-
-  const RAJA_CONFIG={
-    emailjs_public_key:'y1nL04AHOFQQ7iffn',
-    emailjs_service_id:'service_94ybwiy',
-    emailjs_otp_template:'template_5e0vk2h',
-    firebase:{apiKey:'AIzaSyA2F4N12GGCWqM6Jo2RzVKforvgUTeY3jI',authDomain:'rajabrand-4924d.firebaseapp.com',projectId:'rajabrand-4924d',storageBucket:'rajabrand-4924d.firebasestorage.app',messagingSenderId:'744956275932',appId:'1:744956275932:web:62fe87c9d5aeb4ab071819'}
-  };
-
-  emailjs.init(RAJA_CONFIG.emailjs_public_key);
-  firebase.initializeApp(RAJA_CONFIG.firebase);
-  const auth=firebase.auth();
-
-  const STORE={users:'raja_users',currentUser:'raja_current_user'};
-  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
-  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
-
-  const params=new URLSearchParams(window.location.search);
-  const redirect=params.get('redirect')||'index.html';
-
-  function showToast(msg,type='success'){
-    const c=document.getElementById('toastContainer');
-    const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;
-    c.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));
-    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3000);
-  }
-
-  function switchFormTab(tab){
-    document.querySelectorAll('.form-tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.form-panel').forEach(p=>p.classList.remove('active'));
-    document.getElementById('forgotPassPanel').classList.add('hidden');
-    if(tab==='login'){document.querySelector('.form-tab:first-child').classList.add('active');document.getElementById('loginPanel').classList.add('active');}
-    else{document.querySelector('.form-tab:last-child').classList.add('active');document.getElementById('signupPanel').classList.add('active');}
-  }
-
-  function togglePass(id,btn){
-    const inp=document.getElementById(id);
-    const isPass=inp.type==='password';
-    inp.type=isPass?'text':'password';
-    btn.querySelector('span').textContent=isPass?'visibility':'visibility_off';
-  }
-
-  function checkStrength(){
-    const p=document.getElementById('signupPass').value;
-    const bar=document.getElementById('strengthBar');
-    const label=document.getElementById('strengthLabel');
-    let score=0;
-    if(p.length>=6)score++;if(p.length>=10)score++;
-    if(/[A-Z]/.test(p))score++;if(/[0-9]/.test(p))score++;
-    if(/[^A-Za-z0-9]/.test(p))score++;
-    const map=['','bg-red-500','bg-orange-500','bg-yellow-500','bg-green-500','bg-green-600'];
-    const texts=['','Weak','Fair','Good','Strong','Very Strong'];
-    bar.style.width=score*20+'%';
-    bar.style.background=map[score]||'#ddd';
-    label.textContent=texts[score]||'';
-  }
-
-  function checkMatch(){
-    const p=document.getElementById('signupPass').value;
-    const c=document.getElementById('signupConfirm').value;
-    const err=document.getElementById('signupConfirmErr');
-    if(c&&p!==c){err.classList.remove('hidden');return false;}
-    err.classList.add('hidden');return true;
-  }
-
-  function loginUser(){
-    const email=document.getElementById('loginEmail').value.trim();
-    const pass=document.getElementById('loginPass').value;
-    let valid=true;
-    if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){document.getElementById('loginEmailErr').classList.remove('hidden');valid=false;}
-    else document.getElementById('loginEmailErr').classList.add('hidden');
-    if(!pass){document.getElementById('loginPassErr').classList.remove('hidden');valid=false;}
-    else document.getElementById('loginPassErr').classList.add('hidden');
-    if(!valid)return;
-
-    const users=getLS(STORE.users)||[];
-    const user=users.find(u=>u.email===email&&u.password===pass);
-    if(!user){showToast('Invalid email or password','error');document.getElementById('loginBtn').parentElement.classList.add('shake');setTimeout(()=>document.getElementById('loginBtn').parentElement.classList.remove('shake'),500);return;}
-    setLS(STORE.currentUser,{name:user.name,email:user.email,phone:user.phone,address:user.address});
-    showToast('Login successful!','success');
-    setTimeout(()=>window.location.href=redirect,500);
-  }
-
-  function signupUser(){
-    const name=document.getElementById('signupName').value.trim();
-    const phone=document.getElementById('signupPhone').value.trim();
-    const email=document.getElementById('signupEmail').value.trim();
-    const pass=document.getElementById('signupPass').value;
-    const confirm=document.getElementById('signupConfirm').value;
-    let valid=true;
-
-    if(!name){document.getElementById('signupNameErr').classList.remove('hidden');valid=false;}
-    else document.getElementById('signupNameErr').classList.add('hidden');
-    if(!phone||!/^\d{10}$/.test(phone)){document.getElementById('signupPhoneErr').classList.remove('hidden');valid=false;}
-    else document.getElementById('signupPhoneErr').classList.add('hidden');
-    if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){document.getElementById('signupEmailErr').classList.remove('hidden');valid=false;}
-    else document.getElementById('signupEmailErr').classList.add('hidden');
-    if(pass.length<6){showToast('Password must be at least 6 characters','error');document.getElementById('signupPass').focus();valid=false;}
-    if(pass!==confirm){document.getElementById('signupConfirmErr').classList.remove('hidden');valid=false;}
-    else document.getElementById('signupConfirmErr').classList.add('hidden');
-    if(!document.getElementById('signupTerms').checked){showToast('Please accept Terms & Conditions','warning');valid=false;}
-    if(!valid)return;
-
-    const users=getLS(STORE.users)||[];
-    if(users.find(u=>u.email===email)){showToast('Email already registered. Please login.','error');return;}
-
-    const btn=document.getElementById('signupBtn');
-    btn.disabled=true;btn.innerHTML='<span class="material-symbols-rounded animate-spin">progress_activity</span> Sending OTP...';
-
-    sessionStorage.setItem('raja_pending_user',JSON.stringify({name,phone,email,password:pass}));
-
-    const otpParams={
-      to_email:email,
-      to_name:name,
-      otp_code:'000000',
-      from_name:'Raja Brand',
-      reply_to:'rajahaider9053@gmail.com'
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: 'AIzaSyA2F4N12GGCWqM6Jo2RzVKforvgUTeY3jI',
+      authDomain: 'rajabrand-4924d.firebaseapp.com',
+      projectId: 'rajabrand-4924d',
+      storageBucket: 'rajabrand-4924d.firebasestorage.app',
+      messagingSenderId: '744956275932',
+      appId: '1:744956275932:web:62fe87c9d5aeb4ab071819'
     };
-    emailjs.send(RAJA_CONFIG.emailjs_service_id,RAJA_CONFIG.emailjs_otp_template,otpParams)
-      .then(()=>{
-        showToast('OTP sent to your email!','success');
-        setTimeout(()=>window.location.href=`signup-otp.html?redirect=${encodeURIComponent(redirect)}`,500);
-      })
-      .catch(()=>{
-        sessionStorage.removeItem('raja_pending_user');
-        showToast('Failed to send OTP. Check EmailJS config.','error');
-        btn.disabled=false;btn.innerHTML='Create Account <span class="material-symbols-rounded">person_add</span>';
-      });
-  }
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-  function handleGoogleUser(firebaseUser){
-    const users=getLS(STORE.users)||[];
-    let existing=users.find(u=>u.email===firebaseUser.email);
-    if(!existing){
-      const newUser={
-        name:firebaseUser.displayName||'Google User',
-        phone:firebaseUser.phoneNumber||'',
-        email:firebaseUser.email,
-        password:'',
-        provider:'google',
-        address:{line1:'',line2:'',city:'',state:'',pincode:''},
-        created_at:new Date().toISOString()
-      };
-      users.push(newUser);
-      setLS(STORE.users,users);
-      existing=newUser;
+    let termsAccepted = false;
+    let generatedOTP = '';
+
+    // === TAB SWITCHING ===
+    function switchTab(tab) {
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const tabLogin = document.getElementById('tabLogin');
+      const tabSignup = document.getElementById('tabSignup');
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+        tabLogin.classList.add('active', 'text-green-600', 'border-green-600');
+        tabLogin.classList.remove('text-gray-400', 'border-transparent');
+        tabSignup.classList.remove('active', 'text-green-600', 'border-green-600');
+        tabSignup.classList.add('text-gray-400', 'border-transparent');
+      } else {
+        loginForm.classList.add('hidden');
+        signupForm.classList.remove('hidden');
+        tabSignup.classList.add('active', 'text-green-600', 'border-green-600');
+        tabSignup.classList.remove('text-gray-400', 'border-transparent');
+        tabLogin.classList.remove('active', 'text-green-600', 'border-green-600');
+        tabLogin.classList.add('text-gray-400', 'border-transparent');
+      }
     }
-    setLS(STORE.currentUser,{name:existing.name,email:existing.email,phone:existing.phone,address:existing.address,provider:'google'});
-    showToast('Login successful!','success');
-    setTimeout(()=>window.location.href=`index.html?google_signin=true`,500);
-  }
 
-  function googleSignIn(){
-    const provider=new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
-      .then(result=>handleGoogleUser(result.user))
-      .catch(err=>{
-        if(err.code!=='auth/popup-closed-by-user')showToast('Google Sign-In failed: '+err.message,'error');
+    // === EYE TOGGLE ===
+    function togglePassword(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+      } else {
+        input.type = 'password';
+        icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+      }
+    }
+
+    // === PASSWORD STRENGTH ===
+    function checkPasswordStrength(password) {
+      const bar = document.getElementById('strengthBar');
+      const text = document.getElementById('strengthText');
+      let score = 0;
+      if (password.length >= 6) score++;
+      if (password.length >= 10) score++;
+      if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++;
+      if (/\d/.test(password) && /[^A-Za-z0-9]/.test(password)) score++;
+
+      bar.className = 'strength-bar';
+      if (score === 0 || password.length === 0) {
+        bar.style.width = '0'; text.textContent = '';
+      } else if (score === 1) {
+        bar.classList.add('weak'); text.textContent = 'Weak'; text.style.color = '#ef4444';
+      } else if (score === 2) {
+        bar.classList.add('fair'); text.textContent = 'Fair'; text.style.color = '#f97316';
+      } else if (score === 3) {
+        bar.classList.add('good'); text.textContent = 'Good'; text.style.color = '#eab308';
+      } else {
+        bar.classList.add('strong'); text.textContent = 'Strong'; text.style.color = '#16A34A';
+      }
+    }
+
+    // === TERMS CHECKBOX ===
+    function toggleTerms() {
+      const cb = document.getElementById('termsCheck');
+      termsAccepted = !termsAccepted;
+      cb.classList.toggle('checked');
+      const svg = cb.querySelector('svg');
+      svg.classList.toggle('hidden');
+    }
+
+    // === LOGIN HANDLER ===
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const btn = document.getElementById('loginBtn');
+      const btnText = document.getElementById('loginBtnText');
+      const spinner = document.getElementById('loginBtnSpinner');
+
+      btn.disabled = true;
+      btnText.textContent = 'Logging in...';
+      spinner.classList.remove('hidden');
+
+      try {
+        const users = JSON.parse(localStorage.getItem('raja_users') || '[]');
+        const user = users.find(u => u.email === email && u.password === password);
+        if (user) {
+          localStorage.setItem('raja_current_user', JSON.stringify(user));
+          showToast('Welcome back, ' + user.name + '!');
+          setTimeout(() => { window.location.href = 'index.html'; }, 800);
+        } else {
+          const exists = users.find(u => u.email === email);
+          if (!exists) {
+            showToast('No account found with this email');
+          } else {
+            showToast('Incorrect password. Please try again.');
+          }
+          btn.disabled = false;
+          btnText.textContent = 'Login';
+          spinner.classList.add('hidden');
+        }
+      } catch (err) {
+        showToast('Something went wrong. Please try again.');
+        btn.disabled = false;
+        btnText.textContent = 'Login';
+        spinner.classList.add('hidden');
+      }
+    }
+
+    // === SIGNUP HANDLER ===
+    async function handleSignup(e) {
+      e.preventDefault();
+      if (!termsAccepted) {
+        showToast('Please accept the Terms & Privacy Policy');
+        return;
+      }
+
+      const name = document.getElementById('signupName').value.trim();
+      const phone = document.getElementById('signupPhone').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const confirm = document.getElementById('signupConfirm').value;
+
+      if (!/^03[0-9]{9}$/.test(phone)) {
+        showToast('Please enter a valid Pakistani phone number (03XXXXXXXXX)');
+        return;
+      }
+      if (password !== confirm) {
+        showToast('Passwords do not match');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('raja_users') || '[]');
+      if (users.find(u => u.email === email)) {
+        showToast('An account with this email already exists');
+        return;
+      }
+      if (users.find(u => u.phone === phone)) {
+        showToast('An account with this phone number already exists');
+        return;
+      }
+
+      const btn = document.getElementById('signupBtn');
+      const btnText = document.getElementById('signupBtnText');
+      const spinner = document.getElementById('signupBtnSpinner');
+      btn.disabled = true;
+      btnText.textContent = 'Sending OTP...';
+      spinner.classList.remove('hidden');
+
+      generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+
+      const pendingUser = { name, phone, email, password };
+      sessionStorage.setItem('raja_pending_user', JSON.stringify(pendingUser));
+
+      try {
+        await emailjs.send('service_94ybwiy', 'template_5e0vk2h', {
+          to_name: name,
+          to_email: email,
+          otp: generatedOTP,
+          from_name: 'Raja Brand'
+        });
+        showToast('OTP sent to ' + email);
+        setTimeout(() => { window.location.href = 'signup-otp.html'; }, 600);
+      } catch (err) {
+        showToast('Failed to send OTP. Please check your email and try again.');
+        btn.disabled = false;
+        btnText.textContent = 'Create Account';
+        spinner.classList.add('hidden');
+      }
+    }
+
+    // === GOOGLE LOGIN ===
+    function handleGoogleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then(async (result) => {
+          const user = result.user;
+          const users = JSON.parse(localStorage.getItem('raja_users') || '[]');
+          let existing = users.find(u => u.email === user.email);
+          if (!existing) {
+            existing = {
+              id: 'user_' + Date.now(),
+              name: user.displayName || 'User',
+              email: user.email,
+              phone: user.phoneNumber || '',
+              password: '',
+              provider: 'google',
+              createdAt: new Date().toISOString()
+            };
+            users.push(existing);
+            localStorage.setItem('raja_users', JSON.stringify(users));
+          }
+          localStorage.setItem('raja_current_user', JSON.stringify(existing));
+          showToast('Welcome, ' + existing.name + '!');
+          setTimeout(() => { window.location.href = 'index.html'; }, 600);
+        })
+        .catch((err) => {
+          if (err.code !== 'auth/popup-closed-by-user') {
+            showToast('Google sign-in failed. Please try again.');
+          }
+        });
+    }
+
+    // === TOAST ===
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // === INPUT FLOAT LABEL FIX ===
+    document.querySelectorAll('.input-field').forEach(el => {
+      el.addEventListener('blur', function() {
+        if (this.value) this.setAttribute('data-filled', 'true');
+        else this.removeAttribute('data-filled');
       });
-  }
+    });
+  </script>
 
-  function phoneSignIn(){
-    showToast('Phone Sign-In via SMS Gateway app (under development)','info');
-  }
-</script>
 </body>
 </html>

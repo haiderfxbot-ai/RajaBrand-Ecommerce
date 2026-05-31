@@ -8,30 +8,53 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    :root{--primary:#16A34A;--primary-dark:#15803D;--primary-light:#DCFCE7;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
-    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:40px;overflow-x:hidden;overflow-y:auto;}
     h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
     .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+    ::-webkit-scrollbar{display:none;}
     .btn-press:active{transform:scale(0.96);}
+    .sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--secondary);color:#fff;padding-top:64px;transform:translateX(-100%);transition:transform .3s;z-index:40;}
+    .sidebar.open{transform:translateX(0);}
+    @media(min-width:768px){.sidebar{transform:translateX(0);}body{padding-left:240px;}}
   </style>
 </head>
 <body>
-<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+<div class="sidebar" id="sidebar">
+  <div class="p-5 border-b border-white/10">
+    <div class="flex items-center gap-2"><span class="text-xl font-extrabold" style="color:var(--primary);font-family:'Plus Jakarta Sans',sans-serif;">RAJA</span><span class="text-sm font-light text-white/60">Admin</span></div>
+  </div>
+  <nav class="p-3 space-y-1">
+    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">dashboard</span> Dashboard</a>
+    <a href="products.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">inventory_2</span> Products</a>
+    <a href="categories.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">category</span> Categories</a>
+    <a href="orders.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">receipt_long</span> Orders</a>
+    <a href="users.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium" style="background:rgba(22,163,74,0.2);color:var(--primary);"><span class="material-symbols-rounded icon-fill text-lg">group</span> Users</a>
+    <a href="settings.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">settings</span> Settings</a>
+    <hr class="border-white/10 my-3">
+    <button onclick="adminLogout()" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10 w-full"><span class="material-symbols-rounded text-lg">logout</span> Logout</button>
+  </nav>
+</div>
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100" style="z-index:45;">
   <div class="flex items-center justify-between px-4 h-16 safe-top">
-    <a href="dashboard.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></a>
+    <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press md:hidden"><span class="material-symbols-rounded text-gray-700 text-2xl">menu</span></button>
     <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">Users</span>
-    <div class="w-10"></div>
+    <span id="userCount" class="text-xs text-gray-400"></span>
   </div>
 </header>
 
 <div class="px-4 py-3">
-  <input type="text" id="searchUsers" placeholder="Search users..." class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" oninput="renderUsers()">
+  <div class="relative">
+    <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-rounded text-gray-400 text-lg">search</span>
+    <input type="text" id="searchUsers" placeholder="Search users by name or email..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-400" oninput="renderUsers()">
+  </div>
 </div>
 
 <div class="px-4 overflow-x-auto">
   <table class="w-full text-sm">
-    <thead><tr class="text-gray-400 border-b border-gray-100"><th class="text-left py-2 pr-2">Name</th><th class="text-left py-2 px-2">Email</th><th class="text-center py-2 px-2">Orders</th><th class="text-center py-2">Action</th></tr></thead>
+    <thead><tr class="text-gray-400 border-b border-gray-100"><th class="text-left py-2 pr-2">Name</th><th class="text-left py-2 px-2">Email</th><th class="text-left py-2 px-2 hidden sm:table-cell">Phone</th><th class="text-center py-2 px-2 hidden sm:table-cell">Provider</th><th class="text-center py-2 px-2 hidden md:table-cell">Joined</th><th class="text-center py-2">Action</th></tr></thead>
     <tbody id="usersList"></tbody>
   </table>
 </div>
@@ -41,7 +64,11 @@
   document.addEventListener('selectstart',e=>e.preventDefault());
   document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
 
-  if(localStorage.getItem('raja_admin_session')!=='true')window.location.href='login.html';
+  function requireAdmin(){if(localStorage.getItem('raja_admin_session')!=='true')window.location.href='login.html';}
+  requireAdmin();
+
+  function adminLogout(){localStorage.removeItem('raja_admin_session');window.location.href='login.html';}
+  function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
 
   const STORE={users:'raja_users',orders:'raja_orders'};
   function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
@@ -52,17 +79,19 @@
     const orders=getLS(STORE.orders)||[];
     if(search)users=users.filter(u=>u.name?.toLowerCase().includes(search)||u.email?.toLowerCase().includes(search));
     const list=document.getElementById('usersList');
-    if(users.length===0){list.innerHTML='<tr><td colspan="4" class="text-center py-8 text-gray-400">No users found</td></tr>';return;}
+    document.getElementById('userCount').textContent='Total: '+users.length;
+    if(users.length===0){list.innerHTML='<tr><td colspan="6" class="text-center py-8 text-gray-400">No users found</td></tr>';return;}
     list.innerHTML=users.map(u=>{
       const userOrders=orders.filter(o=>o.user_id===u.email);
-      return `<tr class="border-b border-gray-50"><td class="py-3 pr-2"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold" style="background:var(--primary);">${(u.name||'U').charAt(0).toUpperCase()}</div><span class="text-sm font-medium">${u.name||'N/A'}</span></div></td><td class="py-3 px-2 text-xs text-gray-500">${u.email||''}</td><td class="py-3 px-2 text-center font-medium">${userOrders.length}</td><td class="py-3 text-center"><button onclick="viewUserOrders('${u.email}')" class="text-orange-500 text-xs font-medium">View Orders</button></td></tr>`;
+      const created=u.created_at?new Date(u.created_at).toLocaleDateString('en-PK'):'N/A';
+      return `<tr class="border-b border-gray-50"><td class="py-3 pr-2"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold" style="background:var(--primary);">${(u.name||'U').charAt(0).toUpperCase()}</div><span class="text-sm font-medium">${u.name||'N/A'}</span></div></td><td class="py-3 px-2 text-xs text-gray-500">${u.email||''}</td><td class="py-3 px-2 text-xs text-gray-500 hidden sm:table-cell">${u.phone||'-'}</td><td class="py-3 px-2 text-center text-xs text-gray-500 hidden sm:table-cell"><span class="px-2 py-0.5 rounded-full text-[10px] font-medium ${u.provider==='google'?'bg-blue-100 text-blue-700':'bg-green-100 text-green-700'}">${u.provider||'email'}</span></td><td class="py-3 px-2 text-center text-xs text-gray-500 hidden md:table-cell">${created}</td><td class="py-3 text-center"><button onclick="viewUserOrders('${u.email}')" class="text-xs font-medium" style="color:var(--primary);">${userOrders.length} Orders</button></td></tr>`;
     }).join('');
   }
 
   function viewUserOrders(email){
     const userOrders=(getLS(STORE.orders)||[]).filter(o=>o.user_id===email);
     if(userOrders.length===0){alert('No orders for this user.');return;}
-    alert(userOrders.map(o=>`${o.id} — ₹${o.total} — ${o.status}`).join('\n'));
+    alert(userOrders.map(o=>o.id+' — Rs. '+o.total.toLocaleString('en-PK')+' — '+o.status).join('\n'));
   }
 
   renderUsers();

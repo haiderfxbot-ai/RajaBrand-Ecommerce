@@ -1,177 +1,246 @@
 <!DOCTYPE html>
-<html lang="en" class="select-none overflow-x-hidden">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Order Tracker — Raja Brand</title>
+  <title>Track Order - Raja</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
   <style>
-    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
-    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;}
-    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
-    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
-    .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
-    ::-webkit-scrollbar{display:none;}
-    .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px);}
-    .btn-press:active{transform:scale(0.96);}
-    .track-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;position:relative;z-index:2;transition:all .5s ease;}
-    .track-line{width:3px;flex:1;margin:4px auto;transition:all .5s ease;position:relative;z-index:1;}
-    .pulse-ring{animation:pulse 2s infinite;}
-    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,107,53,0.4)}70%{box-shadow:0 0 0 12px rgba(255,107,53,0)}100%{box-shadow:0 0 0 0 rgba(255,107,53,0)}}
-    @keyframes checkPop{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
-    .check-anim{animation:checkPop .3s ease;}
+    * { font-family: 'Plus Jakarta Sans', sans-serif; scrollbar-width: none; }
+    *::-webkit-scrollbar { display: none; }
+    body { overflow-x: hidden; overflow-y: auto; background: #f8fafc; }
+    .brand-gradient { background: linear-gradient(135deg, #16A34A 0%, #15803D 100%); }
+    .brand-text { color: #16A34A; }
+    .brand-bg { background: #16A34A; }
+    .brand-light-bg { background: #DCFCE7; }
+    .price-tag { font-family: 'DM Sans', sans-serif; }
+    .progress-line { width: 2px; }
+    .step-dot { transition: all 0.3s; }
+    .status-placed { background: #FEF3C7; color: #D97706; }
+    .status-confirmed { background: #DBEAFE; color: #2563EB; }
+    .status-shipped { background: #E0E7FF; color: #4F46E5; }
+    .status-outfordelivery { background: #DCFCE7; color: #16A34A; }
+    .status-delivered { background: #DCFCE7; color: #15803D; }
+    .status-cancelled { background: #FEE2E2; color: #DC2626; }
   </style>
 </head>
 <body>
-<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100/50">
-  <div class="flex items-center justify-between px-4 h-16 safe-top">
-    <button onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></button>
-    <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">Track Order</span>
-    <div class="w-10"></div>
-  </div>
-</header>
 
-<main class="px-4 py-4" id="trackContent">
-  <div id="orderNotFound" class="hidden flex flex-col items-center justify-center py-16">
-    <span class="material-symbols-rounded text-6xl text-gray-300">search_off</span>
-    <p class="text-gray-500 mt-4 text-sm">Order not found</p>
-    <a href="orders.html" class="mt-3 px-6 py-2.5 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">View My Orders</a>
-  </div>
+<div id="app">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+    <div class="flex items-center justify-between px-4 h-14">
+      <div class="flex items-center gap-2">
+        <button onclick="goBack()" class="p-2 -ml-2 rounded-lg hover:bg-gray-50">
+          <span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span>
+        </button>
+        <h1 class="text-lg font-bold text-gray-900">Track Order</h1>
+      </div>
+    </div>
+  </header>
 
-  <div id="orderDetails">
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mb-4">
+  <main class="pt-14 px-4 pb-8">
+    <!-- Order Info Card -->
+    <div id="orderInfoCard" class="mt-3 bg-white rounded-xl border border-gray-100 p-4">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-xs font-mono text-gray-400" id="trackOrderId"></span>
-        <span class="text-xs text-gray-400" id="trackOrderDate"></span>
+        <p class="text-xs text-gray-400">Order ID</p>
+        <span id="orderStatusBadge" class="text-[11px] font-semibold px-2 py-1 rounded-full"></span>
       </div>
-      <div class="flex items-center gap-2"><span class="font-bold text-lg" id="trackTotal"></span></div>
-      <p class="text-xs text-gray-500 mt-1" id="trackAddress"></p>
-    </div>
-
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mb-4">
-      <h3 class="text-sm font-bold mb-3">Delivery Status</h3>
-      <div class="flex flex-col items-start gap-0" id="progressTrack"></div>
-    </div>
-
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mb-4">
-      <h3 class="text-sm font-bold mb-3">Items</h3>
-      <div id="trackItems"></div>
-    </div>
-
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mb-4" id="deliveryPartner" style="display:none;">
-      <h3 class="text-sm font-bold mb-3">Delivery Partner</h3>
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="font-medium">SpeedX Courier</p>
-          <p class="text-xs text-gray-400">Tracking: SPX-${Math.random().toString(36).substring(2,8).toUpperCase()}</p>
-        </div>
-        <button class="px-4 py-2 rounded-lg text-xs font-bold text-white btn-press" style="background:var(--primary);">Call Driver</button>
+      <p class="text-sm font-bold text-gray-800" id="orderIdDisplay"></p>
+      <div class="flex items-center gap-3 mt-2 text-sm text-gray-500">
+        <span class="flex items-center gap-1">
+          <span class="material-symbols-rounded text-base">calendar_today</span>
+          <span id="orderDateDisplay"></span>
+        </span>
+        <span class="flex items-center gap-1">
+          <span class="material-symbols-rounded text-base">payments</span>
+          <span id="orderTotalDisplay" class="font-bold brand-text price-tag"></span>
+        </span>
       </div>
     </div>
-  </div>
-</main>
+
+    <!-- Progress Tracker -->
+    <section class="mt-4 bg-white rounded-xl border border-gray-100 p-4">
+      <h2 class="font-bold text-gray-900 mb-4">Order Progress</h2>
+      <div class="relative" id="progressTracker">
+        <div class="absolute left-[15px] top-3 bottom-3 w-0.5 bg-gray-200" id="progressLineBg"></div>
+        <div class="absolute left-[15px] top-3 w-0.5 brand-bg transition-all duration-500" id="progressLineFill" style="height: 0%"></div>
+        <div class="space-y-0" id="stepsContainer"></div>
+      </div>
+    </section>
+
+    <!-- Items in Order -->
+    <section class="mt-4 bg-white rounded-xl border border-gray-100 p-4">
+      <h2 class="font-bold text-gray-900 mb-3">Items in Order</h2>
+      <div id="orderItemsList" class="space-y-2"></div>
+    </section>
+
+    <!-- Delivery Address -->
+    <section class="mt-4 bg-white rounded-xl border border-gray-100 p-4">
+      <h2 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+        <span class="material-symbols-rounded brand-text">location_on</span> Delivery Address
+      </h2>
+      <div id="deliveryAddressDisplay" class="text-sm text-gray-600 space-y-1"></div>
+    </section>
+  </main>
+</div>
 
 <script>
-  document.addEventListener('contextmenu',e=>e.preventDefault());
-  document.addEventListener('selectstart',e=>e.preventDefault());
-  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
-  document.querySelectorAll('img').forEach(img=>img.setAttribute('draggable','false'));
+function formatPrice(amount) {
+  return 'Rs. ' + Number(amount).toLocaleString('en-PK');
+}
 
-  const STORE={users:'raja_users',currentUser:'raja_current_user',products:'raja_products',categories:'raja_categories',orders:'raja_orders',cart:'raja_cart',wishlist:'raja_wishlist'};
-  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+function getCurrentUser() {
+  const data = localStorage.getItem('raja_current_user');
+  return data ? JSON.parse(data) : null;
+}
 
-  const params=new URLSearchParams(window.location.search);
-  const orderId=params.get('id');
-  const orders=getLS(STORE.orders)||[];
-  const order=orders.find(o=>o.id===orderId);
+function goBack() { window.history.back(); }
 
-  if(!order){
-    document.getElementById('orderDetails').style.display='none';
-    document.getElementById('orderNotFound').classList.remove('hidden');
-  }else{
-    document.getElementById('trackOrderId').textContent=order.id;
-    document.getElementById('trackOrderDate').textContent=new Date(order.created_at).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-    document.getElementById('trackTotal').textContent=`₹${order.total.toLocaleString()}`;
-    const addr=order.address;
-    document.getElementById('trackAddress').textContent=`Deliver to: ${addr.name}, ${addr.line1}, ${addr.city}, ${addr.state} - ${addr.pincode}`;
-
-    const stages=[
-      {key:'Placed',icon:'receipt_long',label:'Order Placed'},
-      {key:'Confirmed',icon:'verified',label:'Order Confirmed'},
-      {key:'Dispatched',icon:'local_shipping',label:'Dispatched'},
-      {key:'Out for Delivery',icon:'delivery_dining',label:'Out for Delivery'},
-      {key:'Delivered',icon:'check_circle',label:'Delivered'}
-    ];
-    const statusOrder=['Placed','Confirmed','Dispatched','Out for Delivery','Delivered'];
-    let currentIdx=statusOrder.indexOf(order.status);
-    if(currentIdx<0)currentIdx=order.status==='Cancelled'?-1:0;
-
-    const user=getLS(STORE.currentUser);
-    if(currentIdx>=0){
-      document.getElementById('deliveryPartner').style.display=currentIdx>=2?'block':'none';
-    }
-
-    const track=document.getElementById('progressTrack');
-    track.innerHTML=stages.map((s,i)=>{
-      const isDone=i<=currentIdx;
-      const isCurrent=i===currentIdx&&order.status!=='Cancelled';
-      const isCancelled=order.status==='Cancelled';
-      let circleColor,lineColor,textColor;
-      if(isCancelled&&currentIdx<0){
-        circleColor='bg-gray-200 text-gray-400';lineColor='bg-gray-200';textColor='text-gray-400';
-      }else if(isDone&&isCurrent){
-        circleColor='bg-white border-2';textColor='text-gray-700';
-      }else if(isDone){
-        circleColor='bg-green-500 text-white';lineColor='bg-green-500';textColor='text-gray-700';
-      }else{
-        circleColor='bg-gray-100 text-gray-400 border-2 border-gray-200';lineColor='bg-gray-200';textColor='text-gray-400';
-      }
-
-      return `<div class="flex items-start gap-4 w-full">
-        <div class="flex flex-col items-center">
-          <div class="track-circle ${circleColor} ${isCurrent?'border-orange-500 pulse-ring':''} ${isDone&&!isCurrent?'check-anim':''}" style="${isCurrent?'border-color:var(--primary);':''}">
-            ${isDone&&!isCurrent?'<span class="material-symbols-rounded icon-fill text-lg">check</span>':`<span class="material-symbols-rounded text-lg">${s.icon}</span>`}
-          </div>
-          ${i<stages.length-1?`<div class="track-line ${lineColor}" style="min-height:24px;"></div>`:''}
-        </div>
-        <div class="pb-6 flex-1">
-          <p class="font-bold text-sm ${textColor}">${s.label}</p>
-          <p class="text-xs text-gray-400 mt-0.5">
-            ${isDone&&isCurrent?getStatusTime():isDone?getStatusTime(i):'Pending'}
-          </p>
-        </div>
-      </div>`;
-    }).join('');
-
-    function getStatusTime(idx){
-      if(idx!==undefined){
-        if(order.status_history&&order.status_history[idx]){
-          const d=new Date(order.status_history[idx].timestamp);
-          return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})+' • '+d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-        }
-        return 'Completed';
-      }
-      if(order.status_history){
-        const last=order.status_history[order.status_history.length-1];
-        if(last){
-          const d=new Date(last.timestamp);
-          return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
-        }
-      }
-      return 'In progress';
-    }
-
-    const itemsContainer=document.getElementById('trackItems');
-    itemsContainer.innerHTML=order.items.map(item=>`
-      <div class="flex gap-3 py-2 border-b border-gray-50 last:border-0">
-        <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-50 flex-shrink-0"><img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" loading="lazy"></div>
-        <div class="flex-1 min-w-0"><p class="text-sm font-medium line-clamp-1">${item.name}</p><p class="text-xs text-gray-400">Qty: ${item.quantity}</p><span class="text-sm font-bold">₹${(item.price*item.quantity).toLocaleString()}</span></div>
-      </div>
-    `).join('');
+function authGuard() {
+  const user = getCurrentUser();
+  if (!user) {
+    window.location.href = 'login.html?redirect=order-track.html' + (window.location.search || '');
+    return false;
   }
+  return true;
+}
+
+function formatDate(d) {
+  const date = new Date(d);
+  return date.toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+const STAGES = [
+  { key: 'placed', label: 'Order Placed', icon: 'check_circle' },
+  { key: 'confirmed', label: 'Confirmed', icon: 'fact_check' },
+  { key: 'shipped', label: 'Shipped', icon: 'local_shipping' },
+  { key: 'outfordelivery', label: 'Out for Delivery', icon: 'directions_car' },
+  { key: 'delivered', label: 'Delivered', icon: 'home' }
+];
+
+function getStatusText(status) {
+  const map = {
+    'placed': 'Order Placed',
+    'confirmed': 'Confirmed',
+    'shipped': 'Shipped',
+    'outfordelivery': 'Out for Delivery',
+    'delivered': 'Delivered',
+    'cancelled': 'Cancelled'
+  };
+  return map[status] || status;
+}
+
+function getStatusClass(status) {
+  return 'status-' + status;
+}
+
+function getStageIndex(status) {
+  const idx = STAGES.findIndex(s => s.key === status);
+  return idx >= 0 ? idx : -1;
+}
+
+function renderTracking() {
+  if (!authGuard()) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get('id');
+
+  if (!orderId) {
+    document.getElementById('orderInfoCard').innerHTML = '<p class="text-red-500 text-sm">No order ID provided.</p>';
+    return;
+  }
+
+  const orders = JSON.parse(localStorage.getItem('raja_orders') || '[]');
+  const user = getCurrentUser();
+  const order = orders.find(o => o.id === orderId && o.userId === (user.id || user.email));
+
+  if (!order) {
+    document.getElementById('orderInfoCard').innerHTML = '<p class="text-red-500 text-sm">Order not found.</p>';
+    return;
+  }
+
+  // Order Info
+  document.getElementById('orderIdDisplay').textContent = order.id;
+  document.getElementById('orderDateDisplay').textContent = formatDate(order.date);
+  document.getElementById('orderTotalDisplay').textContent = formatPrice(order.total);
+
+  const statusBadge = document.getElementById('orderStatusBadge');
+  statusBadge.textContent = getStatusText(order.status);
+  statusBadge.className = 'text-[11px] font-semibold px-2 py-1 rounded-full ' + getStatusClass(order.status);
+
+  // Progress Tracker
+  const currentIdx = getStageIndex(order.status);
+  const stepsContainer = document.getElementById('stepsContainer');
+  const isCancelled = order.status === 'cancelled';
+
+  stepsContainer.innerHTML = STAGES.map((stage, idx) => {
+    const completed = idx <= currentIdx && !isCancelled;
+    const active = idx === currentIdx && !isCancelled;
+    const timelineEntry = order.timeline ? order.timeline.find(t => t.stage === stage.key) : null;
+    const dateStr = timelineEntry && timelineEntry.date ? formatDate(timelineEntry.date) : '';
+    return `
+      <div class="flex gap-3 ${idx < STAGES.length - 1 ? 'pb-6' : ''} relative">
+        <div class="flex flex-col items-center">
+          <div class="step-dot w-[30px] h-[30px] rounded-full flex items-center justify-center z-10 ${completed ? 'brand-bg text-white' : active ? 'brand-bg text-white ring-4 ring-green-100' : 'bg-gray-200 text-gray-400'}">
+            <span class="material-symbols-rounded text-sm">${completed || active ? 'check' : 'radio_button_unchecked'}</span>
+          </div>
+          ${idx < STAGES.length - 1 ? `<div class="w-0.5 flex-1 mt-1 ${completed ? 'brand-bg' : 'bg-gray-200'}" style="min-height: 20px;"></div>` : ''}
+        </div>
+        <div class="pt-1">
+          <p class="text-sm font-semibold ${completed || active ? 'text-gray-900' : 'text-gray-400'}">${stage.label}</p>
+          ${dateStr ? `<p class="text-xs text-gray-400 mt-0.5">${dateStr}</p>` : ''}
+        </div>
+        ${active ? `<span class="material-symbols-rounded brand-text text-lg ml-auto">chevron_right</span>` : ''}
+      </div>
+    `;
+  }).join('');
+
+  if (isCancelled) {
+    stepsContainer.innerHTML += `
+      <div class="flex gap-3 pt-2">
+        <div class="step-dot w-[30px] h-[30px] rounded-full flex items-center justify-center z-10 bg-red-500 text-white">
+          <span class="material-symbols-rounded text-sm">cancel</span>
+        </div>
+        <div class="pt-1">
+          <p class="text-sm font-semibold text-red-500">Cancelled</p>
+          <p class="text-xs text-gray-400 mt-0.5">${order.date ? formatDate(order.date) : ''}</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // Items
+  const itemsList = document.getElementById('orderItemsList');
+  itemsList.innerHTML = order.items.map(item => `
+    <div class="flex items-center gap-3">
+      <div class="w-14 h-14 rounded-lg bg-gray-50 overflow-hidden flex-shrink-0">
+        <img src="${item.image || 'https://picsum.photos/seed/torder/400/500'}" alt="${item.name}" class="w-full h-full object-cover" onerror="this.src='https://picsum.photos/seed/terr/400/500'">
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-gray-800">${item.name}</p>
+        <p class="text-xs text-gray-400">Qty: ${item.quantity || 1} x ${formatPrice(item.price || 0)}</p>
+      </div>
+      <span class="text-sm font-bold brand-text price-tag">${formatPrice((item.price || 0) * (item.quantity || 1))}</span>
+    </div>
+  `).join('');
+
+  // Address
+  const addr = order.address;
+  if (addr) {
+    const addrDisplay = document.getElementById('deliveryAddressDisplay');
+    addrDisplay.innerHTML = `
+      <p class="font-medium text-gray-800">${addr.name}</p>
+      <p>${addr.phone}${addr.email ? ' | ' + addr.email : ''}</p>
+      <p>${addr.address}, ${addr.city}</p>
+      <p>${addr.province}${addr.postal ? ' - ' + addr.postal : ''}</p>
+    `;
+  }
+}
+
+window.addEventListener('DOMContentLoaded', renderTracking);
 </script>
 </body>
 </html>

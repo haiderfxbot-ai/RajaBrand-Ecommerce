@@ -1,574 +1,698 @@
 <!DOCTYPE html>
-<html lang="en" class="select-none overflow-x-hidden">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Raja Brand — Shop the Best</title>
+  <title>Raja - Shop Pakistan's Best</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
   <style>
-    :root {
-      --primary: #FF6B35; --primary-dark: #E55A25; --primary-light: #FFE0D6;
-      --secondary: #1A1A2E; --surface: #FFFFFF; --surface-variant: #F8F9FA;
-      --on-surface: #1C1C1E; --outline: #E0E0E0; --success: #34C759;
-      --warning: #FF9500; --error: #FF3B30; --info: #007AFF;
-    }
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
-    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;min-height:100vh;}
-    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
-    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
-    .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
-    ::-webkit-scrollbar{display:none;}
-    .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px);}
-    .safe-top{padding-top:env(safe-area-inset-top,0px);}
-    .header-blur{background:rgba(255,255,255,0.85);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);}
-    .glass-nav{background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);}
-    .btn-press:active{transform:scale(0.96);}
-    .card-hover{transition:all .3s ease;}
-    .card-hover:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.12);}
-    .shimmer{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;}
-    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-    .animate-fadeUp{animation:fadeUp .4s ease forwards;}
-    .animate-slideUp{animation:slideUp .35s cubic-bezier(.32,.72,0,1);}
-    @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-    .marquee-anim{animation:marquee 25s linear infinite;}
-    .hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);transition:all .3s;cursor:pointer;}
-    .hero-dot.active{width:24px;border-radius:4px;background:#fff;}
-    .carousel-track{display:flex;transition:transform .5s cubic-bezier(.32,.72,0,1);}
-    .product-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:all .3s ease;flex-shrink:0;}
-    .badge-pill{padding:2px 10px;border-radius:100px;font-size:11px;font-weight:600;}
-    .toast{position:fixed;top:80px;right:16px;z-index:9999;padding:12px 20px;border-radius:12px;color:#fff;font-weight:500;box-shadow:0 4px 24px rgba(0,0,0,0.15);transform:translateX(120%);transition:transform .3s cubic-bezier(.32,.72,0,1);max-width:320px;}
-    .toast.show{transform:translateX(0);}
-    .toast.success{background:var(--success);}
-    .toast.error{background:var(--error);}
-    .toast.info{background:var(--info);}
-    .toast.warning{background:var(--warning);}
-    .bottom-sheet{position:fixed;bottom:0;left:0;right:0;z-index:300;background:#fff;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1);max-height:85vh;overflow-y:auto;}
-    .bottom-sheet.show{transform:translateY(0);}
-    .sheet-overlay{position:fixed;inset:0;z-index:299;background:rgba(0,0,0,.5);opacity:0;transition:opacity .3s;pointer-events:none;}
-    .sheet-overlay.show{opacity:1;pointer-events:auto;}
+    * { font-family: 'Plus Jakarta Sans', sans-serif; scrollbar-width: none; }
+    *::-webkit-scrollbar { display: none; }
+    body { overflow-x: hidden; overflow-y: auto; padding-bottom: 80px; background: #f8fafc; }
+    .brand-gradient { background: linear-gradient(135deg, #16A34A 0%, #15803D 100%); }
+    .brand-text { color: #16A34A; }
+    .brand-bg { background: #16A34A; }
+    .brand-bg-dark { background: #15803D; }
+    .brand-light-bg { background: #DCFCE7; }
+    .price-tag { font-family: 'DM Sans', sans-serif; }
+    .slide { flex: 0 0 100%; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .marquee-content { display: inline-block; white-space: nowrap; animation: marquee 25s linear infinite; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .product-card { transition: all 0.2s ease; }
+    .product-card:active { transform: scale(0.98); }
+    .cat-chip { transition: all 0.2s; }
+    .cat-chip:active { transform: scale(0.95); }
+    .bottom-sheet { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .drawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .badge-dot { position: absolute; top: 2px; right: 2px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; }
+    .countdown-item { background: #1E293B; color: white; border-radius: 8px; padding: 4px 8px; min-width: 40px; text-align: center; }
   </style>
 </head>
-<body class="select-none overflow-x-hidden">
+<body>
 
-<div id="toastContainer"></div>
+<div id="app">
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+    <div class="flex items-center justify-between px-4 h-14">
+      <button onclick="toggleDrawer()" class="p-2 -ml-2 rounded-lg hover:bg-gray-50">
+        <span class="material-symbols-rounded text-gray-700 text-2xl">menu</span>
+      </button>
+      <a href="index.html" class="flex items-center gap-2">
+        <span class="material-symbols-rounded brand-text text-2xl">store</span>
+        <span class="text-xl font-extrabold text-gray-900">Raja</span>
+      </a>
+      <div class="flex items-center gap-1">
+        <a href="search.html" class="p-2 rounded-lg hover:bg-gray-50">
+          <span class="material-symbols-rounded text-gray-600 text-2xl">search</span>
+        </a>
+        <a href="wishlist.html" class="p-2 rounded-lg hover:bg-gray-50">
+          <span class="material-symbols-rounded text-gray-600 text-2xl">favorite</span>
+        </a>
+        <a href="cart.html" class="p-2 rounded-lg hover:bg-gray-50 relative" id="cartHeaderBtn">
+          <span class="material-symbols-rounded text-gray-600 text-2xl">shopping_bag</span>
+          <span id="cartBadge" class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center hidden">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
 
-<header id="mainHeader" class="fixed top-0 left-0 right-0 z-50 header-blur border-b border-gray-100/50 transition-transform duration-300" style="z-index:100;">
-  <div class="flex items-center justify-between px-4 h-16 safe-top">
-    <button onclick="toggleDrawer()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press" aria-label="Menu">
-      <span class="material-symbols-rounded text-gray-700 text-2xl">menu</span>
-    </button>
-    <a href="index.html" class="flex items-center gap-2">
-      <span class="text-2xl font-extrabold tracking-tight" style="color:var(--primary);font-family:'Plus Jakarta Sans',sans-serif;">RAJA</span>
-      <span class="text-lg font-semibold" style="color:var(--secondary);font-family:'Plus Jakarta Sans',sans-serif;">Brand</span>
-    </a>
-    <div class="flex items-center gap-1">
-      <a href="search.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press" aria-label="Search">
-        <span class="material-symbols-rounded text-gray-700 text-2xl">search</span>
-      </a>
-      <a href="notifications.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press relative" aria-label="Notifications">
-        <span class="material-symbols-rounded text-gray-700 text-2xl">notifications</span>
-        <span id="notifBadge" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full" style="background:var(--error);"></span>
-      </a>
-      <a href="cart.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press relative" aria-label="Cart">
-        <span class="material-symbols-rounded text-gray-700 text-2xl">shopping_bag</span>
-        <span id="cartBadge" class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 hidden">0</span>
-      </a>
+  <!-- Side Drawer -->
+  <div id="drawerOverlay" class="fixed inset-0 bg-black/50 z-[60] hidden" onclick="toggleDrawer()"></div>
+  <div id="drawer" class="drawer fixed top-0 left-0 bottom-0 w-72 bg-white z-[70] shadow-2xl -translate-x-full">
+    <div class="flex flex-col h-full">
+      <div class="brand-gradient p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+              <span class="material-symbols-rounded text-white text-2xl">store</span>
+            </div>
+            <div>
+              <p class="text-white font-bold text-lg" id="drawerUserName">Guest</p>
+              <p class="text-white/70 text-sm" id="drawerUserEmail">Sign in to your account</p>
+            </div>
+          </div>
+          <button onclick="toggleDrawer()" class="text-white/80 hover:text-white">
+            <span class="material-symbols-rounded">close</span>
+          </button>
+        </div>
+        <a href="profile.html" class="block text-center py-2 rounded-lg bg-white/20 text-white font-medium text-sm hover:bg-white/30">View Profile</a>
+      </div>
+      <nav class="flex-1 py-2 overflow-y-auto">
+        <a href="index.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+          <span class="material-symbols-rounded">home</span> Home
+        </a>
+        <a href="product.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+          <span class="material-symbols-rounded">grid_view</span> Products
+        </a>
+        <a href="product.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+          <span class="material-symbols-rounded">category</span> Categories
+        </a>
+        <a href="orders.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+          <span class="material-symbols-rounded">receipt_long</span> Orders
+        </a>
+        <a href="wishlist.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+          <span class="material-symbols-rounded">favorite</span> Wishlist
+        </a>
+        <hr class="mx-6 my-2 border-gray-100">
+        <a href="cart.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+          <span class="material-symbols-rounded">shopping_bag</span> Cart
+        </a>
+        <a href="search.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+          <span class="material-symbols-rounded">search</span> Search
+        </a>
+        <hr class="mx-6 my-2 border-gray-100">
+        <a href="#" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+          <span class="material-symbols-rounded">support_agent</span> Support
+        </a>
+        <a href="#" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+          <span class="material-symbols-rounded">info</span> About Us
+        </a>
+        <hr class="mx-6 my-2 border-gray-100">
+        <button id="drawerLoginBtn" onclick="handleAuthAction()" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium w-full text-left">
+          <span class="material-symbols-rounded">login</span> <span id="drawerAuthText">Login</span>
+        </button>
+      </nav>
+      <div class="p-4 border-t border-gray-100">
+        <p class="text-xs text-gray-400 text-center">Raja v1.0 - Shop Pakistan</p>
+      </div>
     </div>
   </div>
-</header>
 
-<div id="drawerOverlay" class="fixed inset-0 bg-black/40 z-[200] hidden" onclick="toggleDrawer()"></div>
-<div id="drawer" class="fixed top-0 left-0 bottom-0 w-[280px] bg-white z-[201] shadow-2xl transform -translate-x-full transition-transform duration-300 ease-out safe-bottom" style="padding-top:env(safe-area-inset-top,0px);">
-  <div class="flex flex-col h-full">
-    <div class="p-6 border-b border-gray-100">
-      <div class="flex items-center gap-4 mb-4">
-        <div class="w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-xl" style="background:var(--primary);" id="drawerAvatar">R</div>
+  <!-- Main Content -->
+  <main class="pt-14">
+    <!-- Hero Carousel -->
+    <div class="relative overflow-hidden" id="heroCarousel">
+      <div class="flex transition-transform duration-500 ease-out" id="carouselTrack">
+        <div class="slide min-w-full">
+          <div class="relative h-52 bg-gradient-to-r from-orange-500 to-red-500 flex items-center px-6">
+            <div class="z-10">
+              <p class="text-white/80 text-sm font-medium">Summer Sale 2024</p>
+              <h2 class="text-white text-3xl font-extrabold mt-1">Up to 60% Off</h2>
+              <p class="text-white/80 mt-1">On Lawn Collection</p>
+              <a href="product.html?cat=womens-fashion" class="inline-block mt-3 bg-white text-orange-600 px-5 py-2 rounded-full font-bold text-sm">Shop Now</a>
+            </div>
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
+              <span class="material-symbols-rounded text-white text-8xl">checkroom</span>
+            </div>
+          </div>
+        </div>
+        <div class="slide min-w-full">
+          <div class="relative h-52 brand-gradient flex items-center px-6">
+            <div class="z-10">
+              <p class="text-white/80 text-sm font-medium">Electronics Deals</p>
+              <h2 class="text-white text-3xl font-extrabold mt-1">Smartphones</h2>
+              <p class="text-white/80 mt-1">Latest Samsung & Huawei</p>
+              <a href="product.html?cat=electronics" class="inline-block mt-3 bg-white text-green-700 px-5 py-2 rounded-full font-bold text-sm">Explore</a>
+            </div>
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
+              <span class="material-symbols-rounded text-white text-8xl">smartphone</span>
+            </div>
+          </div>
+        </div>
+        <div class="slide min-w-full">
+          <div class="relative h-52 bg-gradient-to-r from-purple-600 to-pink-500 flex items-center px-6">
+            <div class="z-10">
+              <p class="text-white/80 text-sm font-medium">Footwear Fest</p>
+              <h2 class="text-white text-3xl font-extrabold mt-1">Servis & Khadim's</h2>
+              <p class="text-white/80 mt-1">Min 30% Off</p>
+              <a href="product.html?cat=footwear" class="inline-block mt-3 bg-white text-purple-600 px-5 py-2 rounded-full font-bold text-sm">Shop Now</a>
+            </div>
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
+              <span class="material-symbols-rounded text-white text-8xl">footwear</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Dots -->
+      <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="carouselDots"></div>
+      <!-- Navigation -->
+      <button onclick="prevSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center shadow z-10">
+        <span class="material-symbols-rounded text-gray-700 text-lg">chevron_left</span>
+      </button>
+      <button onclick="nextSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center shadow z-10">
+        <span class="material-symbols-rounded text-gray-700 text-lg">chevron_right</span>
+      </button>
+    </div>
+
+    <!-- Marquee Offers -->
+    <div class="bg-[#1E293B] text-white py-2 overflow-hidden">
+      <div class="marquee-content">
+        <span class="mx-6">🔥 Free Shipping on orders over Rs. 2,000</span>
+        <span class="mx-6">🎉 Use code RAJA10 for 10% off</span>
+        <span class="mx-6">🚚 Easy Returns within 7 days</span>
+        <span class="mx-6">💳 Cash on Delivery Available</span>
+        <span class="mx-6">🔥 Free Shipping on orders over Rs. 2,000</span>
+        <span class="mx-6">🎉 Use code RAJA10 for 10% off</span>
+        <span class="mx-6">🚚 Easy Returns within 7 days</span>
+        <span class="mx-6">💳 Cash on Delivery Available</span>
+      </div>
+    </div>
+
+    <!-- Categories Row -->
+    <section class="px-4 mt-5">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-bold text-gray-900">Categories</h2>
+        <a href="product.html" class="text-sm brand-text font-medium">See All</a>
+      </div>
+      <div class="flex gap-3 overflow-x-auto pb-2" id="categoriesRow"></div>
+    </section>
+
+    <!-- Flash Sale -->
+    <section class="px-4 mt-6">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <h2 class="text-lg font-bold text-gray-900">Flash Sale</h2>
+          <div class="flex items-center gap-1" id="flashCountdown">
+            <div class="countdown-item"><span id="hours">00</span><span class="text-[9px] block opacity-70">hrs</span></div>
+            <span class="text-[#1E293B] font-bold">:</span>
+            <div class="countdown-item"><span id="minutes">00</span><span class="text-[9px] block opacity-70">min</span></div>
+            <span class="text-[#1E293B] font-bold">:</span>
+            <div class="countdown-item"><span id="seconds">00</span><span class="text-[9px] block opacity-70">sec</span></div>
+          </div>
+        </div>
+        <a href="product.html" class="text-sm brand-text font-medium">View All</a>
+      </div>
+      <div class="flex gap-3 overflow-x-auto pb-2" id="flashSaleRow"></div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="px-4 mt-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-bold text-gray-900">Featured Products</h2>
+        <a href="product.html" class="text-sm brand-text font-medium">See All</a>
+      </div>
+      <div class="grid grid-cols-2 gap-3" id="featuredGrid"></div>
+    </section>
+
+    <!-- Promo Banner -->
+    <section class="px-4 mt-6">
+      <div class="brand-gradient rounded-2xl p-5 relative overflow-hidden">
+        <div class="relative z-10">
+          <span class="text-white/70 text-xs font-semibold tracking-wider uppercase">Limited Offer</span>
+          <h3 class="text-white text-xl font-extrabold mt-1">Get 10% OFF</h3>
+          <p class="text-white/80 text-sm mt-1">Use code <span class="font-bold text-white bg-white/20 px-2 py-0.5 rounded">RAJA10</span> on your first order</p>
+          <a href="product.html" class="inline-block mt-3 bg-white text-green-700 px-5 py-2 rounded-full font-bold text-sm">Shop Now</a>
+        </div>
+        <div class="absolute right-2 top-1/2 -translate-y-1/2 opacity-20">
+          <span class="material-symbols-rounded text-white text-8xl">confirmation_number</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- New Arrivals -->
+    <section class="px-4 mt-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-bold text-gray-900">New Arrivals</h2>
+        <a href="product.html?sort=newest" class="text-sm brand-text font-medium">View All</a>
+      </div>
+      <div class="flex gap-3 overflow-x-auto pb-2" id="newArrivalsRow"></div>
+    </section>
+
+    <!-- Brand Logos -->
+    <section class="px-4 mt-6">
+      <h2 class="text-lg font-bold text-gray-900 mb-3">Top Brands</h2>
+      <div class="flex gap-4 overflow-x-auto pb-2">
+        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
+          <span class="font-extrabold text-sm text-gray-400">Khaadi</span>
+        </div>
+        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
+          <span class="font-extrabold text-sm text-gray-400">Sapphire</span>
+        </div>
+        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
+          <span class="font-extrabold text-sm text-gray-400">Servis</span>
+        </div>
+        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
+          <span class="font-extrabold text-sm text-gray-400">Samsung</span>
+        </div>
+        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
+          <span class="font-extrabold text-sm text-gray-400">J.</span>
+        </div>
+        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
+          <span class="font-extrabold text-sm text-gray-400">Gul Ahmed</span>
+        </div>
+        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
+          <span class="font-extrabold text-sm text-gray-400">Maria B</span>
+        </div>
+        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
+          <span class="font-extrabold text-sm text-gray-400">Outfitters</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="px-4 mt-6">
+      <div class="grid grid-cols-3 gap-3">
+        <div class="text-center p-3 bg-white rounded-xl border border-gray-100">
+          <span class="material-symbols-rounded brand-text text-3xl">local_shipping</span>
+          <p class="text-xs text-gray-600 mt-1 font-medium">Free Shipping</p>
+        </div>
+        <div class="text-center p-3 bg-white rounded-xl border border-gray-100">
+          <span class="material-symbols-rounded brand-text text-3xl">assignment_return</span>
+          <p class="text-xs text-gray-600 mt-1 font-medium">Easy Returns</p>
+        </div>
+        <div class="text-center p-3 bg-white rounded-xl border border-gray-100">
+          <span class="material-symbols-rounded brand-text text-3xl">security</span>
+          <p class="text-xs text-gray-600 mt-1 font-medium">Secure Payment</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-8 bg-[#1E293B] text-white px-4 py-6 rounded-t-3xl">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="material-symbols-rounded brand-text text-2xl">store</span>
+        <span class="text-xl font-extrabold">Raja</span>
+      </div>
+      <p class="text-gray-400 text-sm mb-4">Pakistan's favorite online shopping destination. Shop the best brands at the best prices.</p>
+      <div class="grid grid-cols-2 gap-4 mb-4">
         <div>
-          <p class="font-bold text-base" id="drawerName" style="font-family:'Plus Jakarta Sans',sans-serif;">Guest User</p>
-          <p class="text-sm text-gray-500" id="drawerEmail">Sign in to your account</p>
+          <h4 class="font-bold text-sm mb-2">Shop</h4>
+          <div class="space-y-1.5 text-sm text-gray-400">
+            <a href="product.html?cat=womens-fashion" class="block">Women's Fashion</a>
+            <a href="product.html?cat=mens-fashion" class="block">Men's Fashion</a>
+            <a href="product.html?cat=electronics" class="block">Electronics</a>
+            <a href="product.html?cat=footwear" class="block">Footwear</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm mb-2">Help</h4>
+          <div class="space-y-1.5 text-sm text-gray-400">
+            <a href="#" class="block">Contact Us</a>
+            <a href="#" class="block">FAQs</a>
+            <a href="#" class="block">Shipping</a>
+            <a href="#" class="block">Returns</a>
+          </div>
         </div>
       </div>
-      <a href="profile.html" class="text-sm font-medium" style="color:var(--primary);">View Profile</a>
+      <hr class="border-gray-700 mb-4">
+      <p class="text-center text-sm text-gray-500">&copy; 2024 Raja. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 px-2 pb-safe" style="padding-bottom: env(safe-area-inset-bottom, 0px);">
+    <div class="flex items-center justify-around h-16">
+      <a href="index.html" class="flex flex-col items-center gap-0.5 brand-text">
+        <span class="material-symbols-rounded text-2xl">home</span>
+        <span class="text-[10px] font-semibold">Home</span>
+      </a>
+      <a href="product.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+        <span class="material-symbols-rounded text-2xl">grid_view</span>
+        <span class="text-[10px] font-medium">Products</span>
+      </a>
+      <a href="search.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+        <span class="material-symbols-rounded text-2xl">search</span>
+        <span class="text-[10px] font-medium">Search</span>
+      </a>
+      <a href="wishlist.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+        <span class="material-symbols-rounded text-2xl">favorite</span>
+        <span class="text-[10px] font-medium">Wishlist</span>
+      </a>
+      <a href="profile.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+        <span class="material-symbols-rounded text-2xl">person</span>
+        <span class="text-[10px] font-medium">Profile</span>
+      </a>
     </div>
-    <nav class="flex-1 overflow-y-auto p-4 space-y-1">
-      <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium" style="color:var(--primary);background:var(--primary-light);"><span class="material-symbols-rounded icon-fill text-xl">home</span> Home</a>
-      <a href="product.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 font-medium"><span class="material-symbols-rounded text-xl">grid_view</span> Products</a>
-      <a href="product.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 font-medium"><span class="material-symbols-rounded text-xl">category</span> Categories</a>
-      <a href="orders.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 font-medium"><span class="material-symbols-rounded text-xl">receipt_long</span> Orders</a>
-      <a href="wishlist.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 font-medium"><span class="material-symbols-rounded text-xl">favorite</span> Wishlist</a>
-      <a href="support.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 font-medium"><span class="material-symbols-rounded text-xl">support</span> Support</a>
-      <a href="about.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 font-medium"><span class="material-symbols-rounded text-xl">info</span> About Us</a>
-      <hr class="my-3 border-gray-100">
-      <a id="drawerLoginBtn" href="login.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 font-medium"><span class="material-symbols-rounded text-xl">login</span> Login / Sign Up</a>
-      <button onclick="logoutUser()" id="drawerLogoutBtn" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 font-medium w-full hidden"><span class="material-symbols-rounded text-xl">logout</span> Logout</button>
-    </nav>
-    <div class="p-4 border-t border-gray-100 text-center text-xs text-gray-400">&copy; 2026 Raja Brand. All rights reserved.</div>
+  </nav>
+
+  <!-- Profile Completion Bottom Sheet -->
+  <div id="profileSheetOverlay" class="fixed inset-0 bg-black/50 z-[80] hidden" onclick="closeProfileSheet()"></div>
+  <div id="profileSheet" class="bottom-sheet fixed bottom-0 left-0 right-0 bg-white z-[90] rounded-t-3xl shadow-2xl translate-y-full">
+    <div class="p-6">
+      <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4"></div>
+      <div class="text-center mb-6">
+        <div class="w-20 h-20 bg-brand-light-bg rounded-full flex items-center justify-center mx-auto mb-3">
+          <span class="material-symbols-rounded brand-text text-4xl">celebration</span>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900">Welcome to Raja!</h3>
+        <p class="text-gray-500 mt-1">Complete your profile for a better experience</p>
+      </div>
+      <div class="space-y-3">
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+          <span class="material-symbols-rounded text-gray-400">person</span>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-gray-700">Full Name</p>
+            <p class="text-xs text-gray-400">Add your name</p>
+          </div>
+          <span class="material-symbols-rounded text-gray-300">chevron_right</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+          <span class="material-symbols-rounded text-gray-400">phone</span>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-gray-700">Phone Number</p>
+            <p class="text-xs text-gray-400">03XX-XXXXXXX</p>
+          </div>
+          <span class="material-symbols-rounded text-gray-300">chevron_right</span>
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+          <span class="material-symbols-rounded text-gray-400">location_on</span>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-gray-700">Shipping Address</p>
+            <p class="text-xs text-gray-400">Add your address</p>
+          </div>
+          <span class="material-symbols-rounded text-gray-300">chevron_right</span>
+        </div>
+      </div>
+      <button onclick="closeProfileSheet()" class="w-full mt-6 brand-gradient text-white py-3 rounded-xl font-bold">Let's Go Shopping</button>
+    </div>
   </div>
 </div>
-
-<nav class="fixed bottom-0 left-0 right-0 z-50 glass-nav border-t border-gray-100 safe-bottom" style="padding-bottom:env(safe-area-inset-bottom,4px);">
-  <div class="flex items-center justify-around h-16">
-    <a href="index.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded icon-fill text-xl" style="color:var(--primary);">home</span><span class="text-[10px] font-medium" style="color:var(--primary);">Home</span></a>
-    <a href="product.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">grid_view</span><span class="text-[10px] text-gray-400">Products</span></a>
-    <a href="search.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">search</span><span class="text-[10px] text-gray-400">Search</span></a>
-    <a href="wishlist.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">favorite</span><span class="text-[10px] text-gray-400">Wishlist</span></a>
-    <a href="profile.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">person</span><span class="text-[10px] text-gray-400">Profile</span></a>
-  </div>
-</nav>
-
-<main>
-  <section class="hero-section relative overflow-hidden" style="height:420px;">
-    <div class="carousel-track h-full" id="heroTrack">
-      <div class="min-w-full h-full flex items-center px-6 relative" style="background:linear-gradient(135deg,#FF6B35 0%,#FF8F65 50%,#FFB088 100%);">
-        <div class="text-white max-w-xs animate-fadeUp">
-          <span class="text-sm font-semibold bg-white/20 px-4 py-1 rounded-full inline-block mb-3">New Collection 2026</span>
-          <h1 class="text-3xl font-extrabold leading-tight mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Summer Style<br>Up to 50% Off</h1>
-          <p class="text-white/80 mb-5 text-sm">Discover the latest trends with premium quality fabrics.</p>
-          <a href="product.html?cat=clothing" class="inline-flex items-center gap-2 bg-white text-orange-500 font-bold px-6 py-3 rounded-xl btn-press" style="box-shadow:0 4px 16px rgba(0,0,0,0.15);">Shop Now <span class="material-symbols-rounded">arrow_forward</span></a>
-        </div>
-        <div class="absolute right-6 bottom-8 text-white/10 text-[200px] leading-none select-none pointer-events-none font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;">R</div>
-      </div>
-      <div class="min-w-full h-full flex items-center px-6 relative" style="background:linear-gradient(135deg,#1A1A2E 0%,#2D2D44 50%,#4A4A6A 100%);">
-        <div class="text-white max-w-xs animate-fadeUp">
-          <span class="text-sm font-semibold bg-white/20 px-4 py-1 rounded-full inline-block mb-3">Flash Sale</span>
-          <h1 class="text-3xl font-extrabold leading-tight mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Premium<br>Electronics</h1>
-          <p class="text-white/80 mb-5 text-sm">Top brands at unbeatable prices. Limited time offer!</p>
-          <a href="product.html?cat=electronics" class="inline-flex items-center gap-2 bg-white text-navy-700 font-bold px-6 py-3 rounded-xl btn-press" style="box-shadow:0 4px 16px rgba(0,0,0,0.15);color:var(--secondary);">Explore <span class="material-symbols-rounded">arrow_forward</span></a>
-        </div>
-        <div class="absolute right-6 bottom-8 text-white/5 text-[200px] leading-none select-none pointer-events-none font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;">E</div>
-      </div>
-      <div class="min-w-full h-full flex items-center px-6 relative" style="background:linear-gradient(135deg,#007AFF 0%,#4A9EFF 50%,#8DC2FF 100%);">
-        <div class="text-white max-w-xs animate-fadeUp">
-          <span class="text-sm font-semibold bg-white/20 px-4 py-1 rounded-full inline-block mb-3">Free Delivery</span>
-          <h1 class="text-3xl font-extrabold leading-tight mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Footwear<br>Collection</h1>
-          <p class="text-white/80 mb-5 text-sm">Step into style with our latest sneakers and shoes.</p>
-          <a href="product.html?cat=shoes" class="inline-flex items-center gap-2 bg-white text-blue-500 font-bold px-6 py-3 rounded-xl btn-press" style="box-shadow:0 4px 16px rgba(0,0,0,0.15);">Shop Now <span class="material-symbols-rounded">arrow_forward</span></a>
-        </div>
-        <div class="absolute right-6 bottom-8 text-white/5 text-[200px] leading-none select-none pointer-events-none font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;">S</div>
-      </div>
-    </div>
-    <div class="absolute bottom-5 left-0 right-0 flex justify-center gap-2 z-10" id="heroDots">
-      <div class="hero-dot active" data-index="0"></div>
-      <div class="hero-dot" data-index="1"></div>
-      <div class="hero-dot" data-index="2"></div>
-    </div>
-  </section>
-
-  <section class="py-4 overflow-hidden border-b border-gray-100 bg-white">
-    <div class="flex whitespace-nowrap marquee-anim gap-8 text-sm font-medium">
-      <span class="inline-flex items-center gap-2"><span class="material-symbols-rounded text-base" style="color:var(--success);">local_shipping</span> Free Delivery on orders above ₹499</span>
-      <span class="inline-flex items-center gap-2"><span class="material-symbols-rounded text-base" style="color:var(--primary);">new_releases</span> New Arrivals Every Week</span>
-      <span class="inline-flex items-center gap-2"><span class="material-symbols-rounded text-base" style="color:var(--warning);">local_fire_department</span> Up to 50% Off on Selected Items</span>
-      <span class="inline-flex items-center gap-2"><span class="material-symbols-rounded text-base" style="color:var(--success);">verified</span> 100% Authentic Products</span>
-      <span class="inline-flex items-center gap-2"><span class="material-symbols-rounded text-base" style="color:var(--primary);">local_shipping</span> Free Delivery on orders above ₹499</span>
-      <span class="inline-flex items-center gap-2"><span class="material-symbols-rounded text-base" style="color:var(--info);">new_releases</span> New Arrivals Every Week</span>
-    </div>
-  </section>
-
-  <section class="px-4 py-5">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;">Categories</h2>
-      <a href="product.html" class="text-sm font-medium flex items-center gap-1" style="color:var(--primary);">View All <span class="material-symbols-rounded text-base">arrow_forward</span></a>
-    </div>
-    <div class="flex gap-3 overflow-x-auto pb-2" id="categoryScroll">
-    </div>
-  </section>
-
-  <section class="px-4 py-5 bg-white">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-bold flex items-center gap-2" style="font-family:'Plus Jakarta Sans',sans-serif;"><span>🔥</span> Flash Sale</h2>
-      <div class="flex items-center gap-2">
-        <span class="text-sm font-mono font-bold bg-red-50 text-red-500 px-3 py-1 rounded-lg" id="countdown">02:15:30</span>
-      </div>
-    </div>
-    <div class="flex gap-4 overflow-x-auto pb-2" id="flashSaleScroll"></div>
-  </section>
-
-  <section class="px-4 py-5">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;">Featured Products</h2>
-      <a href="product.html" class="text-sm font-medium flex items-center gap-1" style="color:var(--primary);">View All <span class="material-symbols-rounded text-base">arrow_forward</span></a>
-    </div>
-    <div class="grid grid-cols-2 gap-3" id="featuredGrid"></div>
-  </section>
-
-  <section class="mx-4 mb-4 rounded-2xl overflow-hidden relative" style="background:linear-gradient(135deg,#FF6B35 0%,#FF9500 100%);min-height:160px;">
-    <div class="p-6 text-white">
-      <span class="text-xs font-semibold bg-white/20 px-3 py-1 rounded-full">Limited Offer</span>
-      <h3 class="text-xl font-bold mt-2 mb-1" style="font-family:'Plus Jakarta Sans',sans-serif;">Get 10% Off</h3>
-      <p class="text-sm text-white/80 mb-3">Use code <strong>RAJA10</strong> on your first order</p>
-      <a href="product.html" class="inline-flex items-center gap-1 bg-white font-bold text-sm px-5 py-2.5 rounded-xl btn-press" style="color:var(--primary);">Shop Now <span class="material-symbols-rounded text-base">arrow_forward</span></a>
-    </div>
-    <div class="absolute right-4 bottom-2 text-white/10 text-[100px] leading-none select-none pointer-events-none font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;">%</div>
-  </section>
-
-  <section class="px-4 py-5 bg-white">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;">New Arrivals</h2>
-      <a href="product.html?sort=newest" class="text-sm font-medium flex items-center gap-1" style="color:var(--primary);">View All <span class="material-symbols-rounded text-base">arrow_forward</span></a>
-    </div>
-    <div class="flex gap-4 overflow-x-auto pb-2" id="newArrivalsScroll"></div>
-  </section>
-
-  <section class="px-4 py-6 bg-white border-t border-gray-100">
-    <div class="flex flex-wrap justify-center gap-8 mb-6 opacity-40">
-      <span class="text-lg font-bold text-gray-400">NIKE</span>
-      <span class="text-lg font-bold text-gray-400">ADIDAS</span>
-      <span class="text-lg font-bold text-gray-400">PUMA</span>
-      <span class="text-lg font-bold text-gray-400">ZARA</span>
-      <span class="text-lg font-bold text-gray-400">H&M</span>
-    </div>
-    <div class="grid grid-cols-3 gap-4 text-center">
-      <div class="flex flex-col items-center gap-2">
-        <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background:var(--primary-light);">
-          <span class="material-symbols-rounded" style="color:var(--primary);">local_shipping</span>
-        </div>
-        <span class="text-xs font-semibold">Free Shipping</span>
-      </div>
-      <div class="flex flex-col items-center gap-2">
-        <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background:var(--primary-light);">
-          <span class="material-symbols-rounded" style="color:var(--primary);">autorenew</span>
-        </div>
-        <span class="text-xs font-semibold">Easy Returns</span>
-      </div>
-      <div class="flex flex-col items-center gap-2">
-        <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background:var(--primary-light);">
-          <span class="material-symbols-rounded" style="color:var(--primary);">lock</span>
-        </div>
-        <span class="text-xs font-semibold">Secure Payment</span>
-      </div>
-    </div>
-  </section>
-</main>
-
-<div class="sheet-overlay" id="sheetOverlay" onclick="closeProfileSheet()"></div>
-<div class="bottom-sheet safe-bottom" id="profileSheet">
-  <div class="p-6">
-    <div class="flex items-center justify-between mb-4">
-      <h3 class="text-lg font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;">Complete Your Profile</h3>
-      <button onclick="closeProfileSheet()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center btn-press"><span class="material-symbols-rounded text-lg">close</span></button>
-    </div>
-    <p class="text-sm text-gray-500 mb-4">Add your details to personalize your experience.</p>
-    <div class="space-y-3">
-      <div><label class="text-sm font-medium mb-1 block">Full Name</label><input type="text" id="sheetName" placeholder="John Doe" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-      <div><label class="text-sm font-medium mb-1 block">Phone Number</label><input type="tel" id="sheetPhone" placeholder="9876543210" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" maxlength="10"></div>
-      <div><label class="text-sm font-medium mb-1 block">Delivery Address</label><input type="text" id="sheetAddress" placeholder="Street, city, pincode" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-    </div>
-    <button onclick="saveProfileSheet()" class="w-full mt-4 py-3 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Save Details</button>
-    <button onclick="closeProfileSheet()" class="w-full mt-2 py-2 text-sm text-gray-400 btn-press">Skip for now</button>
-  </div>
-</div>
-
-<footer class="bg-white border-t border-gray-100 px-4 py-8 safe-bottom">
-  <div class="max-w-4xl mx-auto">
-    <div class="flex items-center gap-2 mb-4">
-      <span class="text-2xl font-extrabold tracking-tight" style="color:var(--primary);font-family:'Plus Jakarta Sans',sans-serif;">RAJA</span>
-      <span class="text-lg font-semibold" style="color:var(--secondary);font-family:'Plus Jakarta Sans',sans-serif;">Brand</span>
-    </div>
-    <p class="text-sm text-gray-500 mb-6">Your one-stop shop for premium fashion, electronics, and lifestyle products. Shop the best at Raja Brand.</p>
-    <div class="grid grid-cols-2 gap-4 mb-6">
-      <div>
-        <h4 class="font-bold text-sm mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Quick Links</h4>
-        <div class="space-y-2 text-sm text-gray-500">
-          <a href="about.html" class="block">About Us</a>
-          <a href="support.html" class="block">Support</a>
-          <a href="orders.html" class="block">My Orders</a>
-          <a href="product.html" class="block">Shop All</a>
-        </div>
-      </div>
-      <div>
-        <h4 class="font-bold text-sm mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Policies</h4>
-        <div class="space-y-2 text-sm text-gray-500">
-          <a href="support.html" class="block">Refund Policy</a>
-          <a href="support.html" class="block">Privacy Policy</a>
-          <a href="support.html" class="block">Terms of Service</a>
-        </div>
-      </div>
-    </div>
-    <div class="flex gap-4 mb-4">
-      <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center border border-gray-200 hover:bg-gray-50 btn-press" aria-label="Facebook"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-      <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center border border-gray-200 hover:bg-gray-50 btn-press" aria-label="Twitter"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg></a>
-      <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center border border-gray-200 hover:bg-gray-50 btn-press" aria-label="Instagram"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678a6.162 6.162 0 100 12.324 6.162 6.162 0 100-12.324zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405a1.441 1.441 0 11-2.882 0 1.441 1.441 0 012.882 0z"/></svg></a>
-    </div>
-    <p class="text-xs text-gray-400 text-center">&copy; 2026 Raja Brand. All rights reserved. Made with ❤️ in India.</p>
-  </div>
-</footer>
 
 <script>
-  document.addEventListener('contextmenu',e=>e.preventDefault());
-  document.addEventListener('selectstart',e=>e.preventDefault());
-  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
-  document.querySelectorAll('img').forEach(img=>img.setAttribute('draggable','false'));
+// ===== UTILITIES =====
+function formatPrice(amount) {
+  return 'Rs. ' + Number(amount).toLocaleString('en-PK');
+}
 
-  const STORE = { users:'raja_users',currentUser:'raja_current_user',products:'raja_products',categories:'raja_categories',orders:'raja_orders',cart:'raja_cart',wishlist:'raja_wishlist',notifications:'raja_notifications',settings:'raja_settings',coupons:'raja_coupons',recentSearch:'raja_recent_search' };
+function goToProduct(id) {
+  localStorage.setItem('raja_selected_product', id);
+  window.location.href = 'product-detail.html?id=' + id;
+}
 
-  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
-  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function getCurrentUser() {
+  const data = localStorage.getItem('raja_current_user');
+  return data ? JSON.parse(data) : null;
+}
 
-  function seedData(){
-    if(getLS(STORE.categories))return;
-    const cats=[
-      {id:'cat_001',name:'Electronics',icon:'devices',color:'#007AFF'},
-      {id:'cat_002',name:'Clothing',icon:'checkroom',color:'#FF6B35'},
-      {id:'cat_003',name:'Shoes',icon:'footprint',color:'#34C759'},
-      {id:'cat_004',name:'Accessories',icon:'watch',color:'#FF9500'},
-      {id:'cat_005',name:'Home & Living',icon:'chair',color:'#AF52DE'},
-      {id:'cat_006',name:'Beauty',icon:'spa',color:'#FF2D55'},
-      {id:'cat_007',name:'Sports',icon:'sports_soccer',color:'#5856D6'},
-      {id:'cat_008',name:'Books',icon:'menu_book',color:'#8E8E93'}
+function getCartCount() {
+  const cart = JSON.parse(localStorage.getItem('raja_cart') || '[]');
+  return cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+}
+
+function updateCartBadge() {
+  const count = getCartCount();
+  const badge = document.getElementById('cartBadge');
+  if (badge) {
+    badge.textContent = count;
+    badge.classList.toggle('hidden', count === 0);
+  }
+}
+
+function formatDate(d) {
+  const date = new Date(d);
+  return date.toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function seedDataIfEmpty() {
+  if (!localStorage.getItem('raja_categories')) {
+    const categories = [
+      { id: 'womens-fashion', name: "Women's Fashion", icon: 'checkroom', count: 8 },
+      { id: 'mens-fashion', name: "Men's Fashion", icon: 'hiking', count: 6 },
+      { id: 'kids', name: 'Kids', icon: 'child_care', count: 4 },
+      { id: 'footwear', name: 'Footwear', icon: 'footwear', count: 5 },
+      { id: 'electronics', name: 'Electronics', icon: 'smartphone', count: 6 },
+      { id: 'home-kitchen', name: 'Home & Kitchen', icon: 'kitchen', count: 4 },
+      { id: 'beauty', name: 'Beauty', icon: 'spa', count: 3 },
+      { id: 'books', name: 'Books & Stationery', icon: 'menu_book', count: 3 }
     ];
-    setLS(STORE.categories,cats);
+    localStorage.setItem('raja_categories', JSON.stringify(categories));
+  }
 
-    const prods=[
-      {id:'prod_001',cat_id:'cat_002',name:'Premium Cotton T-Shirt',description:'Soft, breathable cotton t-shirt perfect for everyday wear. Available in multiple colors.',price:599,original_price:999,discount:40,stock:100,images:['https://picsum.photos/400/400?random=1'],rating:4.5,reviews:234,tags:['featured','new'],created_at:'2026-05-01'},
-      {id:'prod_002',cat_id:'cat_002',name:'Slim Fit Denim Jeans',description:'Modern slim fit jeans with premium denim fabric. Stretchable and comfortable.',price:1299,original_price:2499,discount:48,stock:75,images:['https://picsum.photos/400/400?random=2'],rating:4.3,reviews:189,tags:['featured'],created_at:'2026-04-28'},
-      {id:'prod_003',cat_id:'cat_001',name:'Wireless Bluetooth Earbuds',description:'High-quality wireless earbuds with noise cancellation and 24hr battery life.',price:2499,original_price:4999,discount:50,stock:60,images:['https://picsum.photos/400/400?random=3'],rating:4.7,reviews:456,tags:['featured','new','sale'],created_at:'2026-05-10'},
-      {id:'prod_004',cat_id:'cat_001',name:'Smart Watch Pro',description:'Advanced smartwatch with health monitoring, GPS, and 7-day battery life.',price:5999,original_price:9999,discount:40,stock:40,images:['https://picsum.photos/400/400?random=4'],rating:4.4,reviews:312,tags:['featured'],created_at:'2026-03-15'},
-      {id:'prod_005',cat_id:'cat_003',name:'Running Sneakers Air',description:'Lightweight running shoes with responsive cushioning and breathable mesh upper.',price:3499,original_price:5499,discount:36,stock:85,images:['https://picsum.photos/400/400?random=5'],rating:4.6,reviews:278,tags:['featured','new'],created_at:'2026-05-20'},
-      {id:'prod_006',cat_id:'cat_003',name:'Casual Loafers',description:'Stylish casual loafers with memory foam insole for all-day comfort.',price:1999,original_price:2999,discount:33,stock:55,images:['https://picsum.photos/400/400?random=6'],rating:4.2,reviews:145,tags:[],created_at:'2026-04-10'},
-      {id:'prod_007',cat_id:'cat_004',name:'Classic Leather Watch',description:'Elegant analog watch with genuine leather strap and mineral glass face.',price:4499,original_price:6999,discount:36,stock:30,images:['https://picsum.photos/400/400?random=7'],rating:4.8,reviews:523,tags:['featured'],created_at:'2026-02-20'},
-      {id:'prod_008',cat_id:'cat_004',name:'Silver Chain Necklace',description:'Premium silver chain necklace with polished finish. Hypoallergenic and tarnish-resistant.',price:899,original_price:1499,discount:40,stock:120,images:['https://picsum.photos/400/400?random=8'],rating:4.1,reviews:89,tags:['new'],created_at:'2026-05-15'},
-      {id:'prod_009',cat_id:'cat_005',name:'Scented Candle Set',description:'Set of 3 hand-poured soy wax candles. Lavender, vanilla, and citrus scents.',price:799,original_price:1299,discount:38,stock:200,images:['https://picsum.photos/400/400?random=9'],rating:4.0,reviews:67,tags:['new'],created_at:'2026-05-18'},
-      {id:'prod_010',cat_id:'cat_006',name:'Face Serum Vitamin C',description:'Brightening vitamin C serum with hyaluronic acid. Reduces dark spots and fine lines.',price:549,original_price:899,discount:39,stock:150,images:['https://picsum.photos/400/400?random=10'],rating:4.5,reviews:432,tags:['featured'],created_at:'2026-04-05'},
-      {id:'prod_011',cat_id:'cat_007',name:'Yoga Mat Premium',description:'Extra thick, non-slip yoga mat with alignment lines. Eco-friendly TPE material.',price:1499,original_price:2499,discount:40,stock:90,images:['https://picsum.photos/400/400?random=11'],rating:4.3,reviews:198,tags:[],created_at:'2026-03-25'},
-      {id:'prod_012',cat_id:'cat_008',name:'The Art of Living',description:'Bestselling self-improvement book with practical wisdom for modern life.',price:299,original_price:499,discount:40,stock:300,images:['https://picsum.photos/400/400?random=12'],rating:4.6,reviews:876,tags:['featured'],created_at:'2026-01-10'},
-      {id:'prod_013',cat_id:'cat_001',name:'USB-C Hub 7-in-1',description:'Multi-port adapter with HDMI, USB 3.0, SD card reader, and PD charging.',price:1799,original_price:2999,discount:40,stock:65,images:['https://picsum.photos/400/400?random=13'],rating:4.2,reviews:156,tags:['sale'],created_at:'2026-05-08'},
-      {id:'prod_014',cat_id:'cat_002',name:'Floral Summer Dress',description:'Lightweight floral print dress perfect for summer. Flattering A-line silhouette.',price:1499,original_price:2499,discount:40,stock:45,images:['https://picsum.photos/400/400?random=14'],rating:4.4,reviews:234,tags:['new','featured'],created_at:'2026-05-22'},
-      {id:'prod_015',cat_id:'cat_005',name:'Mini Plant Pot Set',description:'Set of 4 ceramic mini plant pots with drainage holes. Perfect for succulents.',price:449,original_price:699,discount:36,stock:180,images:['https://picsum.photos/400/400?random=15'],rating:4.0,reviews:98,tags:['new'],created_at:'2026-05-12'},
-      {id:'prod_016',cat_id:'cat_006',name:'Organic Lip Balm Trio',description:'Moisturizing organic lip balms in strawberry, mint, and coconut flavors.',price:299,original_price:499,discount:40,stock:250,images:['https://picsum.photos/400/400?random=16'],rating:4.3,reviews:567,tags:[],created_at:'2026-04-20'}
+  if (!localStorage.getItem('raja_products')) {
+    const products = [
+      { id: 'p1', name: 'Khaadi 3-Piece Unstitched Embroidered Suit', category: 'womens-fashion', price: 4500, originalPrice: 6500, rating: 4.5, reviews: 234, image: 'https://picsum.photos/seed/khaadi1/400/500', images: ['https://picsum.photos/seed/khaadi1/400/500', 'https://picsum.photos/seed/khaadi1a/400/500', 'https://picsum.photos/seed/khaadi1b/400/500'], isNew: true, isFlashSale: true, discount: 31, stock: 25, description: 'Premium unstitched 3-piece suit from Khaadi. Features intricate embroidery on fine fabric. Includes shirt, dupatta, and trouser. Perfect for casual and formal occasions.', brand: 'Khaadi', dateAdded: '2024-05-01' },
+      { id: 'p2', name: 'Sapphire Lawn 2024 Printed Collection', category: 'womens-fashion', price: 3200, originalPrice: 4000, rating: 4.3, reviews: 189, image: 'https://picsum.photos/seed/sapphire1/400/500', images: ['https://picsum.photos/seed/sapphire1/400/500', 'https://picsum.photos/seed/sapphire1a/400/500'], isNew: true, isFlashSale: true, discount: 20, stock: 40, description: 'Beautiful printed lawn collection by Sapphire. Lightweight and breathable fabric, ideal for summer.', brand: 'Sapphire', dateAdded: '2024-05-10' },
+      { id: 'p3', name: 'J. 2-Piece Pret Collection - Summer Bliss', category: 'womens-fashion', price: 5990, originalPrice: 7990, rating: 4.7, reviews: 312, image: 'https://picsum.photos/seed/jdot1/400/500', images: ['https://picsum.photos/seed/jdot1/400/500', 'https://picsum.photos/seed/jdot1a/400/500', 'https://picsum.photos/seed/jdot1b/400/500'], isNew: false, isFlashSale: false, discount: 25, stock: 15, description: 'Ready-to-wear 2-piece pret from J. Stitched with precision and style.', brand: 'J.', dateAdded: '2024-04-15' },
+      { id: 'p4', name: 'Sana Safinaz Luxury Unstitched 3-Piece', category: 'womens-fashion', price: 6500, originalPrice: 8500, rating: 4.8, reviews: 156, image: 'https://picsum.photos/seed/sana1/400/500', images: ['https://picsum.photos/seed/sana1/400/500', 'https://picsum.photos/seed/sana1a/400/500'], isNew: true, isFlashSale: false, discount: 24, stock: 10, description: 'Luxury unstitched 3-piece by Sana Safinaz. Premium quality fabric with modern design.', brand: 'Sana Safinaz', dateAdded: '2024-05-20' },
+      { id: 'p5', name: 'Maria B Stitched Premium Collection 2024', category: 'womens-fashion', price: 4990, originalPrice: 6990, rating: 4.4, reviews: 278, image: 'https://picsum.photos/seed/mariab1/400/500', images: ['https://picsum.photos/seed/mariab1/400/500'], isNew: false, isFlashSale: true, discount: 29, stock: 20, description: 'Stitched premium collection from Maria B. Elegant design for special occasions.', brand: 'Maria B', dateAdded: '2024-03-10' },
+      { id: 'p6', name: 'Nishat Linen Winter Collection 2024', category: 'womens-fashion', price: 3800, originalPrice: 4800, rating: 4.2, reviews: 145, image: 'https://picsum.photos/seed/nishat1/400/500', images: ['https://picsum.photos/seed/nishat1/400/500'], isNew: false, isFlashSale: false, discount: 21, stock: 30, description: 'Winter collection from Nishat Linen. Warm and stylish fabric for the cold season.', brand: 'Nishat Linen', dateAdded: '2024-02-20' },
+      { id: 'p7', name: 'Alkaram Studio Premium Unstitched', category: 'womens-fashion', price: 4200, originalPrice: 5200, rating: 4.1, reviews: 198, image: 'https://picsum.photos/seed/alkaram1/400/500', images: ['https://picsum.photos/seed/alkaram1/400/500', 'https://picsum.photos/seed/alkaram1a/400/500'], isNew: false, isFlashSale: true, discount: 19, stock: 35, description: 'Premium unstitched fabric from Alkaram Studio. High quality and comfortable.', brand: 'Alkaram Studio', dateAdded: '2024-04-01' },
+      { id: 'p8', name: 'Gul Ahmed Printed Lawn Suit', category: 'womens-fashion', price: 3500, originalPrice: 4500, rating: 4.6, reviews: 423, image: 'https://picsum.photos/seed/gulahmed1/400/500', images: ['https://picsum.photos/seed/gulahmed1/400/500', 'https://picsum.photos/seed/gulahmed1a/400/500'], isNew: true, isFlashSale: false, discount: 22, stock: 50, description: 'Beautiful printed lawn suit by Gul Ahmed. A summer essential with vibrant prints.', brand: 'Gul Ahmed', dateAdded: '2024-05-15' },
+      { id: 'p9', name: 'Bonanza Satrangi Kurta Shalwar Stitched', category: 'mens-fashion', price: 2990, originalPrice: 3990, rating: 4.3, reviews: 167, image: 'https://picsum.photos/seed/bonanza1/400/500', images: ['https://picsum.photos/seed/bonanza1/400/500'], isNew: false, isFlashSale: true, discount: 25, stock: 30, description: 'Stitched kurta shalwar from Bonanza Satrangi. Comfortable and stylish for daily wear.', brand: 'Bonanza Satrangi', dateAdded: '2024-04-10' },
+      { id: 'p10', name: 'Outfitters Men\'s Premium T-Shirt', category: 'mens-fashion', price: 1499, originalPrice: 1999, rating: 4.0, reviews: 89, image: 'https://picsum.photos/seed/outfitters1/400/500', images: ['https://picsum.photos/seed/outfitters1/400/500'], isNew: true, isFlashSale: false, discount: 25, stock: 45, description: 'Premium quality t-shirt from Outfitters. Soft fabric with modern fit.', brand: 'Outfitters', dateAdded: '2024-05-18' },
+      { id: 'p11', name: 'Junaid Jamshed Kurta Shalwar - Classic White', category: 'mens-fashion', price: 3490, originalPrice: 4490, rating: 4.6, reviews: 234, image: 'https://picsum.photos/seed/junaid1/400/500', images: ['https://picsum.photos/seed/junaid1/400/500'], isNew: false, isFlashSale: false, discount: 22, stock: 25, description: 'Classic white kurta shalwar from Junaid Jamshed. Premium fabric with elegant design.', brand: 'Junaid Jamshed', dateAdded: '2024-03-20' },
+      { id: 'p12', name: 'Samsung Galaxy A14 128GB', category: 'electronics', price: 32999, originalPrice: 39999, rating: 4.4, reviews: 567, image: 'https://picsum.photos/seed/samsung1/400/500', images: ['https://picsum.photos/seed/samsung1/400/500', 'https://picsum.photos/seed/samsung1a/400/500'], isNew: false, isFlashSale: true, discount: 18, stock: 20, description: 'Samsung Galaxy A14 with 128GB storage. Features a 6.6" display and 50MP camera.', brand: 'Samsung', dateAdded: '2024-03-01' },
+      { id: 'p13', name: 'Huawei Nova 12i 256GB', category: 'electronics', price: 45999, originalPrice: 52999, rating: 4.5, reviews: 345, image: 'https://picsum.photos/seed/huawei1/400/500', images: ['https://picsum.photos/seed/huawei1/400/500', 'https://picsum.photos/seed/huawei1a/400/500'], isNew: true, isFlashSale: false, discount: 13, stock: 15, description: 'Huawei Nova 12i with 256GB storage. 108MP camera and 40W fast charging.', brand: 'Huawei', dateAdded: '2024-05-05' },
+      { id: 'p14', name: 'Dawlance Microwave Oven 28L', category: 'electronics', price: 18500, originalPrice: 22500, rating: 4.2, reviews: 189, image: 'https://picsum.photos/seed/dawlance1/400/500', images: ['https://picsum.photos/seed/dawlance1/400/500'], isNew: false, isFlashSale: true, discount: 18, stock: 12, description: 'Dawlance 28L microwave oven with multiple cooking modes and auto-defrost.', brand: 'Dawlance', dateAdded: '2024-02-15' },
+      { id: 'p15', name: 'Servis Cheetah Men's Sports Shoes', category: 'footwear', price: 2299, originalPrice: 2999, rating: 4.3, reviews: 678, image: 'https://picsum.photos/seed/servis1/400/500', images: ['https://picsum.photos/seed/servis1/400/500', 'https://picsum.photos/seed/servis1a/400/500'], isNew: false, isFlashSale: true, discount: 23, stock: 50, description: 'Servis Cheetah sports shoes. Comfortable and durable for daily wear and sports.', brand: 'Servis', dateAdded: '2024-04-05' },
+      { id: 'p16', name: 'Khadim's Women's Khussa - Gold Embroidered', category: 'footwear', price: 1899, originalPrice: 2499, rating: 4.4, reviews: 345, image: 'https://picsum.photos/seed/khadims1/400/500', images: ['https://picsum.photos/seed/khadims1/400/500'], isNew: true, isFlashSale: false, discount: 24, stock: 35, description: 'Beautiful gold embroidered khussa from Khadim\'s. Traditional design with modern comfort.', brand: 'Khadim\'s', dateAdded: '2024-05-12' },
+      { id: 'p17', name: 'Borjan Women's Heels - Elegance Collection', category: 'footwear', price: 3499, originalPrice: 4499, rating: 4.1, reviews: 156, image: 'https://picsum.photos/seed/borjan1/400/500', images: ['https://picsum.photos/seed/borjan1/400/500'], isNew: false, isFlashSale: false, discount: 22, stock: 20, description: 'Elegant heels from Borjan. Perfect for parties and formal events.', brand: 'Borjan', dateAdded: '2024-03-25' },
+      { id: 'p18', name: 'Metro Casual Shoes for Men', category: 'footwear', price: 2799, originalPrice: 3499, rating: 4.0, reviews: 234, image: 'https://picsum.photos/seed/metro1/400/500', images: ['https://picsum.photos/seed/metro1/400/500'], isNew: true, isFlashSale: true, discount: 20, stock: 40, description: 'Comfortable casual shoes from Metro. Lightweight and stylish for everyday use.', brand: 'Metro', dateAdded: '2024-05-08' },
+      { id: 'p19', name: 'Kids Branded Kurta Shalwar Set - Blue', category: 'kids', price: 1299, originalPrice: 1799, rating: 4.5, reviews: 123, image: 'https://picsum.photos/seed/kids1/400/500', images: ['https://picsum.photos/seed/kids1/400/500'], isNew: false, isFlashSale: false, discount: 28, stock: 30, description: 'Colorful kurta shalwar set for kids. Comfortable fabric with beautiful design.', brand: 'Kids Collection', dateAdded: '2024-04-20' },
+      { id: 'p20', name: 'Kids Winter Jacket - Hooded', category: 'kids', price: 1999, originalPrice: 2599, rating: 4.3, reviews: 89, image: 'https://picsum.photos/seed/kids2/400/500', images: ['https://picsum.photos/seed/kids2/400/500'], isNew: true, isFlashSale: false, discount: 23, stock: 20, description: 'Warm hooded winter jacket for kids. Soft inner lining and durable outer shell.', brand: 'Kids Collection', dateAdded: '2024-05-02' },
+      { id: 'p21', name: 'PEL Air Conditioner 1.5 Ton Inverter', category: 'electronics', price: 84999, originalPrice: 94999, rating: 4.6, reviews: 234, image: 'https://picsum.photos/seed/pel1/400/500', images: ['https://picsum.photos/seed/pel1/400/500'], isNew: true, isFlashSale: false, discount: 11, stock: 8, description: 'PEL 1.5 ton inverter AC with energy-saving technology and smart cooling.', brand: 'PEL', dateAdded: '2024-05-25' },
+      { id: 'p22', name: 'Haq & Sons Embroidered Waistcoat', category: 'mens-fashion', price: 2499, originalPrice: 3299, rating: 4.2, reviews: 112, image: 'https://picsum.photos/seed/haq1/400/500', images: ['https://picsum.photos/seed/haq1/400/500'], isNew: false, isFlashSale: true, discount: 24, stock: 18, description: 'Hand-embroidered waistcoat from Haq & Sons. Perfect for Eid and weddings.', brand: 'Haq & Sons', dateAdded: '2024-03-15' },
+      { id: 'p23', name: 'KitchenAid Blender 1.5L', category: 'home-kitchen', price: 5499, originalPrice: 6999, rating: 4.4, reviews: 178, image: 'https://picsum.photos/seed/kitchen1/400/500', images: ['https://picsum.photos/seed/kitchen1/400/500'], isNew: false, isFlashSale: false, discount: 21, stock: 25, description: 'Powerful 1.5L blender from KitchenAid. Ideal for smoothies, shakes, and grinding.', brand: 'KitchenAid', dateAdded: '2024-04-10' },
+      { id: 'p24', name: 'ChenOne 6-Piece Towel Set', category: 'home-kitchen', price: 2999, originalPrice: 3999, rating: 4.1, reviews: 234, image: 'https://picsum.photos/seed/chen1/400/500', images: ['https://picsum.photos/seed/chen1/400/500'], isNew: true, isFlashSale: true, discount: 25, stock: 40, description: 'Premium 6-piece towel set from ChenOne. Soft, absorbent, and long-lasting.', brand: 'ChenOne', dateAdded: '2024-05-22' }
     ];
-    setLS(STORE.products,prods);
-
-    setLS(STORE.cart,[]);
-    setLS(STORE.wishlist,[]);
-    setLS(STORE.orders,[]);
-    setLS(STORE.notifications,[]);
-    setLS(STORE.coupons,[{code:'RAJA10',discount:10,minAmount:499,description:'10% off on orders above ₹499'},{code:'WELCOME50',discount:50,minAmount:999,description:'Flat ₹50 off on orders above ₹999'}]);
-    setLS(STORE.recentSearch,[]);
-    setLS(STORE.settings,{storeName:'Raja Brand',storeLogo:'',contactEmail:'support@rajabrand.in',contactPhone:'+91 98765 43210',currency:'₹',adminPassword:'admin123'});
+    localStorage.setItem('raja_products', JSON.stringify(products));
+    localStorage.setItem('raja_wishlist', JSON.stringify([]));
+    localStorage.setItem('raja_cart', JSON.stringify([]));
   }
 
-  seedData();
-
-  function goToProduct(id){
-    window.location.href=`product-detail.html?id=${id}`;
+  if (!localStorage.getItem('raja_users')) {
+    const users = [
+      { id: 'u1', name: 'Admin', email: 'admin@raja.pk', password: 'admin123', phone: '0300-1234567', role: 'admin', address: '12 Mall Road, Lahore', city: 'Lahore', province: 'Punjab' }
+    ];
+    localStorage.setItem('raja_users', JSON.stringify(users));
   }
 
-  function showProfileSheet(){
-    const user=getLS(STORE.currentUser);
-    if(user){
-      document.getElementById('sheetName').value=user.name||'';
-      document.getElementById('sheetPhone').value=user.phone||'';
-      document.getElementById('sheetAddress').value=user.address?`${user.address.line1||''} ${user.address.city||''}`.trim():'';
-    }
-    document.getElementById('profileSheet').classList.add('show');
-    document.getElementById('sheetOverlay').classList.add('show');
+  if (!localStorage.getItem('raja_coupons')) {
+    const coupons = [
+      { code: 'RAJA10', discount: 10, minAmount: 1000, maxUses: 100, used: 0 },
+      { code: 'SAVE20', discount: 20, minAmount: 3000, maxUses: 50, used: 0 },
+      { code: 'NEWUSER', discount: 15, minAmount: 500, maxUses: 200, used: 0 }
+    ];
+    localStorage.setItem('raja_coupons', JSON.stringify(coupons));
   }
 
-  function closeProfileSheet(){
-    document.getElementById('profileSheet').classList.remove('show');
-    document.getElementById('sheetOverlay').classList.remove('show');
+  if (!localStorage.getItem('raja_orders')) {
+    localStorage.setItem('raja_orders', JSON.stringify([]));
   }
 
-  function saveProfileSheet(){
-    const user=getLS(STORE.currentUser);
-    if(!user)return;
-    user.name=document.getElementById('sheetName').value.trim()||user.name;
-    user.phone=document.getElementById('sheetPhone').value.trim()||user.phone;
-    const addr=document.getElementById('sheetAddress').value.trim();
-    if(!user.address)user.address={line1:'',line2:'',city:'',state:'',pincode:''};
-    user.address.line1=addr;
-    setLS(STORE.currentUser,user);
-    const users=getLS(STORE.users)||[];
-    const idx=users.findIndex(u=>u.email===user.email);
-    if(idx>=0){users[idx]=user;setLS(STORE.users,users);}
-    closeProfileSheet();
-    showToast('Profile updated!','success');
-    window.location.href='index.html';
+  if (!localStorage.getItem('raja_notifications')) {
+    localStorage.setItem('raja_notifications', JSON.stringify([]));
   }
+}
 
-  const urlParams=new URLSearchParams(window.location.search);
-  if(urlParams.get('google_signin')==='true'){
-    history.replaceState(null,'',window.location.pathname);
-    setTimeout(()=>showProfileSheet(),600);
+// ===== DRAWER =====
+function toggleDrawer() {
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('drawerOverlay');
+  const isOpen = !drawer.classList.contains('-translate-x-full');
+  if (isOpen) {
+    drawer.classList.add('-translate-x-full');
+    overlay.classList.add('hidden');
+  } else {
+    drawer.classList.remove('-translate-x-full');
+    overlay.classList.remove('hidden');
   }
+}
 
-  const user = getLS(STORE.currentUser);
-  if(user){
-    document.getElementById('drawerAvatar').textContent = user.name.charAt(0).toUpperCase();
-    document.getElementById('drawerName').textContent = user.name;
-    document.getElementById('drawerEmail').textContent = user.email;
-    document.getElementById('drawerLoginBtn').classList.add('hidden');
-    document.getElementById('drawerLogoutBtn').classList.remove('hidden');
+function handleAuthAction() {
+  const user = getCurrentUser();
+  if (user) {
+    localStorage.removeItem('raja_current_user');
+    window.location.reload();
+  } else {
+    window.location.href = 'login.html';
   }
+}
 
-  function toggleDrawer(){
-    const d=document.getElementById('drawer'),o=document.getElementById('drawerOverlay');
-    const isOpen=!d.classList.contains('-translate-x-full');
-    if(isOpen){d.classList.add('-translate-x-full');o.classList.add('hidden');}
-    else{d.classList.remove('-translate-x-full');o.classList.remove('hidden');}
+function updateDrawerUser() {
+  const user = getCurrentUser();
+  const nameEl = document.getElementById('drawerUserName');
+  const emailEl = document.getElementById('drawerUserEmail');
+  const authText = document.getElementById('drawerAuthText');
+  const loginBtn = document.getElementById('drawerLoginBtn');
+  if (user) {
+    nameEl.textContent = user.name || 'User';
+    emailEl.textContent = user.email || '';
+    authText.textContent = 'Logout';
+    loginBtn.querySelector('span.material-symbols-rounded').textContent = 'logout';
+  } else {
+    nameEl.textContent = 'Guest';
+    emailEl.textContent = 'Sign in to your account';
+    authText.textContent = 'Login';
+    loginBtn.querySelector('span.material-symbols-rounded').textContent = 'login';
   }
+}
 
-  function logoutUser(){
-    if(!confirm('Are you sure you want to logout?'))return;
-    localStorage.removeItem(STORE.currentUser);
-    window.location.href='login.html';
-  }
+// ===== CAROUSEL =====
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const track = document.getElementById('carouselTrack');
 
-  function showToast(msg,type='success'){
-    const c=document.getElementById('toastContainer');
-    const t=document.createElement('div');
-    t.className=`toast ${type}`;
-    t.textContent=msg;
-    c.appendChild(t);
-    requestAnimationFrame(()=>t.classList.add('show'));
-    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3000);
-  }
+function updateCarousel() {
+  track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+  document.querySelectorAll('#carouselDots span').forEach((dot, i) => {
+    dot.className = 'w-2 h-2 rounded-full ' + (i === currentSlide ? 'bg-white' : 'bg-white/40');
+  });
+}
 
-  function updateCartBadge(){
-    const cart=getLS(STORE.cart)||[];
-    const badge=document.getElementById('cartBadge');
-    if(cart.length>0){badge.textContent=cart.length;badge.classList.remove('hidden');}
-    else badge.classList.add('hidden');
-  }
+function nextSlide() { currentSlide = (currentSlide + 1) % slides.length; updateCarousel(); }
+function prevSlide() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateCarousel(); }
+
+let carouselInterval = setInterval(nextSlide, 4000);
+
+// Touch swipe
+let touchStartX = 0;
+let touchEndX = 0;
+const carousel = document.getElementById('heroCarousel');
+carousel.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; clearInterval(carouselInterval); });
+carousel.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  if (touchStartX - touchEndX > 50) nextSlide();
+  else if (touchEndX - touchStartX > 50) prevSlide();
+  carouselInterval = setInterval(nextSlide, 4000);
+});
+
+// ===== RENDER =====
+function renderPage() {
+  seedDataIfEmpty();
   updateCartBadge();
+  updateDrawerUser();
 
-  const categories = getLS(STORE.categories)||[];
-  const products = getLS(STORE.products)||[];
-  const catScroll=document.getElementById('categoryScroll');
-  categories.forEach(c=>{
-    const count=(products.filter(p=>p.cat_id===c.id)).length;
-    catScroll.innerHTML+=`<a href="product.html?cat=${c.id}" class="flex flex-col items-center gap-2 min-w-[80px] btn-press">
-      <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm" style="background:${c.color}15;">
-        <span class="material-symbols-rounded text-2xl" style="color:${c.color};">${c.icon}</span>
+  const products = JSON.parse(localStorage.getItem('raja_products') || '[]');
+  const categories = JSON.parse(localStorage.getItem('raja_categories') || '[]');
+  const wishlist = JSON.parse(localStorage.getItem('raja_wishlist') || '[]');
+
+  // Carousel Dots
+  const dotsContainer = document.getElementById('carouselDots');
+  dotsContainer.innerHTML = slides.length ? '' : '';
+  for (let i = 0; i < slides.length; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'w-2 h-2 rounded-full ' + (i === 0 ? 'bg-white' : 'bg-white/40');
+    dot.onclick = () => { currentSlide = i; updateCarousel(); };
+    dotsContainer.appendChild(dot);
+  }
+
+  // Categories
+  const catRow = document.getElementById('categoriesRow');
+  catRow.innerHTML = categories.map(c => `
+    <div onclick="window.location.href='product.html?cat=${c.id}'" class="cat-chip flex-shrink-0 flex flex-col items-center gap-1.5 p-3 bg-white rounded-xl border border-gray-100 min-w-[80px] cursor-pointer hover:border-green-200">
+      <div class="w-10 h-10 brand-light-bg rounded-full flex items-center justify-center">
+        <span class="material-symbols-rounded brand-text text-xl">${c.icon}</span>
       </div>
-      <span class="text-xs font-medium text-gray-700 text-center leading-tight">${c.name}</span>
-    </a>`;
-  });
+      <span class="text-[11px] font-medium text-gray-700 text-center leading-tight">${c.name}</span>
+    </div>
+  `).join('');
 
-  function renderProductCard(p,isHorizontal=false){
-    const cat=categories.find(c=>c.id===p.cat_id);
-    const wishlist=getLS(STORE.wishlist)||[];
-    const inWish=wishlist.includes(p.id);
-    const isNew=p.tags.includes('new');
-    const isSale=p.tags.includes('sale');
-    if(isHorizontal){
-      return `<div class="product-card min-w-[200px] w-[200px] card-hover" onclick="goToProduct('${p.id}')">
-        <div class="relative aspect-[4/3] overflow-hidden bg-gray-50">
-          <img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy">
-          <div class="absolute top-2 left-2 flex gap-1">
-            ${isNew?'<span class="badge-pill bg-green-500 text-white">New</span>':''}
-            ${isSale?'<span class="badge-pill bg-red-500 text-white">-'+p.discount+'%</span>':''}
-            ${!isNew&&!isSale?'<span class="badge-pill bg-red-500 text-white">-'+p.discount+'%</span>':''}
-          </div>
-          <button onclick="toggleWishlist('${p.id}')" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow btn-press ${inWish?'icon-fill':''}" style="color:${inWish?'var(--error)':'#999'};"><span class="material-symbols-rounded text-lg">favorite</span></button>
-        </div>
-        <div class="p-3">
-          <span class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">${cat?cat.name:''}</span>
-          <h3 class="text-sm font-bold mt-0.5 leading-tight line-clamp-2">${p.name}</h3>
-          <div class="flex items-center gap-1 mt-1 text-xs text-gray-400"><span class="material-symbols-rounded text-sm" style="color:var(--warning);">star</span><span class="font-medium text-gray-700">${p.rating}</span><span>(${p.reviews})</span></div>
-          <div class="flex items-center gap-2 mt-2">
-            <span class="font-bold text-base" style="color:var(--on-surface);">₹${p.price}</span>
-            <span class="text-xs text-gray-400 line-through">₹${p.original_price}</span>
-          </div>
-          <button onclick="addToCart('${p.id}')" class="w-full mt-2 py-2 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Add to Cart</button>
-        </div>
-      </div>`;
-    }
-    return `<div class="product-card card-hover" onclick="goToProduct('${p.id}')">
-      <div class="relative aspect-[4/3] overflow-hidden bg-gray-50">
-        <img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy">
-        <div class="absolute top-2 left-2 flex gap-1">
-          ${isNew?'<span class="badge-pill bg-green-500 text-white">New</span>':''}
-          ${!isNew?'<span class="badge-pill bg-red-500 text-white">-'+p.discount+'%</span>':''}
-        </div>
-        <button onclick="event.stopPropagation();toggleWishlist('${p.id}')" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow btn-press ${inWish?'icon-fill':''}" style="color:${inWish?'var(--error)':'#999'};"><span class="material-symbols-rounded text-lg">favorite</span></button>
+  // Flash Sale Countdown (end in 5 hours from now)
+  function updateCountdown() {
+    const now = new Date();
+    const end = new Date(now);
+    end.setHours(now.getHours() + 5, now.getMinutes() + 30, 0, 0);
+    const diff = Math.max(0, end - now);
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('hours').textContent = String(h).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(s).padStart(2, '0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // Flash Sale Products
+  const flashProducts = products.filter(p => p.isFlashSale).slice(0, 6);
+  const flashRow = document.getElementById('flashSaleRow');
+  flashRow.innerHTML = flashProducts.map(p => renderProductCard(p, wishlist)).join('');
+
+  // Featured Products (first 6)
+  const featured = products.slice(0, 6);
+  const featuredGrid = document.getElementById('featuredGrid');
+  featuredGrid.innerHTML = featured.map(p => renderProductCard(p, wishlist)).join('');
+
+  // New Arrivals
+  const newArrivals = products.filter(p => p.isNew).slice(0, 6);
+  const newRow = document.getElementById('newArrivalsRow');
+  newRow.innerHTML = newArrivals.map(p => renderProductCard(p, wishlist)).join('');
+}
+
+function renderProductCard(p, wishlist) {
+  const inWishlist = wishlist.includes(p.id);
+  const discount = p.originalPrice ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
+  return `
+    <div class="product-card flex-shrink-0 w-36 sm:w-40 bg-white rounded-xl border border-gray-100 overflow-hidden cursor-pointer" onclick="goToProduct('${p.id}')">
+      <div class="relative aspect-[4/5] bg-gray-50">
+        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://picsum.photos/seed/error${p.id}/400/500'">
+        ${discount > 0 ? `<div class="absolute top-2 left-2 brand-bg text-white text-[10px] font-bold px-1.5 py-0.5 rounded">-${discount}%</div>` : ''}
+        ${p.isNew ? `<div class="absolute top-2 right-2 bg-[#F59E0B] text-white text-[10px] font-bold px-1.5 py-0.5 rounded">NEW</div>` : ''}
+        <button onclick="event.stopPropagation(); toggleWishlist('${p.id}')" class="absolute bottom-2 right-2 w-7 h-7 bg-white/90 rounded-full flex items-center justify-center shadow">
+          <span class="material-symbols-rounded text-lg ${inWishlist ? 'text-red-500' : 'text-gray-400'}" style="font-variation-settings:'FILL'${inWishlist ? '1' : '0'}">favorite</span>
+        </button>
       </div>
-      <div class="p-3">
-        <span class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">${cat?cat.name:''}</span>
-        <h3 class="text-sm font-bold mt-0.5 leading-tight line-clamp-2">${p.name}</h3>
-        <div class="flex items-center gap-1 mt-1 text-xs text-gray-400"><span class="material-symbols-rounded text-sm" style="color:var(--warning);">star</span><span class="font-medium text-gray-700">${p.rating}</span><span>(${p.reviews})</span></div>
-        <div class="flex items-center gap-2 mt-2">
-          <span class="font-bold text-base" style="color:var(--on-surface);">₹${p.price}</span>
-          <span class="text-xs text-gray-400 line-through">₹${p.original_price}</span>
+      <div class="p-2.5">
+        <p class="text-[11px] text-gray-400 font-medium truncate">${p.brand}</p>
+        <h3 class="text-xs font-semibold text-gray-800 line-clamp-2 leading-tight mt-0.5">${p.name}</h3>
+        <div class="flex items-center gap-1 mt-1">
+          <span class="text-xs font-bold brand-text price-tag">${formatPrice(p.price)}</span>
+          ${p.originalPrice ? `<span class="text-[10px] text-gray-400 line-through price-tag">${formatPrice(p.originalPrice)}</span>` : ''}
         </div>
-        <button onclick="addToCart('${p.id}')" class="w-full mt-2 py-2 rounded-xl text-sm font-bold text-white btn-press transition-all active:scale-95" style="background:var(--primary);">Add to Cart</button>
       </div>
-    </div>`;
+    </div>
+  `;
+}
+
+function toggleWishlist(id) {
+  let wishlist = JSON.parse(localStorage.getItem('raja_wishlist') || '[]');
+  const idx = wishlist.indexOf(id);
+  if (idx > -1) wishlist.splice(idx, 1);
+  else wishlist.push(id);
+  localStorage.setItem('raja_wishlist', JSON.stringify(wishlist));
+  renderPage();
+}
+
+function closeProfileSheet() {
+  document.getElementById('profileSheet').classList.add('translate-y-full');
+  document.getElementById('profileSheetOverlay').classList.add('hidden');
+}
+
+// Check for ?google_signin=true
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('google_signin') === 'true') {
+    setTimeout(() => {
+      document.getElementById('profileSheet').classList.remove('translate-y-full');
+      document.getElementById('profileSheetOverlay').classList.remove('hidden');
+    }, 500);
   }
-
-  const flashProds = products.filter(p=>p.tags.includes('sale')||p.discount>=40).slice(0,6);
-  document.getElementById('flashSaleScroll').innerHTML = flashProds.map(p=>renderProductCard(p,true)).join('');
-
-  const featured = products.filter(p=>p.tags.includes('featured')).slice(0,6);
-  document.getElementById('featuredGrid').innerHTML = featured.map(p=>renderProductCard(p,false)).join('');
-
-  const newArrivals = products.filter(p=>p.tags.includes('new')).slice(0,8);
-  document.getElementById('newArrivalsScroll').innerHTML = newArrivals.map(p=>renderProductCard(p,true)).join('');
-
-  let heroIdx=0,heroInterval;
-  function goToSlide(i){
-    heroIdx=i;
-    document.getElementById('heroTrack').style.transform=`translateX(-${i*100}%)`;
-    document.querySelectorAll('.hero-dot').forEach((d,j)=>{d.classList.toggle('active',j===i);});
-  }
-  document.querySelectorAll('.hero-dot').forEach(d=>{d.addEventListener('click',()=>goToSlide(parseInt(d.dataset.index)));});
-  function startHeroAuto(){heroInterval=setInterval(()=>goToSlide((heroIdx+1)%3),4000);}
-  startHeroAuto();
-  let touchStartX=0;
-  document.querySelector('.hero-section').addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;clearInterval(heroInterval);});
-  document.querySelector('.hero-section').addEventListener('touchend',e=>{
-    const diff=touchStartX-e.changedTouches[0].clientX;
-    if(diff>50&&heroIdx<2)goToSlide(heroIdx+1);
-    if(diff<-50&&heroIdx>0)goToSlide(heroIdx-1);
-    startHeroAuto();
-  });
-
-  let countdownTime=2*3600+15*60+30;
-  setInterval(()=>{
-    if(countdownTime>0)countdownTime--;
-    const h=String(Math.floor(countdownTime/3600)).padStart(2,'0');
-    const m=String(Math.floor((countdownTime%3600)/60)).padStart(2,'0');
-    const s=String(countdownTime%60).padStart(2,'0');
-    document.getElementById('countdown').textContent=`${h}:${m}:${s}`;
-  },1000);
-
-  function addToCart(prodId){
-    const cart=getLS(STORE.cart)||[];
-    const existing=cart.find(i=>i.product_id===prodId);
-    const prod=products.find(p=>p.id===prodId);
-    if(existing)existing.quantity+=1;
-    else cart.push({product_id:prodId,product_name:prod.name,product_image:prod.images[0],price:prod.price,quantity:1});
-    setLS(STORE.cart,cart);
-    updateCartBadge();
-    showToast(`${prod.name} added to cart!`,'success');
-  }
-
-  function toggleWishlist(prodId){
-    let w=getLS(STORE.wishlist)||[];
-    const prod=products.find(p=>p.id===prodId);
-    if(w.includes(prodId)){w=w.filter(i=>i!==prodId);showToast('Removed from wishlist','info');}
-    else{w.push(prodId);showToast(`${prod.name} added to wishlist!`,'success');}
-    setLS(STORE.wishlist,w);
-    document.querySelectorAll(`button[onclick*="toggleWishlist('${prodId}')"]`).forEach(b=>{
-      b.style.color=w.includes(prodId)?'var(--error)':'#999';
-      b.classList.toggle('icon-fill',w.includes(prodId));
-    });
-  }
-
-  let lastScroll=0;
-  window.addEventListener('scroll',()=>{
-    const curr=window.scrollY;
-    const h=document.getElementById('mainHeader');
-    if(curr>lastScroll&&curr>80)h.style.transform='translateY(-100%)';
-    else h.style.transform='translateY(0)';
-    lastScroll=curr;
-  });
+  renderPage();
+});
 </script>
 </body>
 </html>

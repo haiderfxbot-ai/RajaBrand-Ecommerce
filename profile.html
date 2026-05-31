@@ -1,264 +1,599 @@
 <!DOCTYPE html>
-<html lang="en" class="select-none overflow-x-hidden">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Profile — Raja Brand</title>
+  <title>Raja Brand - My Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
-    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;}
-    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
-    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
-    .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
-    ::-webkit-scrollbar{display:none;}
-    .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px);}
-    .header-blur{background:rgba(255,255,255,0.85);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);}
-    .glass-nav{background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);}
-    .btn-press:active{transform:scale(0.96);}
-    .toast{position:fixed;top:80px;right:16px;z-index:9999;padding:12px 20px;border-radius:12px;color:#fff;font-weight:500;box-shadow:0 4px 24px rgba(0,0,0,0.15);transform:translateX(120%);transition:transform .3s;max-width:320px;}
-    .toast.show{transform:translateX(0);}
-    .toast.success{background:var(--success);}
-    .toast.error{background:var(--error);}
-    .toast.info{background:var(--info);}
-    .collapse-sec{max-height:0;overflow:hidden;transition:max-height .35s ease;}
-    .collapse-sec.open{max-height:500px;}
-    .strength-bar{height:4px;border-radius:2px;transition:all .3s;}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #f8fafc;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding-bottom: 120px;
+      min-height: 100vh;
+    }
+    input, button, textarea { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .input-field {
+      width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0;
+      border-radius: 12px; font-size: 15px; outline: none;
+      transition: border-color 0.2s ease; background: white;
+    }
+    .input-field:focus { border-color: #16A34A; }
+    .input-group { position: relative; }
+    .input-group .eye-btn { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .input-group .eye-btn svg { width: 22px; height: 22px; }
+    .input-group .input-field { padding-right: 44px; }
+    .floating-label {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      font-size: 15px; color: #94a3b8; transition: all 0.2s ease; pointer-events: none;
+      background: white; padding: 0 4px;
+    }
+    .input-field:focus + .floating-label,
+    .input-field:not(:placeholder-shown) + .floating-label {
+      top: 0; font-size: 11px; color: #16A34A;
+    }
+    textarea.input-field { resize: vertical; min-height: 80px; }
+    textarea.input-field + .floating-label { top: 16px; transform: none; }
+    textarea.input-field:focus + .floating-label,
+    textarea.input-field:not(:placeholder-shown) + .floating-label {
+      top: -8px; font-size: 11px;
+    }
+    .strength-bar { height: 4px; border-radius: 4px; transition: all 0.3s ease; }
+    .strength-bar.weak { width: 25%; background: #ef4444; }
+    .strength-bar.fair { width: 50%; background: #f97316; }
+    .strength-bar.good { width: 75%; background: #eab308; }
+    .strength-bar.strong { width: 100%; background: #16A34A; }
+    .strength-text { font-size: 11px; font-weight: 600; transition: all 0.3s ease; }
+    .btn-primary {
+      background: linear-gradient(135deg, #16A34A, #15803D);
+      color: white; border: none; border-radius: 14px;
+      min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center;
+    }
+    .btn-primary:active { transform: scale(0.95); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-outline {
+      background: transparent; color: #16A34A; border: 2px solid #16A34A;
+      border-radius: 14px; min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-outline:active { transform: scale(0.95); }
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white; border: none; border-radius: 14px;
+      min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center;
+    }
+    .btn-danger:active { transform: scale(0.95); }
+    .btn-secondary {
+      background: #f1f5f9; color: #475569; border: none;
+      border-radius: 14px; min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center;
+    }
+    .btn-secondary:active { transform: scale(0.95); }
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;
+      display: none; align-items: center; justify-content: center; padding: 24px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: white; border-radius: 20px; padding: 28px 24px;
+      max-width: 340px; width: 100%; text-align: center;
+    }
+    .toast {
+      position: fixed; bottom: 130px; left: 50%; transform: translateX(-50%);
+      background: #1e293b; color: white; padding: 12px 24px; border-radius: 12px;
+      font-size: 14px; font-weight: 500; z-index: 999;
+      opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+    .avatar-circle {
+      width: 72px; height: 72px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 700; color: white; flex-shrink: 0;
+    }
+    .stat-card {
+      background: #f8fafc; border-radius: 14px; padding: 16px 12px;
+      text-align: center; flex: 1; border: 1px solid #f1f5f9;
+    }
+    .link-item {
+      display: flex; align-items: center; gap: 14px; padding: 14px 0;
+      border-bottom: 1px solid #f1f5f9; cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .link-item:last-child { border-bottom: none; }
+    .link-item:hover { padding-left: 6px; }
+    .link-item:active { opacity: 0.7; }
+    .section-toggle { cursor: pointer; user-select: none; }
+    .section-toggle:active { opacity: 0.7; }
+    .nav-bottom {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: white; border-top: 1px solid #f1f5f9;
+      display: flex; justify-content: space-around; padding: 8px 0;
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      cursor: pointer; padding: 4px 12px; border-radius: 8px;
+      transition: all 0.2s ease; text-decoration: none;
+    }
+    .nav-item:active { transform: scale(0.92); }
+    .nav-item span.material-symbols-rounded { font-size: 24px; }
+    .nav-item .nav-label { font-size: 10px; font-weight: 500; }
+    .hidden-panel { display: none; }
+    .hidden-panel.open { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { animation: spin 1s linear infinite; }
+    @media (max-width: 400px) {
+      .container-inner { padding-left: 16px; padding-right: 16px; }
+    }
   </style>
 </head>
 <body>
-<div id="toastContainer"></div>
 
-<header class="fixed top-0 left-0 right-0 z-50 header-blur border-b border-gray-100/50">
-  <div class="flex items-center justify-between px-4 h-16 safe-top">
-    <button onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></button>
-    <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">My Profile</span>
-    <a href="cart.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press relative"><span class="material-symbols-rounded text-gray-700 text-2xl">shopping_bag</span><span id="cartBadge" class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 hidden">0</span></a>
-  </div>
-</header>
-
-<nav class="fixed bottom-0 left-0 right-0 z-50 glass-nav border-t border-gray-100 safe-bottom" style="padding-bottom:env(safe-area-inset-bottom,4px);">
-  <div class="flex items-center justify-around h-16">
-    <a href="index.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">home</span><span class="text-[10px] text-gray-400">Home</span></a>
-    <a href="product.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">grid_view</span><span class="text-[10px] text-gray-400">Products</span></a>
-    <a href="search.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">search</span><span class="text-[10px] text-gray-400">Search</span></a>
-    <a href="wishlist.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">favorite</span><span class="text-[10px] text-gray-400">Wishlist</span></a>
-    <a href="profile.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded icon-fill text-xl" style="color:var(--primary);">person</span><span class="text-[10px] font-medium" style="color:var(--primary);">Profile</span></a>
-  </div>
-</nav>
-
-<div class="px-4 py-4">
-  <div class="p-6 rounded-2xl bg-white shadow-sm border border-gray-50 text-center">
-    <div class="w-20 h-20 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto" style="background:var(--primary);" id="profileAvatar">U</div>
-    <h2 class="text-lg font-bold mt-3" id="profileName" style="font-family:'Plus Jakarta Sans',sans-serif;"></h2>
-    <p class="text-sm text-gray-500" id="profileEmail"></p>
-    <p class="text-sm text-gray-400" id="profilePhone"></p>
-    <span id="providerBadge" class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium mt-2" style="display:none;"></span>
-  </div>
-
-  <div class="grid grid-cols-3 gap-3 mt-4">
-    <div class="p-3 rounded-xl bg-white shadow-sm border border-gray-50 text-center">
-      <span class="text-2xl font-bold" style="color:var(--primary);" id="statOrders">0</span>
-      <p class="text-xs text-gray-500 mt-1">Orders</p>
-    </div>
-    <div class="p-3 rounded-xl bg-white shadow-sm border border-gray-50 text-center">
-      <span class="text-2xl font-bold" style="color:var(--primary);" id="statWishlist">0</span>
-      <p class="text-xs text-gray-500 mt-1">Wishlist</p>
-    </div>
-    <div class="p-3 rounded-xl bg-white shadow-sm border border-gray-50 text-center">
-      <span class="text-2xl font-bold" style="color:var(--primary);" id="statReviews">0</span>
-      <p class="text-xs text-gray-500 mt-1">Reviews</p>
+  <!-- Header -->
+  <div class="sticky top-0 bg-white z-50 border-b border-gray-100">
+    <div class="flex items-center justify-between px-4 py-3 max-w-lg mx-auto">
+      <button onclick="goBack()" class="p-2 -ml-2 rounded-xl hover:bg-gray-50 active:scale-95 transition-all touch-action-manipulation">
+        <span class="material-symbols-rounded text-gray-700">arrow_back</span>
+      </button>
+      <h1 class="text-lg font-bold text-gray-900" style="font-family:'DM Sans',sans-serif;">My Profile</h1>
+      <div class="w-10"></div>
     </div>
   </div>
 
-  <div class="mt-4 space-y-1 rounded-xl bg-white shadow-sm border border-gray-50 overflow-hidden">
-    <a href="orders.html" class="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50"><span class="material-symbols-rounded text-gray-500">receipt_long</span><span class="flex-1 text-sm font-medium">My Orders</span><span class="material-symbols-rounded text-gray-300 text-lg">chevron_right</span></a>
-    <a href="wishlist.html" class="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50"><span class="material-symbols-rounded text-gray-500">favorite</span><span class="flex-1 text-sm font-medium">My Wishlist</span><span class="material-symbols-rounded text-gray-300 text-lg">chevron_right</span></a>
-    <button onclick="toggleSection('addressSec')" class="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 w-full text-left"><span class="material-symbols-rounded text-gray-500">home</span><span class="flex-1 text-sm font-medium">Saved Addresses</span><span class="material-symbols-rounded text-gray-300 text-lg transition-transform" id="addrArrow">expand_more</span></button>
-    <a href="notifications.html" class="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50"><span class="material-symbols-rounded text-gray-500">notifications</span><span class="flex-1 text-sm font-medium">Notifications</span><span class="material-symbols-rounded text-gray-300 text-lg">chevron_right</span></a>
-    <a href="support.html" class="flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50"><span class="material-symbols-rounded text-gray-500">support</span><span class="flex-1 text-sm font-medium">Support</span><span class="material-symbols-rounded text-gray-300 text-lg">chevron_right</span></a>
-  </div>
+  <div class="max-w-lg mx-auto px-4 py-4 space-y-5">
 
-  <div class="collapse-sec" id="addressSec">
-    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mt-3">
-      <h3 class="text-sm font-bold mb-3">Delivery Address</h3>
-      <p id="profileAddressDisplay" class="text-sm text-gray-500">No address saved</p>
-    </div>
-  </div>
-
-  <div class="mt-4">
-    <button onclick="toggleSection('editSec')" class="flex items-center justify-between w-full p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-left">
-      <span class="text-sm font-bold">Edit Profile</span>
-      <span class="material-symbols-rounded text-gray-400 transition-transform" id="editArrow">expand_more</span>
-    </button>
-    <div class="collapse-sec" id="editSec">
-      <div class="p-4 rounded-xl bg-white border border-gray-100 mt-1">
-        <div class="space-y-3">
-          <div><label class="text-sm font-medium mb-1 block">Name</label><input type="text" id="editName" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-          <div><label class="text-sm font-medium mb-1 block">Phone</label><input type="tel" id="editPhone" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" maxlength="10"></div>
-          <div><label class="text-sm font-medium mb-1 block">Email</label><input type="email" id="editEmail" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-          <div><label class="text-sm font-medium mb-1 block">Address Line 1</label><input type="text" id="editAddr1" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
-          <div><label class="text-sm font-medium mb-1 block">Address Line 2</label><input type="text" id="editAddr2" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
-          <div class="grid grid-cols-2 gap-3"><div><label class="text-sm font-medium mb-1 block">City</label><input type="text" id="editCity" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div><div><label class="text-sm font-medium mb-1 block">State</label><input type="text" id="editState" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div></div>
-          <div><label class="text-sm font-medium mb-1 block">Pincode</label><input type="text" id="editPincode" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm" maxlength="6"></div>
-          <button onclick="saveProfile()" class="w-full py-2.5 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Save Changes</button>
+    <!-- Profile Card -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+      <div class="flex items-center gap-4">
+        <div class="avatar-circle bg-gradient-to-br from-green-500 to-green-700" id="avatarCircle">RB</div>
+        <div class="flex-1 min-w-0">
+          <h2 class="text-lg font-bold text-gray-900 truncate" id="profileName">User Name</h2>
+          <p class="text-sm text-gray-500 truncate" id="profileEmail">user@email.com</p>
+          <p class="text-sm text-gray-400 truncate" id="profilePhone">03XX-XXXXXXX</p>
+          <div id="googleBadge" class="hidden mt-1">
+            <span class="inline-flex items-center gap-1 text-xs font-medium text-green-600 bg-green-50 px-2.5 py-0.5 rounded-full">
+              <svg width="12" height="12" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 0 1 9.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 0 0 0 24c0 3.77.88 7.35 2.56 10.56l7.97-5.97z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 5.97C6.51 42.62 14.62 48 24 48z"/></svg>
+              Connected with Google
+            </span>
+          </div>
         </div>
+      </div>
+
+      <button class="btn-outline mt-4 text-sm" onclick="toggleEditForm()">
+        <span class="material-symbols-rounded text-lg">edit</span> Edit Profile
+      </button>
+    </div>
+
+    <!-- Edit Profile Form (inline toggle) -->
+    <div id="editFormPanel" class="hidden-panel">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="material-symbols-rounded text-green-600 text-lg">edit</span> Edit Profile
+        </h3>
+        <div class="space-y-4">
+          <div class="input-group">
+            <input type="text" id="editName" class="input-field" placeholder=" ">
+            <label for="editName" class="floating-label">Full Name</label>
+          </div>
+          <div class="input-group">
+            <input type="tel" id="editPhone" class="input-field" placeholder=" " pattern="03[0-9]{9}">
+            <label for="editPhone" class="floating-label">Phone (03XXXXXXXXX)</label>
+          </div>
+          <div class="input-group">
+            <input type="email" id="editEmail" class="input-field" placeholder=" ">
+            <label for="editEmail" class="floating-label">Email Address</label>
+          </div>
+          <div class="input-group">
+            <textarea id="editAddress" class="input-field" placeholder=" " rows="3"></textarea>
+            <label for="editAddress" class="floating-label">Shipping Address</label>
+          </div>
+          <div class="flex gap-3">
+            <button class="btn-secondary flex-1 text-sm" onclick="cancelEdit()">Cancel</button>
+            <button class="btn-primary flex-1 text-sm" onclick="saveProfile()">
+              <span id="saveProfileText">Save Changes</span>
+              <svg id="saveProfileSpinner" class="spinner hidden ml-2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="flex gap-3">
+      <div class="stat-card">
+        <p class="text-2xl font-bold text-green-600" id="statOrders">0</p>
+        <p class="text-xs text-gray-500 mt-1">Orders</p>
+      </div>
+      <div class="stat-card">
+        <p class="text-2xl font-bold text-green-600" id="statWishlist">0</p>
+        <p class="text-xs text-gray-500 mt-1">Wishlist</p>
+      </div>
+      <div class="stat-card">
+        <p class="text-2xl font-bold text-green-600" id="statReviews">0</p>
+        <p class="text-xs text-gray-500 mt-1">Reviews</p>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+      <h3 class="font-bold text-gray-800 mb-2">Quick Links</h3>
+      <a href="orders.html" class="link-item no-underline text-gray-700">
+        <span class="material-symbols-rounded text-green-600">shopping_bag</span>
+        <span class="font-medium flex-1">My Orders</span>
+        <span class="material-symbols-rounded text-gray-300 text-lg">chevron_right</span>
+      </a>
+      <a href="wishlist.html" class="link-item no-underline text-gray-700">
+        <span class="material-symbols-rounded text-green-600">favorite</span>
+        <span class="font-medium flex-1">Wishlist</span>
+        <span class="material-symbols-rounded text-gray-300 text-lg">chevron_right</span>
+      </a>
+      <a href="support.html" class="link-item no-underline text-gray-700">
+        <span class="material-symbols-rounded text-green-600">support</span>
+        <span class="font-medium flex-1">Support</span>
+        <span class="material-symbols-rounded text-gray-300 text-lg">chevron_right</span>
+      </a>
+      <a href="about.html" class="link-item no-underline text-gray-700">
+        <span class="material-symbols-rounded text-green-600">info</span>
+        <span class="font-medium flex-1">About</span>
+        <span class="material-symbols-rounded text-gray-300 text-lg">chevron_right</span>
+      </a>
+      <a href="notifications.html" class="link-item no-underline text-gray-700">
+        <span class="material-symbols-rounded text-green-600">notifications</span>
+        <span class="font-medium flex-1">Notifications</span>
+        <span id="notifBadge" class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-[22px] text-center hidden">0</span>
+        <span class="material-symbols-rounded text-gray-300 text-lg">chevron_right</span>
+      </a>
+    </div>
+
+    <!-- Change Password Section -->
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+      <div class="section-toggle flex items-center justify-between" onclick="toggleChangePassword()">
+        <h3 class="font-bold text-gray-800 flex items-center gap-2">
+          <span class="material-symbols-rounded text-green-600 text-lg">lock</span> Change Password
+        </h3>
+        <span class="material-symbols-rounded text-gray-400 transition-transform duration-300" id="cpChevron">expand_more</span>
+      </div>
+      <div id="changePasswordPanel" class="hidden-panel mt-4 space-y-4">
+        <div class="input-group">
+          <input type="password" id="cpCurrent" class="input-field" placeholder=" ">
+          <label for="cpCurrent" class="floating-label">Current Password</label>
+          <button type="button" class="eye-btn" onclick="toggleCpPassword('cpCurrent', 'cpCurrentEye')" tabindex="-1">
+            <svg id="cpCurrentEye" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="input-group">
+          <input type="password" id="cpNew" class="input-field" placeholder=" " minlength="6" oninput="checkCpStrength(this.value)">
+          <label for="cpNew" class="floating-label">New Password</label>
+          <button type="button" class="eye-btn" onclick="toggleCpPassword('cpNew', 'cpNewEye')" tabindex="-1">
+            <svg id="cpNewEye" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="flex-1 h-1 bg-gray-200 rounded-full overflow-hidden">
+            <div class="strength-bar" id="cpStrengthBar"></div>
+          </div>
+          <span class="strength-text" id="cpStrengthText" style="min-width:50px;text-align:right;"></span>
+        </div>
+        <div class="input-group">
+          <input type="password" id="cpConfirm" class="input-field" placeholder=" " minlength="6">
+          <label for="cpConfirm" class="floating-label">Confirm New Password</label>
+          <button type="button" class="eye-btn" onclick="toggleCpPassword('cpConfirm', 'cpConfirmEye')" tabindex="-1">
+            <svg id="cpConfirmEye" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <button class="btn-primary text-sm" onclick="updatePassword()">
+          <span id="updatePassText">Update Password</span>
+          <svg id="updatePassSpinner" class="spinner hidden ml-2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Logout Button -->
+    <button class="btn-danger" onclick="showLogoutModal()">
+      <span class="material-symbols-rounded text-lg">logout</span> Logout
+    </button>
+
+  </div>
+
+  <!-- Logout Modal -->
+  <div class="modal-overlay" id="logoutModal">
+    <div class="modal-box">
+      <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+        <span class="material-symbols-rounded text-red-500 text-3xl">logout</span>
+      </div>
+      <h3 class="text-lg font-bold text-gray-900 mb-2">Logout</h3>
+      <p class="text-sm text-gray-500 mb-6">Are you sure you want to logout from Raja Brand?</p>
+      <div class="flex gap-3">
+        <button class="btn-secondary flex-1" onclick="hideLogoutModal()">Cancel</button>
+        <button class="btn-danger flex-1" onclick="logout()">Logout</button>
       </div>
     </div>
   </div>
 
-  <div class="mt-4" id="passSection">
-    <button onclick="toggleSection('passSec')" class="flex items-center justify-between w-full p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-left">
-      <span class="text-sm font-bold">Change Password</span>
-      <span class="material-symbols-rounded text-gray-400 transition-transform" id="passArrow">expand_more</span>
-    </button>
-    <div class="collapse-sec" id="passSec">
-      <div class="p-4 rounded-xl bg-white border border-gray-100 mt-1">
-        <div class="space-y-3">
-          <div><label class="text-sm font-medium mb-1 block">Current Password</label><input type="password" id="currPass" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-          <div><label class="text-sm font-medium mb-1 block">New Password</label><input type="password" id="newPass" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" oninput="checkNewStrength()"><div class="strength-bar" id="newStrengthBar"></div></div>
-          <div><label class="text-sm font-medium mb-1 block">Confirm New Password</label><input type="password" id="confirmNewPass" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-          <button onclick="changePassword()" class="w-full py-2.5 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Update Password</button>
-          <p class="text-xs text-gray-400 text-center" id="googlePassNote" style="display:none;">Password management is handled by Google for Google-linked accounts.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 
-  <button onclick="logoutUser()" class="w-full mt-6 py-3.5 rounded-xl text-sm font-bold btn-press border-2" style="color:var(--error);border-color:var(--error);">Logout</button>
-</div>
+  <!-- Bottom Navigation -->
+  <nav class="nav-bottom">
+    <a href="index.html" class="nav-item text-gray-400">
+      <span class="material-symbols-rounded">home</span>
+      <span class="nav-label">Home</span>
+    </a>
+    <a href="categories.html" class="nav-item text-gray-400">
+      <span class="material-symbols-rounded">category</span>
+      <span class="nav-label">Categories</span>
+    </a>
+    <a href="cart.html" class="nav-item text-gray-400">
+      <span class="material-symbols-rounded">shopping_cart</span>
+      <span class="nav-label">Cart</span>
+    </a>
+    <a href="orders.html" class="nav-item text-gray-400">
+      <span class="material-symbols-rounded">receipt_long</span>
+      <span class="nav-label">Orders</span>
+    </a>
+    <a href="profile.html" class="nav-item text-green-600">
+      <span class="material-symbols-rounded">person</span>
+      <span class="nav-label font-semibold">Profile</span>
+    </a>
+  </nav>
 
-<script>
-  document.addEventListener('contextmenu',e=>e.preventDefault());
-  document.addEventListener('selectstart',e=>e.preventDefault());
-  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
-  document.querySelectorAll('img').forEach(img=>img.setAttribute('draggable','false'));
-
-  const STORE={users:'raja_users',currentUser:'raja_current_user',products:'raja_products',orders:'raja_orders',wishlist:'raja_wishlist'};
-  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
-  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
-
-  const user=getLS(STORE.currentUser);
-  if(!user){window.location.href='login.html?redirect=profile.html';}
-
-  function updateCartBadge(){const c=getLS(STORE.cart)||[];const b=document.getElementById('cartBadge');if(c.length>0){b.textContent=c.length;b.classList.remove('hidden');}else b.classList.add('hidden');}
-  updateCartBadge();
-
-  function showToast(msg,type='success'){
-    const c=document.getElementById('toastContainer');
-    const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;
-    c.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));
-    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3000);
-  }
-
-  function loadProfile(){
-    document.getElementById('profileAvatar').textContent=user.name?user.name.charAt(0).toUpperCase():'U';
-    document.getElementById('profileName').textContent=user.name||'User';
-    document.getElementById('profileEmail').textContent=user.email||'';
-    document.getElementById('profilePhone').textContent=user.phone||'';
-    document.getElementById('editName').value=user.name||'';
-    document.getElementById('editPhone').value=user.phone||'';
-    document.getElementById('editEmail').value=user.email||'';
-
-    const provider=user.provider||'email';
-    const badge=document.getElementById('providerBadge');
-    if(provider==='google'){
-      badge.style.display='inline-flex';
-      badge.innerHTML='<span class="material-symbols-rounded text-sm">verified</span> Google Account';
-      badge.style.background='#e8f5e9';
-      badge.style.color='#2e7d32';
-      document.getElementById('editEmail').disabled=true;
-      document.getElementById('editEmail').classList.add('bg-gray-100','cursor-not-allowed');
-      document.getElementById('passSection').style.display='none';
-    }else{
-      badge.style.display='inline-flex';
-      badge.innerHTML='<span class="material-symbols-rounded text-sm">mail</span> Email Account';
-      badge.style.background='var(--primary-light)';
-      badge.style.color='var(--primary)';
-      document.getElementById('editEmail').disabled=false;
-      document.getElementById('editEmail').classList.remove('bg-gray-100','cursor-not-allowed');
-      document.getElementById('passSection').style.display='block';
-    }
-    if(user.address){
-      document.getElementById('editAddr1').value=user.address.line1||'';
-      document.getElementById('editAddr2').value=user.address.line2||'';
-      document.getElementById('editCity').value=user.address.city||'';
-      document.getElementById('editState').value=user.address.state||'';
-      document.getElementById('editPincode').value=user.address.pincode||'';
-      const parts=[user.address.line1,user.address.line2,user.address.city,user.address.state,user.address.pincode].filter(Boolean);
-      document.getElementById('profileAddressDisplay').textContent=parts.length>0?parts.join(', '):'No address saved';
+  <script>
+    function formatPrice(amount) {
+      return 'Rs. ' + Number(amount || 0).toLocaleString('en-PK');
     }
 
-    const orders=getLS(STORE.orders)||[];
-    const uOrders=orders.filter(o=>o.user_id===user.email);
-    document.getElementById('statOrders').textContent=uOrders.length;
-    const wl=getLS(STORE.wishlist)||[];
-    document.getElementById('statWishlist').textContent=wl.length;
-    document.getElementById('statReviews').textContent='12';
-  }
+    let currentUser = null;
+    let editOpen = false;
+    let cpOpen = false;
 
-  function saveProfile(){
-    user.name=document.getElementById('editName').value.trim()||user.name;
-    user.phone=document.getElementById('editPhone').value.trim()||user.phone;
-    user.address={
-      line1:document.getElementById('editAddr1').value.trim(),
-      line2:document.getElementById('editAddr2').value.trim(),
-      city:document.getElementById('editCity').value.trim(),
-      state:document.getElementById('editState').value.trim(),
-      pincode:document.getElementById('editPincode').value.trim()
-    };
-    setLS(STORE.currentUser,user);
-    const users=getLS(STORE.users)||[];
-    const idx=users.findIndex(u=>u.email===user.email);
-    if(idx>=0){users[idx]=user;setLS(STORE.users,users);}
-    loadProfile();
-    showToast('Profile updated!','success');
-  }
+    // === LOAD PROFILE ===
+    function loadProfile() {
+      const stored = localStorage.getItem('raja_current_user');
+      if (!stored) {
+        showToast('Please login first');
+        setTimeout(() => { window.location.href = 'login.html'; }, 800);
+        return;
+      }
+      currentUser = JSON.parse(stored);
+      const initial = (currentUser.name || 'U').charAt(0).toUpperCase();
+      const lastInitial = currentUser.name && currentUser.name.split(' ').length > 1
+        ? currentUser.name.split(' ').pop().charAt(0).toUpperCase() : '';
+      document.getElementById('avatarCircle').textContent = initial + (lastInitial || '');
+      document.getElementById('profileName').textContent = currentUser.name || 'User';
+      document.getElementById('profileEmail').textContent = currentUser.email || '';
+      document.getElementById('profilePhone').textContent = currentUser.phone ? formatPhone(currentUser.phone) : 'No phone added';
 
-  function checkNewStrength(){
-    const p=document.getElementById('newPass').value;
-    const bar=document.getElementById('newStrengthBar');
-    let score=0;
-    if(p.length>=6)score++;if(p.length>=10)score++;
-    if(/[A-Z]/.test(p))score++;if(/[0-9]/.test(p))score++;
-    if(/[^A-Za-z0-9]/.test(p))score++;
-    const map=['','bg-red-500','bg-orange-500','bg-yellow-500','bg-green-500','bg-green-600'];
-    bar.style.width=score*20+'%';
-    bar.style.background=map[score]||'#ddd';
-  }
+      const badge = document.getElementById('googleBadge');
+      if (currentUser.provider === 'google') {
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
 
-  function changePassword(){
-    const curr=document.getElementById('currPass').value;
-    const newp=document.getElementById('newPass').value;
-    const confirm=document.getElementById('confirmNewPass').value;
-    if(!curr||!newp||!confirm){showToast('Fill all password fields','error');return;}
-    const users=getLS(STORE.users)||[];
-    const idx=users.findIndex(u=>u.email===user.email);
-    if(idx>=0&&users[idx].password!==curr){showToast('Current password is incorrect','error');return;}
-    if(newp.length<6){showToast('New password must be at least 6 characters','error');return;}
-    if(newp!==confirm){showToast('Passwords do not match','error');return;}
-    if(idx>=0){users[idx].password=newp;setLS(STORE.users,users);}
-    showToast('Password changed successfully!','success');
-    document.getElementById('currPass').value='';document.getElementById('newPass').value='';document.getElementById('confirmNewPass').value='';
-  }
+      // Load stats
+      const orders = JSON.parse(localStorage.getItem('raja_orders') || '[]');
+      const userOrders = orders.filter(o => o.userId === currentUser.id || o.email === currentUser.email);
+      document.getElementById('statOrders').textContent = userOrders.length;
 
-  function logoutUser(){
-    if(!confirm('Are you sure you want to logout?'))return;
-    localStorage.removeItem(STORE.currentUser);
-    window.location.href='login.html';
-  }
+      const wishlist = JSON.parse(localStorage.getItem('raja_wishlist') || '[]');
+      const userWishlist = wishlist.filter(w => w.userId === currentUser.id);
+      document.getElementById('statWishlist').textContent = userWishlist.length;
 
-  function toggleSection(id){
-    const sec=document.getElementById(id);
-    const arrow=document.getElementById(id.replace('Sec','').replace('address','addr').replace('edit','edit').replace('pass','pass')+'Arrow');
-    sec.classList.toggle('open');
-    if(arrow)arrow.style.transform=sec.classList.contains('open')?'rotate(180deg)':'rotate(0)';
-  }
+      document.getElementById('statReviews').textContent = '0';
 
-  loadProfile();
-</script>
+      // Notifications badge
+      const notifs = JSON.parse(localStorage.getItem('raja_notifications') || '[]');
+      const unread = notifs.filter(n => !n.read).length;
+      const badgeEl = document.getElementById('notifBadge');
+      if (unread > 0) {
+        badgeEl.textContent = unread;
+        badgeEl.classList.remove('hidden');
+      } else {
+        badgeEl.classList.add('hidden');
+      }
+    }
+
+    function formatPhone(phone) {
+      if (!phone) return '';
+      if (phone.length === 11) {
+        return phone.slice(0, 4) + '-' + phone.slice(4, 7) + '-' + phone.slice(7);
+      }
+      return phone;
+    }
+
+    // === EDIT FORM ===
+    function toggleEditForm() {
+      editOpen = !editOpen;
+      const panel = document.getElementById('editFormPanel');
+      if (editOpen) {
+        panel.classList.add('open');
+        document.getElementById('editName').value = currentUser.name || '';
+        document.getElementById('editPhone').value = currentUser.phone || '';
+        document.getElementById('editEmail').value = currentUser.email || '';
+        if (currentUser.provider === 'google') {
+          document.getElementById('editEmail').disabled = true;
+          document.getElementById('editEmail').classList.add('bg-gray-50', 'text-gray-400');
+        } else {
+          document.getElementById('editEmail').disabled = false;
+          document.getElementById('editEmail').classList.remove('bg-gray-50', 'text-gray-400');
+        }
+        document.getElementById('editAddress').value = currentUser.address || '';
+        setTimeout(() => {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        panel.classList.remove('open');
+      }
+    }
+
+    function cancelEdit() {
+      editOpen = false;
+      document.getElementById('editFormPanel').classList.remove('open');
+    }
+
+    function saveProfile() {
+      const name = document.getElementById('editName').value.trim();
+      const phone = document.getElementById('editPhone').value.trim();
+      const address = document.getElementById('editAddress').value.trim();
+      if (!name) { showToast('Name is required'); return; }
+
+      const users = JSON.parse(localStorage.getItem('raja_users') || '[]');
+      const idx = users.findIndex(u => u.email === currentUser.email);
+      if (idx !== -1) {
+        users[idx].name = name;
+        users[idx].phone = phone;
+        users[idx].address = address;
+        localStorage.setItem('raja_users', JSON.stringify(users));
+        currentUser = users[idx];
+        localStorage.setItem('raja_current_user', JSON.stringify(currentUser));
+        loadProfile();
+        cancelEdit();
+        showToast('Profile updated successfully!');
+      }
+    }
+
+    // === CHANGE PASSWORD ===
+    function toggleChangePassword() {
+      cpOpen = !cpOpen;
+      const panel = document.getElementById('changePasswordPanel');
+      const chevron = document.getElementById('cpChevron');
+      if (cpOpen) {
+        panel.classList.add('open');
+        chevron.style.transform = 'rotate(180deg)';
+      } else {
+        panel.classList.remove('open');
+        chevron.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function checkCpStrength(password) {
+      const bar = document.getElementById('cpStrengthBar');
+      const text = document.getElementById('cpStrengthText');
+      let score = 0;
+      if (password.length >= 6) score++;
+      if (password.length >= 10) score++;
+      if (/[A-Z]/.test(password) && /[a-z]/.test(password)) score++;
+      if (/\d/.test(password) && /[^A-Za-z0-9]/.test(password)) score++;
+
+      bar.className = 'strength-bar';
+      if (score === 0 || password.length === 0) {
+        bar.style.width = '0'; text.textContent = '';
+      } else if (score === 1) {
+        bar.classList.add('weak'); text.textContent = 'Weak'; text.style.color = '#ef4444';
+      } else if (score === 2) {
+        bar.classList.add('fair'); text.textContent = 'Fair'; text.style.color = '#f97316';
+      } else if (score === 3) {
+        bar.classList.add('good'); text.textContent = 'Good'; text.style.color = '#eab308';
+      } else {
+        bar.classList.add('strong'); text.textContent = 'Strong'; text.style.color = '#16A34A';
+      }
+    }
+
+    function toggleCpPassword(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+      } else {
+        input.type = 'password';
+        icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+      }
+    }
+
+    function updatePassword() {
+      const current = document.getElementById('cpCurrent').value;
+      const newPass = document.getElementById('cpNew').value;
+      const confirm = document.getElementById('cpConfirm').value;
+
+      if (!current || !newPass || !confirm) {
+        showToast('Please fill in all password fields');
+        return;
+      }
+      if (current !== currentUser.password) {
+        showToast('Current password is incorrect');
+        return;
+      }
+      if (newPass !== confirm) {
+        showToast('New passwords do not match');
+        return;
+      }
+      if (newPass.length < 6) {
+        showToast('Password must be at least 6 characters');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('raja_users') || '[]');
+      const idx = users.findIndex(u => u.email === currentUser.email);
+      if (idx !== -1) {
+        users[idx].password = newPass;
+        localStorage.setItem('raja_users', JSON.stringify(users));
+        currentUser.password = newPass;
+        localStorage.setItem('raja_current_user', JSON.stringify(currentUser));
+        document.getElementById('cpCurrent').value = '';
+        document.getElementById('cpNew').value = '';
+        document.getElementById('cpConfirm').value = '';
+        document.getElementById('cpStrengthBar').style.width = '0';
+        document.getElementById('cpStrengthText').textContent = '';
+        showToast('Password updated successfully!');
+      }
+    }
+
+    // === LOGOUT ===
+    function showLogoutModal() {
+      document.getElementById('logoutModal').classList.add('show');
+    }
+
+    function hideLogoutModal() {
+      document.getElementById('logoutModal').classList.remove('show');
+    }
+
+    function logout() {
+      localStorage.removeItem('raja_current_user');
+      hideLogoutModal();
+      showToast('Logged out successfully');
+      setTimeout(() => { window.location.href = 'login.html'; }, 600);
+    }
+
+    // === GO BACK ===
+    function goBack() {
+      if (document.referrer) {
+        window.history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+
+    // === TOAST ===
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // === INIT ===
+    document.addEventListener('DOMContentLoaded', loadProfile);
+  </script>
+
 </body>
 </html>

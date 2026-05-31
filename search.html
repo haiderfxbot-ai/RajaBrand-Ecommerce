@@ -1,150 +1,282 @@
 <!DOCTYPE html>
-<html lang="en" class="select-none overflow-x-hidden">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Search — Raja Brand</title>
+  <title>Search - Raja</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
   <style>
-    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
-    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;min-height:100vh;}
-    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
-    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
-    .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
-    ::-webkit-scrollbar{display:none;}
-    .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px);}
-    .btn-press:active{transform:scale(0.96);}
-    .product-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);}
-    .badge-pill{padding:2px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+    * { font-family: 'Plus Jakarta Sans', sans-serif; scrollbar-width: none; }
+    *::-webkit-scrollbar { display: none; }
+    body { overflow-x: hidden; overflow-y: auto; padding-bottom: 80px; background: #f8fafc; }
+    .brand-gradient { background: linear-gradient(135deg, #16A34A 0%, #15803D 100%); }
+    .brand-text { color: #16A34A; }
+    .brand-bg { background: #16A34A; }
+    .brand-light-bg { background: #DCFCE7; }
+    .price-tag { font-family: 'DM Sans', sans-serif; }
+    .product-card { transition: all 0.2s ease; }
+    .product-card:active { transform: scale(0.98); }
+    .recent-chip { transition: all 0.15s; }
+    .recent-chip:active { transform: scale(0.95); }
   </style>
 </head>
 <body>
-<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100/50">
-  <div class="flex items-center justify-between px-4 h-16 safe-top">
-    <button onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></button>
-    <div class="flex-1 mx-2 relative">
-      <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-rounded text-gray-400 text-lg">search</span>
-      <input type="text" id="searchInput" placeholder="Search products..." class="w-full pl-9 pr-8 py-2.5 rounded-xl bg-gray-100 text-sm focus:outline-none focus:bg-white focus:border focus:border-orange-400" autofocus oninput="doSearch()">
-      <span id="clearSearch" class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-rounded text-gray-400 cursor-pointer hidden text-lg" onclick="clearSearch()">close</span>
+
+<div id="app">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+    <div class="flex items-center gap-2 px-4 h-14">
+      <button onclick="goBack()" class="p-2 -ml-2 rounded-lg hover:bg-gray-50">
+        <span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span>
+      </button>
+      <div class="flex-1 relative">
+        <span class="material-symbols-rounded absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl">search</span>
+        <input type="text" id="searchInput" oninput="doSearch()" placeholder="Search products, brands..." class="w-full bg-gray-100 border-0 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-green-200" autofocus>
+      </div>
+      <button onclick="clearSearch()" class="text-sm brand-text font-medium">Cancel</button>
     </div>
-  </div>
-</header>
+  </header>
 
-<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/92 backdrop-blur-xl border-t border-gray-100 safe-bottom" style="padding-bottom:env(safe-area-inset-bottom,4px);">
-  <div class="flex items-center justify-around h-16">
-    <a href="index.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">home</span><span class="text-[10px] text-gray-400">Home</span></a>
-    <a href="product.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">grid_view</span><span class="text-[10px] text-gray-400">Products</span></a>
-    <a href="search.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded icon-fill text-xl" style="color:var(--primary);">search</span><span class="text-[10px] font-medium" style="color:var(--primary);">Search</span></a>
-    <a href="wishlist.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">favorite</span><span class="text-[10px] text-gray-400">Wishlist</span></a>
-    <a href="profile.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">person</span><span class="text-[10px] text-gray-400">Profile</span></a>
-  </div>
-</nav>
+  <main class="pt-14 px-4 pb-24">
+    <!-- Recent Searches -->
+    <div id="recentSearchesSection" class="mt-3">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-sm font-bold text-gray-900">Recent Searches</h2>
+        <button onclick="clearRecentSearches()" class="text-xs text-gray-400">Clear</button>
+      </div>
+      <div class="flex flex-wrap gap-2" id="recentSearchesList"></div>
+    </div>
 
-<div class="px-4 py-3">
-  <div id="recentSearches" class="mb-4"></div>
-  <div id="trendingSearches" class="mb-4"></div>
-  <div id="searchResults" class="grid grid-cols-2 gap-3"></div>
-  <div id="emptyState" class="hidden flex flex-col items-center justify-center py-12">
-    <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_t9v9vnzm.json" background="transparent" speed="1" style="width:160px;height:160px;" loop autoplay></lottie-player>
-    <p class="text-gray-500 mt-3 text-sm">No results found</p>
-    <p class="text-xs text-gray-400 mt-1">Try different keywords</p>
-  </div>
+    <!-- Search Results -->
+    <div id="searchResultsSection" class="hidden mt-3">
+      <p class="text-sm text-gray-500 mb-3" id="searchResultCount"></p>
+      <div class="space-y-3" id="searchResultsList"></div>
+    </div>
+
+    <!-- Initial State -->
+    <div id="initialState" class="text-center py-16">
+      <span class="material-symbols-rounded text-6xl text-gray-200">search</span>
+      <h3 class="text-lg font-bold text-gray-800 mt-3">Search Products</h3>
+      <p class="text-sm text-gray-400 mt-1">Find your favorite products from top Pakistani brands</p>
+    </div>
+
+    <!-- No Results -->
+    <div id="noResults" class="hidden text-center py-16">
+      <span class="material-symbols-rounded text-6xl text-gray-200">search_off</span>
+      <h3 class="text-lg font-bold text-gray-800 mt-3">No Results Found</h3>
+      <p class="text-sm text-gray-400 mt-1">Try searching with different keywords</p>
+    </div>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 px-2" style="padding-bottom: env(safe-area-inset-bottom, 0px);">
+    <div class="flex items-center justify-around h-16">
+      <a href="index.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+        <span class="material-symbols-rounded text-2xl">home</span>
+        <span class="text-[10px] font-medium">Home</span>
+      </a>
+      <a href="product.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+        <span class="material-symbols-rounded text-2xl">grid_view</span>
+        <span class="text-[10px] font-medium">Products</span>
+      </a>
+      <a href="search.html" class="flex flex-col items-center gap-0.5 brand-text">
+        <span class="material-symbols-rounded text-2xl">search</span>
+        <span class="text-[10px] font-semibold">Search</span>
+      </a>
+      <a href="wishlist.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+        <span class="material-symbols-rounded text-2xl">favorite</span>
+        <span class="text-[10px] font-medium">Wishlist</span>
+      </a>
+      <a href="profile.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+        <span class="material-symbols-rounded text-2xl">person</span>
+        <span class="text-[10px] font-medium">Profile</span>
+      </a>
+    </div>
+  </nav>
 </div>
 
 <script>
-  document.addEventListener('contextmenu',e=>e.preventDefault());
-  document.addEventListener('selectstart',e=>e.preventDefault());
-  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
-  document.querySelectorAll('img').forEach(img=>img.setAttribute('draggable','false'));
+function formatPrice(amount) {
+  return 'Rs. ' + Number(amount).toLocaleString('en-PK');
+}
 
-  const STORE={products:'raja_products',categories:'raja_categories',cart:'raja_cart',wishlist:'raja_wishlist',recentSearch:'raja_recent_search'};
-  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
-  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function goToProduct(id) {
+  localStorage.setItem('raja_selected_product', id);
+  window.location.href = 'product-detail.html?id=' + id;
+}
 
-  function showToast(msg,type='success'){
-    const c=document.getElementById('toastContainer')||document.body;
-    const t=document.createElement('div');t.className='fixed top-20 right-4 z-50 px-4 py-2.5 rounded-xl text-white font-medium shadow-lg transition-all duration-300 translate-x-[120%]';t.textContent=msg;t.style.background=type==='success'?'var(--success)':type==='error'?'var(--error)':'var(--info)';
-    c.appendChild(t);requestAnimationFrame(()=>t.style.transform='translateX(0)');
-    setTimeout(()=>{t.style.transform='translateX(120%)';setTimeout(()=>t.remove(),300);},2500);
+function goBack() { window.history.back(); }
+
+function seedDataIfEmpty() {
+  if (!localStorage.getItem('raja_products')) {
+    const products = [
+      { id: 'p1', name: 'Khaadi 3-Piece Unstitched Embroidered Suit', category: 'womens-fashion', price: 4500, originalPrice: 6500, rating: 4.5, reviews: 234, image: 'https://picsum.photos/seed/khaadi1/400/500', images: ['https://picsum.photos/seed/khaadi1/400/500'], isNew: true, isFlashSale: true, discount: 31, stock: 25, description: 'Premium unstitched 3-piece suit from Khaadi.', brand: 'Khaadi', dateAdded: '2024-05-01' },
+      { id: 'p2', name: 'Sapphire Lawn 2024 Printed Collection', category: 'womens-fashion', price: 3200, originalPrice: 4000, rating: 4.3, reviews: 189, image: 'https://picsum.photos/seed/sapphire1/400/500', images: ['https://picsum.photos/seed/sapphire1/400/500'], isNew: true, isFlashSale: true, discount: 20, stock: 40, description: 'Beautiful printed lawn collection by Sapphire.', brand: 'Sapphire', dateAdded: '2024-05-10' },
+      { id: 'p3', name: 'J. 2-Piece Pret Collection - Summer Bliss', category: 'womens-fashion', price: 5990, originalPrice: 7990, rating: 4.7, reviews: 312, image: 'https://picsum.photos/seed/jdot1/400/500', images: ['https://picsum.photos/seed/jdot1/400/500'], isNew: false, isFlashSale: false, discount: 25, stock: 15, description: 'Ready-to-wear 2-piece pret from J.', brand: 'J.', dateAdded: '2024-04-15' },
+      { id: 'p4', name: 'Sana Safinaz Luxury Unstitched 3-Piece', category: 'womens-fashion', price: 6500, originalPrice: 8500, rating: 4.8, reviews: 156, image: 'https://picsum.photos/seed/sana1/400/500', images: ['https://picsum.photos/seed/sana1/400/500'], isNew: true, isFlashSale: false, discount: 24, stock: 10, description: 'Luxury unstitched 3-piece by Sana Safinaz.', brand: 'Sana Safinaz', dateAdded: '2024-05-20' },
+      { id: 'p5', name: 'Maria B Stitched Premium Collection 2024', category: 'womens-fashion', price: 4990, originalPrice: 6990, rating: 4.4, reviews: 278, image: 'https://picsum.photos/seed/mariab1/400/500', images: ['https://picsum.photos/seed/mariab1/400/500'], isNew: false, isFlashSale: true, discount: 29, stock: 20, description: 'Stitched premium collection from Maria B.', brand: 'Maria B', dateAdded: '2024-03-10' },
+      { id: 'p6', name: 'Nishat Linen Winter Collection 2024', category: 'womens-fashion', price: 3800, originalPrice: 4800, rating: 4.2, reviews: 145, image: 'https://picsum.photos/seed/nishat1/400/500', images: ['https://picsum.photos/seed/nishat1/400/500'], isNew: false, isFlashSale: false, discount: 21, stock: 30, description: 'Winter collection from Nishat Linen.', brand: 'Nishat Linen', dateAdded: '2024-02-20' },
+      { id: 'p7', name: 'Alkaram Studio Premium Unstitched', category: 'womens-fashion', price: 4200, originalPrice: 5200, rating: 4.1, reviews: 198, image: 'https://picsum.photos/seed/alkaram1/400/500', images: ['https://picsum.photos/seed/alkaram1/400/500'], isNew: false, isFlashSale: true, discount: 19, stock: 35, description: 'Premium unstitched fabric from Alkaram Studio.', brand: 'Alkaram Studio', dateAdded: '2024-04-01' },
+      { id: 'p8', name: 'Gul Ahmed Printed Lawn Suit', category: 'womens-fashion', price: 3500, originalPrice: 4500, rating: 4.6, reviews: 423, image: 'https://picsum.photos/seed/gulahmed1/400/500', images: ['https://picsum.photos/seed/gulahmed1/400/500'], isNew: true, isFlashSale: false, discount: 22, stock: 50, description: 'Printed lawn suit by Gul Ahmed.', brand: 'Gul Ahmed', dateAdded: '2024-05-15' },
+      { id: 'p9', name: 'Bonanza Satrangi Kurta Shalwar Stitched', category: 'mens-fashion', price: 2990, originalPrice: 3990, rating: 4.3, reviews: 167, image: 'https://picsum.photos/seed/bonanza1/400/500', images: ['https://picsum.photos/seed/bonanza1/400/500'], isNew: false, isFlashSale: true, discount: 25, stock: 30, description: 'Stitched kurta shalwar from Bonanza Satrangi.', brand: 'Bonanza Satrangi', dateAdded: '2024-04-10' },
+      { id: 'p10', name: "Outfitters Men's Premium T-Shirt", category: 'mens-fashion', price: 1499, originalPrice: 1999, rating: 4.0, reviews: 89, image: 'https://picsum.photos/seed/outfitters1/400/500', images: ['https://picsum.photos/seed/outfitters1/400/500'], isNew: true, isFlashSale: false, discount: 25, stock: 45, description: 'Premium quality t-shirt from Outfitters.', brand: 'Outfitters', dateAdded: '2024-05-18' },
+      { id: 'p11', name: 'Junaid Jamshed Kurta Shalwar - Classic White', category: 'mens-fashion', price: 3490, originalPrice: 4490, rating: 4.6, reviews: 234, image: 'https://picsum.photos/seed/junaid1/400/500', images: ['https://picsum.photos/seed/junaid1/400/500'], isNew: false, isFlashSale: false, discount: 22, stock: 25, description: 'Classic white kurta shalwar from Junaid Jamshed.', brand: 'Junaid Jamshed', dateAdded: '2024-03-20' },
+      { id: 'p12', name: 'Samsung Galaxy A14 128GB', category: 'electronics', price: 32999, originalPrice: 39999, rating: 4.4, reviews: 567, image: 'https://picsum.photos/seed/samsung1/400/500', images: ['https://picsum.photos/seed/samsung1/400/500'], isNew: false, isFlashSale: true, discount: 18, stock: 20, description: 'Samsung Galaxy A14 with 128GB storage.', brand: 'Samsung', dateAdded: '2024-03-01' },
+      { id: 'p13', name: 'Huawei Nova 12i 256GB', category: 'electronics', price: 45999, originalPrice: 52999, rating: 4.5, reviews: 345, image: 'https://picsum.photos/seed/huawei1/400/500', images: ['https://picsum.photos/seed/huawei1/400/500'], isNew: true, isFlashSale: false, discount: 13, stock: 15, description: 'Huawei Nova 12i with 256GB storage.', brand: 'Huawei', dateAdded: '2024-05-05' },
+      { id: 'p14', name: 'Dawlance Microwave Oven 28L', category: 'electronics', price: 18500, originalPrice: 22500, rating: 4.2, reviews: 189, image: 'https://picsum.photos/seed/dawlance1/400/500', images: ['https://picsum.photos/seed/dawlance1/400/500'], isNew: false, isFlashSale: true, discount: 18, stock: 12, description: 'Dawlance 28L microwave oven.', brand: 'Dawlance', dateAdded: '2024-02-15' },
+      { id: 'p15', name: "Servis Cheetah Men's Sports Shoes", category: 'footwear', price: 2299, originalPrice: 2999, rating: 4.3, reviews: 678, image: 'https://picsum.photos/seed/servis1/400/500', images: ['https://picsum.photos/seed/servis1/400/500'], isNew: false, isFlashSale: true, discount: 23, stock: 50, description: 'Servis Cheetah sports shoes.', brand: 'Servis', dateAdded: '2024-04-05' },
+      { id: 'p16', name: "Khadim's Women's Khussa - Gold Embroidered", category: 'footwear', price: 1899, originalPrice: 2499, rating: 4.4, reviews: 345, image: 'https://picsum.photos/seed/khadims1/400/500', images: ['https://picsum.photos/seed/khadims1/400/500'], isNew: true, isFlashSale: false, discount: 24, stock: 35, description: 'Gold embroidered khussa from Khadim\'s.', brand: "Khadim's", dateAdded: '2024-05-12' },
+      { id: 'p17', name: "Borjan Women's Heels - Elegance Collection", category: 'footwear', price: 3499, originalPrice: 4499, rating: 4.1, reviews: 156, image: 'https://picsum.photos/seed/borjan1/400/500', images: ['https://picsum.photos/seed/borjan1/400/500'], isNew: false, isFlashSale: false, discount: 22, stock: 20, description: 'Elegant heels from Borjan.', brand: 'Borjan', dateAdded: '2024-03-25' },
+      { id: 'p18', name: 'Metro Casual Shoes for Men', category: 'footwear', price: 2799, originalPrice: 3499, rating: 4.0, reviews: 234, image: 'https://picsum.photos/seed/metro1/400/500', images: ['https://picsum.photos/seed/metro1/400/500'], isNew: true, isFlashSale: true, discount: 20, stock: 40, description: 'Comfortable casual shoes from Metro.', brand: 'Metro', dateAdded: '2024-05-08' },
+      { id: 'p19', name: 'Kids Branded Kurta Shalwar Set - Blue', category: 'kids', price: 1299, originalPrice: 1799, rating: 4.5, reviews: 123, image: 'https://picsum.photos/seed/kids1/400/500', images: ['https://picsum.photos/seed/kids1/400/500'], isNew: false, isFlashSale: false, discount: 28, stock: 30, description: 'Colorful kurta shalwar set for kids.', brand: 'Kids Collection', dateAdded: '2024-04-20' },
+      { id: 'p20', name: 'Kids Winter Jacket - Hooded', category: 'kids', price: 1999, originalPrice: 2599, rating: 4.3, reviews: 89, image: 'https://picsum.photos/seed/kids2/400/500', images: ['https://picsum.photos/seed/kids2/400/500'], isNew: true, isFlashSale: false, discount: 23, stock: 20, description: 'Warm hooded winter jacket for kids.', brand: 'Kids Collection', dateAdded: '2024-05-02' },
+      { id: 'p21', name: 'PEL Air Conditioner 1.5 Ton Inverter', category: 'electronics', price: 84999, originalPrice: 94999, rating: 4.6, reviews: 234, image: 'https://picsum.photos/seed/pel1/400/500', images: ['https://picsum.photos/seed/pel1/400/500'], isNew: true, isFlashSale: false, discount: 11, stock: 8, description: 'PEL 1.5 ton inverter AC.', brand: 'PEL', dateAdded: '2024-05-25' },
+      { id: 'p22', name: 'Haq & Sons Embroidered Waistcoat', category: 'mens-fashion', price: 2499, originalPrice: 3299, rating: 4.2, reviews: 112, image: 'https://picsum.photos/seed/haq1/400/500', images: ['https://picsum.photos/seed/haq1/400/500'], isNew: false, isFlashSale: true, discount: 24, stock: 18, description: 'Hand-embroidered waistcoat from Haq & Sons.', brand: 'Haq & Sons', dateAdded: '2024-03-15' },
+      { id: 'p23', name: 'KitchenAid Blender 1.5L', category: 'home-kitchen', price: 5499, originalPrice: 6999, rating: 4.4, reviews: 178, image: 'https://picsum.photos/seed/kitchen1/400/500', images: ['https://picsum.photos/seed/kitchen1/400/500'], isNew: false, isFlashSale: false, discount: 21, stock: 25, description: 'Powerful 1.5L blender from KitchenAid.', brand: 'KitchenAid', dateAdded: '2024-04-10' },
+      { id: 'p24', name: 'ChenOne 6-Piece Towel Set', category: 'home-kitchen', price: 2999, originalPrice: 3999, rating: 4.1, reviews: 234, image: 'https://picsum.photos/seed/chen1/400/500', images: ['https://picsum.photos/seed/chen1/400/500'], isNew: true, isFlashSale: true, discount: 25, stock: 40, description: 'Premium 6-piece towel set from ChenOne.', brand: 'ChenOne', dateAdded: '2024-05-22' }
+    ];
+    localStorage.setItem('raja_products', JSON.stringify(products));
+    localStorage.setItem('raja_wishlist', JSON.stringify([]));
+    localStorage.setItem('raja_cart', JSON.stringify([]));
+  }
+  if (!localStorage.getItem('raja_categories')) {
+    const categories = [
+      { id: 'womens-fashion', name: "Women's Fashion", icon: 'checkroom' },
+      { id: 'mens-fashion', name: "Men's Fashion", icon: 'hiking' },
+      { id: 'kids', name: 'Kids', icon: 'child_care' },
+      { id: 'footwear', name: 'Footwear', icon: 'footwear' },
+      { id: 'electronics', name: 'Electronics', icon: 'smartphone' },
+      { id: 'home-kitchen', name: 'Home & Kitchen', icon: 'kitchen' },
+      { id: 'beauty', name: 'Beauty', icon: 'spa' },
+      { id: 'books', name: 'Books & Stationery', icon: 'menu_book' }
+    ];
+    localStorage.setItem('raja_categories', JSON.stringify(categories));
+  }
+}
+
+let allProducts = [];
+const RECENT_KEY = 'raja_recent_searches';
+
+function getRecentSearches() {
+  return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]');
+}
+
+function addRecentSearch(term) {
+  const searches = getRecentSearches().filter(s => s !== term);
+  searches.unshift(term);
+  localStorage.setItem(RECENT_KEY, JSON.stringify(searches.slice(0, 10)));
+}
+
+function clearRecentSearches() {
+  localStorage.setItem(RECENT_KEY, JSON.stringify([]));
+  renderRecentSearches();
+}
+
+function renderRecentSearches() {
+  const section = document.getElementById('recentSearchesSection');
+  const list = document.getElementById('recentSearchesList');
+  const searches = getRecentSearches();
+  if (searches.length === 0) {
+    section.classList.add('hidden');
+    return;
+  }
+  section.classList.remove('hidden');
+  list.innerHTML = searches.map(s => `
+    <button onclick="searchTerm('${s.replace(/'/g, "\\'")}')" class="recent-chip flex items-center gap-1 px-3 py-1.5 bg-white rounded-full border border-gray-200 text-xs text-gray-600">
+      <span class="material-symbols-rounded text-base text-gray-400">history</span> ${s}
+    </button>
+  `).join('');
+}
+
+function searchTerm(term) {
+  document.getElementById('searchInput').value = term;
+  doSearch();
+}
+
+function doSearch() {
+  const query = document.getElementById('searchInput').value.trim();
+  const recentSection = document.getElementById('recentSearchesSection');
+  const resultsSection = document.getElementById('searchResultsSection');
+  const initialState = document.getElementById('initialState');
+  const noResults = document.getElementById('noResults');
+
+  if (!query) {
+    recentSection.classList.remove('hidden');
+    resultsSection.classList.add('hidden');
+    initialState.classList.remove('hidden');
+    noResults.classList.add('hidden');
+    return;
   }
 
-  const products=getLS(STORE.products)||[];
-  const categories=getLS(STORE.categories)||[];
+  addRecentSearch(query);
+  renderRecentSearches();
 
-  function doSearch(){
-    const q=document.getElementById('searchInput').value.trim().toLowerCase();
-    const grid=document.getElementById('searchResults');
-    const empty=document.getElementById('emptyState');
-    const clear=document.getElementById('clearSearch');
-    clear.classList.toggle('hidden',!q);
+  const q = query.toLowerCase();
+  const results = allProducts.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    p.brand.toLowerCase().includes(q) ||
+    p.category.toLowerCase().includes(q) ||
+    p.description.toLowerCase().includes(q)
+  );
 
-    if(!q){
-      grid.innerHTML='';
-      empty.classList.add('hidden');
-      showRecentTrending();
-      return;
-    }
+  recentSection.classList.add('hidden');
+  initialState.classList.add('hidden');
 
-    const results=products.filter(p=>p.name.toLowerCase().includes(q)||p.description.toLowerCase().includes(q)||(categories.find(c=>c.id===p.cat_id)||{}).name?.toLowerCase().includes(q));
-
-    if(results.length===0){
-      grid.innerHTML='';
-      empty.classList.remove('hidden');
-    }else{
-      empty.classList.add('hidden');
-      grid.innerHTML=results.map(p=>{
-        const cat=categories.find(c=>c.id===p.cat_id);
-        return `<a href="product-detail.html?id=${p.id}" class="product-card block">
-          <div class="relative aspect-[4/3] overflow-hidden bg-gray-50"><img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy"><div class="absolute top-2 left-2"><span class="badge-pill bg-red-500 text-white">${p.discount}%</span></div></div>
-          <div class="p-2"><span class="text-[10px] text-gray-400 uppercase">${cat?cat.name:''}</span><h3 class="text-xs font-bold line-clamp-2">${p.name}</h3><div class="flex items-center gap-1 mt-1"><span class="font-bold text-sm">₹${p.price}</span></div></div>
-        </a>`;
-      }).join('');
-      saveRecentSearch(q);
-    }
-    document.getElementById('recentSearches').innerHTML='';
-    document.getElementById('trendingSearches').innerHTML='';
+  if (results.length === 0) {
+    resultsSection.classList.add('hidden');
+    noResults.classList.remove('hidden');
+    return;
   }
 
-  function saveRecentSearch(q){
-    let recents=getLS(STORE.recentSearch)||[];
-    recents=recents.filter(r=>r!==q);
-    recents.unshift(q);
-    if(recents.length>8)recents=recents.slice(0,8);
-    setLS(STORE.recentSearch,recents);
-  }
+  noResults.classList.add('hidden');
+  resultsSection.classList.remove('hidden');
 
-  function showRecentTrending(){
-    const recents=getLS(STORE.recentSearch)||[];
-    const rDiv=document.getElementById('recentSearches');
-    if(recents.length>0){
-      rDiv.innerHTML=`<div class="flex items-center justify-between mb-2"><h3 class="text-sm font-bold">Recent</h3><button onclick="clearRecent()" class="text-xs" style="color:var(--primary);">Clear</button></div><div class="flex flex-wrap gap-2">${recents.map(r=>`<button onclick="useSearch('${r}')" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-xs btn-press">${r}</button>`).join('')}</div>`;
-    }else rDiv.innerHTML='';
+  document.getElementById('searchResultCount').textContent = results.length + ' result' + (results.length !== 1 ? 's' : '');
 
-    const trending=['T-Shirt','Sneakers','Earbuds','Watch','Jeans','Dress','Serum','Loafer'];
-    document.getElementById('trendingSearches').innerHTML=`<h3 class="text-sm font-bold mb-2">Trending</h3><div class="flex flex-wrap gap-2">${trending.map(t=>`<button onclick="useSearch('${t}')" class="px-3 py-1.5 rounded-lg bg-orange-50 border border-orange-100 text-xs btn-press" style="color:var(--primary);">${t}</button>`).join('')}</div>`;
-  }
+  const list = document.getElementById('searchResultsList');
+  list.innerHTML = results.map(p => {
+    const discount = p.originalPrice ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
+    return `
+      <div class="flex gap-3 bg-white rounded-xl border border-gray-100 p-3 cursor-pointer" onclick="goToProduct('${p.id}')">
+        <div class="w-20 h-20 rounded-lg bg-gray-50 overflow-hidden flex-shrink-0">
+          <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" onerror="this.src='https://picsum.photos/seed/serr${p.id}/400/500'">
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-[11px] text-gray-400 font-medium">${p.brand}</p>
+          <h3 class="text-sm font-semibold text-gray-800 line-clamp-2 leading-tight">${p.name}</h3>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-sm font-bold brand-text price-tag">${formatPrice(p.price)}</span>
+            ${p.originalPrice ? `<span class="text-[11px] text-gray-400 line-through price-tag">${formatPrice(p.originalPrice)}</span>` : ''}
+            ${discount > 0 ? `<span class="text-[10px] font-bold text-white brand-bg px-1 py-0.5 rounded">-${discount}%</span>` : ''}
+          </div>
+          <div class="flex items-center gap-1 mt-0.5">
+            <span class="material-symbols-rounded text-yellow-500 text-xs">star</span>
+            <span class="text-[10px] text-gray-500">${p.rating}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
 
-  function useSearch(q){
-    document.getElementById('searchInput').value=q;
-    doSearch();
-  }
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchResultsSection').classList.add('hidden');
+  document.getElementById('noResults').classList.add('hidden');
+  document.getElementById('initialState').classList.remove('hidden');
+  document.getElementById('recentSearchesSection').classList.remove('hidden');
+  renderRecentSearches();
+  document.getElementById('searchInput').blur();
+}
 
-  function clearSearch(){
-    document.getElementById('searchInput').value='';
-    document.getElementById('clearSearch').classList.add('hidden');
-    doSearch();
-  }
-
-  function clearRecent(){
-    setLS(STORE.recentSearch,[]);
-    showRecentTrending();
-  }
-
-  showRecentTrending();
+window.addEventListener('DOMContentLoaded', () => {
+  seedDataIfEmpty();
+  allProducts = JSON.parse(localStorage.getItem('raja_products') || '[]');
+  renderRecentSearches();
+  document.getElementById('searchInput').focus();
+});
 </script>
 </body>
 </html>

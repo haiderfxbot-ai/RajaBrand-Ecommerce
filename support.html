@@ -8,9 +8,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    :root{--primary:#16A34A;--primary-dark:#15803D;--primary-light:#DCFCE7;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
-    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;min-height:100vh;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:80px;min-height:100vh;overflow-x:hidden;overflow-y:auto;}
     h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
     .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
     .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
@@ -28,8 +28,6 @@
     .faq-q:hover{background:var(--surface-variant);}
     .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 16px;}
     .faq-a.open{max-height:300px;padding:0 16px 14px;}
-    .policy-content{max-height:0;overflow:hidden;transition:max-height .35s ease;}
-    .policy-content.open{max-height:1000px;}
   </style>
 </head>
 <body>
@@ -38,8 +36,8 @@
 <header class="fixed top-0 left-0 right-0 z-50 header-blur border-b border-gray-100/50">
   <div class="flex items-center justify-between px-4 h-16 safe-top">
     <button onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></button>
-    <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">Help & Support</span>
-    <a href="cart.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press relative"><span class="material-symbols-rounded text-gray-700 text-2xl">shopping_bag</span><span id="cartBadge" class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 hidden">0</span></a>
+    <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">Support</span>
+    <div class="w-10"></div>
   </div>
 </header>
 
@@ -54,17 +52,21 @@
 </nav>
 
 <div class="px-4 py-5">
-  <h2 class="text-lg font-bold mb-4" style="font-family:'Plus Jakarta Sans',sans-serif;">Contact Us</h2>
+  <div class="p-5 rounded-2xl bg-white shadow-sm border border-gray-50 mb-6" style="background:linear-gradient(135deg,var(--primary) 0%,#15803D 100%);">
+    <h2 class="text-xl font-bold text-white" style="font-family:'Plus Jakarta Sans',sans-serif;">How can we help you?</h2>
+    <p class="text-sm text-white/80 mt-1">We're here for you 24/7</p>
+  </div>
+
   <div class="grid grid-cols-3 gap-3 mb-6">
-    <a href="tel:+919876543210" class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center btn-press">
+    <a href="tel:+923001234567" class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center btn-press card-hover">
       <span class="material-symbols-rounded text-2xl" style="color:var(--primary);">phone</span>
       <p class="text-xs font-medium mt-1">Call Us</p>
     </a>
-    <a href="https://wa.me/919876543210" target="_blank" class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center btn-press">
+    <a href="https://wa.me/923001234567" target="_blank" class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center btn-press card-hover">
       <span class="material-symbols-rounded text-2xl" style="color:var(--success);">chat</span>
       <p class="text-xs font-medium mt-1">WhatsApp</p>
     </a>
-    <a href="mailto:support@rajabrand.in" class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center btn-press">
+    <a href="mailto:support@rajabrand.pk" class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center btn-press card-hover">
       <span class="material-symbols-rounded text-2xl" style="color:var(--info);">mail</span>
       <p class="text-xs font-medium mt-1">Email</p>
     </a>
@@ -72,48 +74,43 @@
 
   <h2 class="text-lg font-bold mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Frequently Asked Questions</h2>
   <div class="rounded-xl bg-white shadow-sm border border-gray-50 overflow-hidden mb-6" id="faqList">
-    <div class="faq-q" onclick="toggleFaq(this)"><span>How do I place an order?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
-    <div class="faq-a"><p class="text-sm text-gray-600">Simply browse our products, add items to cart, and proceed to checkout. No account needed — you can check out as a guest!</p></div>
-    <div class="faq-q" onclick="toggleFaq(this)"><span>What payment methods do you accept?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
-    <div class="faq-a"><p class="text-sm text-gray-600">We currently offer Cash on Delivery (COD) for all orders. Pay when your order arrives.</p></div>
-    <div class="faq-q" onclick="toggleFaq(this)"><span>How long does delivery take?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
-    <div class="faq-a"><p class="text-sm text-gray-600">Standard delivery takes 3-7 business days depending on your location. Metro cities usually get delivery within 2-4 days.</p></div>
-    <div class="faq-q" onclick="toggleFaq(this)"><span>Is delivery free?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
-    <div class="faq-a"><p class="text-sm text-gray-600">Yes! We offer free delivery on all orders above ₹499. A small ₹49 fee applies for orders below this amount.</p></div>
-    <div class="faq-q" onclick="toggleFaq(this)"><span>What is the return policy?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
-    <div class="faq-a"><p class="text-sm text-gray-600">We offer 7-day easy returns from the date of delivery. Items must be unused and in original packaging.</p></div>
-    <div class="faq-q" onclick="toggleFaq(this)"><span>How do I track my order?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
-    <div class="faq-a"><p class="text-sm text-gray-600">Go to "My Orders" in your profile and click "Track Order" to see real-time updates on your delivery status.</p></div>
-    <div class="faq-q" onclick="toggleFaq(this)"><span>Can I cancel my order?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
-    <div class="faq-a"><p class="text-sm text-gray-600">Yes, you can cancel your order before it is dispatched. Once dispatched, please contact support for assistance.</p></div>
-    <div class="faq-q" onclick="toggleFaq(this)"><span>How do I apply a coupon?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
-    <div class="faq-a"><p class="text-sm text-gray-600">Enter your coupon code in the "Have a coupon?" field on the cart page and click "Apply". The discount will be reflected in your order summary.</p></div>
-    <div class="faq-q" onclick="toggleFaq(this)"><span>Is my personal information safe?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
-    <div class="faq-a"><p class="text-sm text-gray-600">Absolutely! We take your privacy seriously. Your data is stored securely and never shared with third parties.</p></div>
-    <div class="faq-q" onclick="toggleFaq(this)"><span>How do I contact customer support?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
-    <div class="faq-a"><p class="text-sm text-gray-600">You can call us, WhatsApp us, or email us using the options at the top of this page. We're here 24/7!</p></div>
+    <div class="faq-q border-b border-gray-50" onclick="toggleFaq(this)"><span>How do I place an order?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
+    <div class="faq-a"><p class="text-sm text-gray-600">Simply browse our products, add items to cart, and proceed to checkout. You can place an order as a guest or sign up for a faster experience.</p></div>
+    <div class="faq-q border-b border-gray-50" onclick="toggleFaq(this)"><span>What payment methods do you accept?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
+    <div class="faq-a"><p class="text-sm text-gray-600">We offer Cash on Delivery (COD) across all major cities in Pakistan. Pay when your order arrives at your doorstep.</p></div>
+    <div class="faq-q border-b border-gray-50" onclick="toggleFaq(this)"><span>How long does delivery take?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
+    <div class="faq-a"><p class="text-sm text-gray-600">Standard delivery takes 3-7 business days. Metro cities like Karachi, Lahore, and Islamabad usually get delivery within 2-4 days.</p></div>
+    <div class="faq-q" onclick="toggleFaq(this)"><span>What is your return policy?</span><span class="material-symbols-rounded text-gray-400">expand_more</span></div>
+    <div class="faq-a"><p class="text-sm text-gray-600">We offer 7-day easy returns from the date of delivery. Items must be unused and in original packaging. Contact support to initiate a return.</p></div>
   </div>
 
-  <h2 class="text-lg font-bold mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Raise a Ticket</h2>
-  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mb-6">
+  <h2 class="text-lg font-bold mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Contact Form</h2>
+  <div class="p-5 rounded-xl bg-white shadow-sm border border-gray-50 mb-6">
     <div class="space-y-3">
-      <div><label class="text-sm font-medium mb-1 block">Your Name</label><input type="text" id="ticketName" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-      <div><label class="text-sm font-medium mb-1 block">Email</label><input type="email" id="ticketEmail" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-      <div><label class="text-sm font-medium mb-1 block">Order ID (optional)</label><input type="text" id="ticketOrder" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
-      <div><label class="text-sm font-medium mb-1 block">Issue Type</label><select id="ticketType" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"><option>Delivery Issue</option><option>Product Quality</option><option>Return Request</option><option>Payment Issue</option><option>Other</option></select></div>
-      <div><label class="text-sm font-medium mb-1 block">Message</label><textarea id="ticketMsg" rows="3" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400 resize-none"></textarea></div>
-      <button onclick="submitTicket()" class="w-full py-2.5 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Submit Ticket</button>
+      <div><label class="text-sm font-medium mb-1 block">Your Name <span style="color:var(--error);">*</span></label><input type="text" id="ticketName" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-400"></div>
+      <div><label class="text-sm font-medium mb-1 block">Email <span style="color:var(--error);">*</span></label><input type="email" id="ticketEmail" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-400"></div>
+      <div><label class="text-sm font-medium mb-1 block">Subject <span style="color:var(--error);">*</span></label><input type="text" id="ticketSubject" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-400"></div>
+      <div><label class="text-sm font-medium mb-1 block">Message <span style="color:var(--error);">*</span></label><textarea id="ticketMsg" rows="4" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-400 resize-none"></textarea></div>
+      <button onclick="submitTicket()" class="w-full py-3 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Submit Ticket</button>
     </div>
   </div>
 
-  <h2 class="text-lg font-bold mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Policies</h2>
-  <div class="rounded-xl bg-white shadow-sm border border-gray-50 overflow-hidden mb-4">
-    <button onclick="togglePolicy(this)" class="faq-q w-full"><span>Refund Policy</span><span class="material-symbols-rounded text-gray-400">expand_more</span></button>
-    <div class="policy-content"><p class="text-sm text-gray-600 p-4">We offer a full refund on items returned within 7 days of delivery. Refunds are processed within 5-7 business days after we receive the returned item. Items must be unused, undamaged, and in original packaging. COD charges are non-refundable.</p></div>
-    <button onclick="togglePolicy(this)" class="faq-q w-full"><span>Privacy Policy</span><span class="material-symbols-rounded text-gray-400">expand_more</span></button>
-    <div class="policy-content"><p class="text-sm text-gray-600 p-4">Raja Brand respects your privacy. We collect only necessary information (name, email, phone, address) to process your orders. Your data is encrypted and never shared with third parties. You can request data deletion at any time by contacting support.</p></div>
-    <button onclick="togglePolicy(this)" class="faq-q w-full"><span>Terms of Service</span><span class="material-symbols-rounded text-gray-400">expand_more</span></button>
-    <div class="policy-content"><p class="text-sm text-gray-600 p-4">By using Raja Brand, you agree to provide accurate information, not misuse the platform, and comply with all applicable laws. We reserve the right to cancel orders if fraudulent activity is suspected. Prices and availability are subject to change without notice.</p></div>
+  <div class="p-5 rounded-xl bg-white shadow-sm border border-gray-50">
+    <h3 class="text-sm font-bold mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Contact Information</h3>
+    <div class="space-y-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--primary-light);"><span class="material-symbols-rounded" style="color:var(--primary);">mail</span></div>
+        <div><p class="text-xs text-gray-400">Email</p><p class="text-sm font-medium">support@rajabrand.pk</p></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--primary-light);"><span class="material-symbols-rounded" style="color:var(--primary);">phone</span></div>
+        <div><p class="text-xs text-gray-400">Phone</p><p class="text-sm font-medium">+92 300 1234567</p></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--primary-light);"><span class="material-symbols-rounded" style="color:var(--primary);">schedule</span></div>
+        <div><p class="text-xs text-gray-400">Working Hours</p><p class="text-sm font-medium">Mon - Sat: 9 AM - 9 PM</p></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -121,10 +118,6 @@
   document.addEventListener('contextmenu',e=>e.preventDefault());
   document.addEventListener('selectstart',e=>e.preventDefault());
   document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
-  document.querySelectorAll('img').forEach(img=>img.setAttribute('draggable','false'));
-
-  function updateCartBadge(){const c=JSON.parse(localStorage.getItem('raja_cart')||'[]');const b=document.getElementById('cartBadge');if(c.length>0){b.textContent=c.length;b.classList.remove('hidden');}else b.classList.add('hidden');}
-  updateCartBadge();
 
   function showToast(msg,type='success'){
     const c=document.getElementById('toastContainer');
@@ -141,24 +134,18 @@
     icon.style.transition='transform .3s';
   }
 
-  function togglePolicy(el){
-    const content=el.nextElementSibling;
-    const icon=el.querySelector('.material-symbols-rounded');
-    content.classList.toggle('open');
-    icon.style.transform=content.classList.contains('open')?'rotate(180deg)':'rotate(0)';
-    icon.style.transition='transform .3s';
-  }
-
   function submitTicket(){
     const name=document.getElementById('ticketName').value.trim();
     const email=document.getElementById('ticketEmail').value.trim();
+    const subject=document.getElementById('ticketSubject').value.trim();
     const msg=document.getElementById('ticketMsg').value.trim();
-    if(!name||!email||!msg){showToast('Please fill in all required fields','error');return;}
-    const ticket={id:'TKT-'+Date.now().toString(36).toUpperCase(),name,email,orderId:document.getElementById('ticketOrder').value.trim(),type:document.getElementById('ticketType').value,message:msg,created_at:new Date().toISOString()};
+    if(!name||!email||!subject||!msg){showToast('Please fill in all required fields','error');return;}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showToast('Please enter a valid email address','error');return;}
+    const ticket={id:'TKT-'+Date.now().toString(36).toUpperCase(),name,email,subject,message:msg,status:'Open',created_at:new Date().toISOString()};
     const tickets=JSON.parse(localStorage.getItem('raja_tickets')||'[]');
     tickets.unshift(ticket);
     localStorage.setItem('raja_tickets',JSON.stringify(tickets));
-    document.getElementById('ticketName').value='';document.getElementById('ticketEmail').value='';document.getElementById('ticketOrder').value='';document.getElementById('ticketMsg').value='';
+    document.getElementById('ticketName').value='';document.getElementById('ticketEmail').value='';document.getElementById('ticketSubject').value='';document.getElementById('ticketMsg').value='';
     showToast('Ticket submitted! We\'ll contact you soon.','success');
   }
 </script>

@@ -1,273 +1,295 @@
 <!DOCTYPE html>
-<html lang="en" class="select-none overflow-x-hidden">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Checkout — Raja Brand</title>
+  <title>Checkout - Raja</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
   <style>
-    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
-    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:100px;min-height:100vh;}
-    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
-    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
-    .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
-    ::-webkit-scrollbar{display:none;}
-    .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px);}
-    .btn-press:active{transform:scale(0.96);}
-    .toast{position:fixed;top:80px;right:16px;z-index:9999;padding:12px 20px;border-radius:12px;color:#fff;font-weight:500;box-shadow:0 4px 24px rgba(0,0,0,0.15);transform:translateX(120%);transition:transform .3s;max-width:320px;}
-    .toast.show{transform:translateX(0);}
-    .toast.success{background:var(--success);}
-    .toast.error{background:var(--error);}
-    .toast.info{background:var(--info);}
-    .toast.warning{background:var(--warning);}
-    .step{display:none;}
-    .step.active{display:block;animation:fadeUp .3s ease;}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-    .step-indicator{display:flex;align-items:center;justify-content:center;gap:0;padding:16px 0;}
-    .step-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid #ddd;color:#999;background:#fff;transition:all .3s;flex-shrink:0;}
-    .step-dot.active{border-color:var(--primary);background:var(--primary);color:#fff;}
-    .step-dot.done{border-color:var(--success);background:var(--success);color:#fff;}
-    .step-line{flex:1;height:2px;background:#ddd;margin:0 4px;transition:background .3s;}
-    .step-line.done{background:var(--success);}
+    * { font-family: 'Plus Jakarta Sans', sans-serif; scrollbar-width: none; }
+    *::-webkit-scrollbar { display: none; }
+    body { overflow-x: hidden; overflow-y: auto; background: #f8fafc; }
+    .brand-gradient { background: linear-gradient(135deg, #16A34A 0%, #15803D 100%); }
+    .brand-text { color: #16A34A; }
+    .brand-bg { background: #16A34A; }
+    .brand-light-bg { background: #DCFCE7; }
+    .price-tag { font-family: 'DM Sans', sans-serif; }
+    input, select, textarea { transition: all 0.15s; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #16A34A; ring: 2px solid #BBF7D0; }
+    .error-input { border-color: #ef4444 !important; }
   </style>
 </head>
 <body>
-<div id="toastContainer"></div>
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100/50">
-  <div class="flex items-center justify-between px-4 h-16 safe-top">
-    <button onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></button>
-    <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">Checkout</span>
-    <div class="w-10"></div>
-  </div>
-</header>
-
-<div class="px-4 step-indicator">
-  <div class="step-dot active" id="step1Dot">1</div>
-  <div class="step-line" id="step1Line"></div>
-  <div class="step-dot" id="step2Dot">2</div>
-  <div class="step-line" id="step2Line"></div>
-  <div class="step-dot" id="step3Dot">3</div>
-</div>
-
-<div class="px-4 step active" id="step1">
-  <h2 class="text-lg font-bold mb-4" style="font-family:'Plus Jakarta Sans',sans-serif;">Delivery Address</h2>
-  <div class="space-y-3">
-    <div><label class="text-sm font-medium mb-1 block">Full Name</label><input type="text" id="addrName" placeholder="John Doe" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-    <div><label class="text-sm font-medium mb-1 block">Mobile Number</label><input type="tel" id="addrPhone" placeholder="9876543210" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" maxlength="10"></div>
-    <div><label class="text-sm font-medium mb-1 block">Address Line 1</label><input type="text" id="addrLine1" placeholder="Flat, House no., Building" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-    <div><label class="text-sm font-medium mb-1 block">Address Line 2 (Optional)</label><input type="text" id="addrLine2" placeholder="Area, Street, Landmark" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-    <div class="grid grid-cols-2 gap-3">
-      <div><label class="text-sm font-medium mb-1 block">City</label><input type="text" id="addrCity" placeholder="Mumbai" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
-      <div><label class="text-sm font-medium mb-1 block">State</label><input type="text" id="addrState" placeholder="Maharashtra" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
+<div id="app">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+    <div class="flex items-center justify-between px-4 h-14">
+      <div class="flex items-center gap-2">
+        <button onclick="goBack()" class="p-2 -ml-2 rounded-lg hover:bg-gray-50">
+          <span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span>
+        </button>
+        <h1 class="text-lg font-bold text-gray-900">Checkout</h1>
+      </div>
     </div>
-    <div><label class="text-sm font-medium mb-1 block">Pincode</label><input type="text" id="addrPincode" placeholder="400001" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" maxlength="6"></div>
-    <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="saveAddr" checked class="accent-orange-500"> Save address for future</label>
-    <div id="addrErrors" class="text-sm" style="color:var(--error);"></div>
-    <button onclick="goStep2()" class="w-full py-3 rounded-xl text-sm font-bold text-white btn-press mt-2" style="background:var(--primary);">Continue → Review</button>
-  </div>
-</div>
+  </header>
 
-<div class="px-4 step" id="step2">
-  <h2 class="text-lg font-bold mb-4" style="font-family:'Plus Jakarta Sans',sans-serif;">Review Order</h2>
-  <div id="reviewItems" class="space-y-3 mb-4"></div>
-  <div class="p-4 rounded-xl bg-white border border-gray-100 mb-4">
-    <h3 class="text-sm font-bold mb-3">Price Summary</h3>
-    <div class="space-y-2 text-sm">
-      <div class="flex justify-between"><span class="text-gray-500">Items Total</span><span class="font-medium" id="revSubtotal">₹0</span></div>
-      <div class="flex justify-between"><span class="text-gray-500">Delivery</span><span id="revDelivery">FREE</span></div>
-      <div class="flex justify-between"><span class="text-gray-500">Coupon Discount</span><span id="revCoupon">-₹0</span></div>
-      <hr class="border-gray-100">
-      <div class="flex justify-between font-bold text-base"><span>Grand Total</span><span id="revTotal">₹0</span></div>
-    </div>
-  </div>
-  <button onclick="goStep3()" class="w-full py-3 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Continue → Payment</button>
-</div>
+  <main class="pt-14 px-4 pb-8">
+    <!-- Delivery Address Form -->
+    <section class="mt-3 bg-white rounded-xl border border-gray-100 p-4">
+      <h2 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+        <span class="material-symbols-rounded brand-text">location_on</span> Delivery Address
+      </h2>
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs font-medium text-gray-500 mb-1 block">Full Name</label>
+          <input type="text" id="addrName" placeholder="Enter your full name" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-medium text-gray-500 mb-1 block">Phone Number</label>
+            <input type="tel" id="addrPhone" placeholder="03XX-XXXXXXX" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm">
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-500 mb-1 block">Email</label>
+            <input type="email" id="addrEmail" placeholder="email@example.com" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm">
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-medium text-gray-500 mb-1 block">Street Address</label>
+          <textarea id="addrAddress" rows="2" placeholder="House #, Street, Area" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm resize-none"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-medium text-gray-500 mb-1 block">City</label>
+            <input type="text" id="addrCity" placeholder="e.g. Lahore" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm">
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-500 mb-1 block">Province</label>
+            <select id="addrProvince" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm">
+              <option value="">Select Province</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Sindh">Sindh</option>
+              <option value="KPK">KPK</option>
+              <option value="Balochistan">Balochistan</option>
+              <option value="Gilgit-Baltistan">Gilgit-Baltistan</option>
+              <option value="AJK">AJK</option>
+              <option value="ICT">ICT</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-medium text-gray-500 mb-1 block">Postal Code</label>
+          <input type="text" id="addrPostal" placeholder="e.g. 54000" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm">
+        </div>
+      </div>
+    </section>
 
-<div class="px-4 step" id="step3">
-  <h2 class="text-lg font-bold mb-4" style="font-family:'Plus Jakarta Sans',sans-serif;">Payment</h2>
-  <div class="p-5 rounded-xl bg-white border border-gray-100 mb-4">
-    <div class="flex items-center gap-3 mb-3">
-      <span class="material-symbols-rounded text-2xl" style="color:var(--primary);">payments</span>
-      <span class="font-bold">Cash on Delivery (COD)</span>
-    </div>
-    <p class="text-sm text-gray-500 mb-3">Pay when your order is delivered. No online payment needed.</p>
-    <div class="p-3 rounded-lg bg-orange-50 border border-orange-100">
-      <p class="text-sm font-medium" style="color:var(--primary);">₹<span id="codAmount">0</span> to be paid on delivery</p>
-    </div>
-  </div>
-  <div class="p-4 rounded-xl bg-green-50 border border-green-100 mb-4">
-    <p class="text-sm text-green-700 flex items-center gap-2"><span class="material-symbols-rounded text-lg">card_giftcard</span> Get ₹50 cashback on your next order!</p>
-  </div>
-  <button onclick="placeOrder()" id="placeOrderBtn" class="w-full py-3.5 rounded-xl text-sm font-bold text-white btn-press flex items-center justify-center gap-2" style="background:var(--primary);">Place Order <span class="material-symbols-rounded">check_circle</span></button>
-  <p class="text-xs text-gray-400 text-center mt-3">By placing this order, you agree to our Terms & Conditions.</p>
+    <!-- Order Summary -->
+    <section class="mt-4 bg-white rounded-xl border border-gray-100 p-4">
+      <h2 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+        <span class="material-symbols-rounded brand-text">receipt_long</span> Order Summary
+      </h2>
+      <div id="orderItems" class="space-y-2 mb-3"></div>
+      <hr class="border-gray-100 mb-3">
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between">
+          <span class="text-gray-500">Subtotal</span>
+          <span class="font-medium" id="checkoutSubtotal">Rs. 0</span>
+        </div>
+        <div class="flex justify-between" id="checkoutDiscountRow">
+          <span class="text-gray-500">Discount</span>
+          <span class="font-medium text-green-600" id="checkoutDiscount">- Rs. 0</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-500">Delivery</span>
+          <span class="font-medium" id="checkoutDelivery">Rs. 0</span>
+        </div>
+        <hr class="border-gray-100">
+        <div class="flex justify-between text-base font-bold">
+          <span>Total</span>
+          <span class="brand-text" id="checkoutTotal">Rs. 0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payment Method -->
+    <section class="mt-4 bg-white rounded-xl border border-gray-100 p-4">
+      <h2 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+        <span class="material-symbols-rounded brand-text">payments</span> Payment Method
+      </h2>
+      <div class="flex items-center gap-3 p-3 bg-brand-light-bg rounded-xl">
+        <span class="material-symbols-rounded brand-text text-2xl">payments</span>
+        <div>
+          <p class="text-sm font-semibold text-gray-800">Cash on Delivery</p>
+          <p class="text-xs text-gray-500">Pay when you receive your order</p>
+        </div>
+        <span class="material-symbols-rounded brand-text ml-auto">check_circle</span>
+      </div>
+    </section>
+
+    <!-- Place Order -->
+    <button onclick="placeOrder()" class="w-full mt-6 brand-gradient text-white py-3.5 rounded-xl font-bold text-base flex items-center justify-center gap-2">
+      <span class="material-symbols-rounded">check_circle</span> Place Order
+    </button>
+  </main>
 </div>
 
 <script>
-  document.addEventListener('contextmenu',e=>e.preventDefault());
-  document.addEventListener('selectstart',e=>e.preventDefault());
-  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
-  document.querySelectorAll('img').forEach(img=>img.setAttribute('draggable','false'));
+function formatPrice(amount) {
+  return 'Rs. ' + Number(amount).toLocaleString('en-PK');
+}
 
-  const STORE={users:'raja_users',currentUser:'raja_current_user',products:'raja_products',categories:'raja_categories',orders:'raja_orders',cart:'raja_cart',wishlist:'raja_wishlist',notifications:'raja_notifications',settings:'raja_settings',coupons:'raja_coupons',recentSearch:'raja_recent_search'};
-  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
-  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function getCurrentUser() {
+  const data = localStorage.getItem('raja_current_user');
+  return data ? JSON.parse(data) : null;
+}
 
-  const user=getLS(STORE.currentUser);
-  if(!user){window.location.href='login.html?redirect=checkout.html';}
+function goBack() { window.history.back(); }
 
-  let currentStep=1;
-  let couponDisc=0;
+function seedDataIfEmpty() {}
 
-  function seedData(){
-    if(getLS(STORE.products)&&getLS(STORE.products).length>0)return;
-    const cats=[{id:'cat_001',name:'Electronics',icon:'devices',color:'#007AFF'},{id:'cat_002',name:'Clothing',icon:'checkroom',color:'#FF6B35'},{id:'cat_003',name:'Shoes',icon:'footprint',color:'#34C759'},{id:'cat_004',name:'Accessories',icon:'watch',color:'#FF9500'},{id:'cat_005',name:'Home & Living',icon:'chair',color:'#AF52DE'},{id:'cat_006',name:'Beauty',icon:'spa',color:'#FF2D55'},{id:'cat_007',name:'Sports',icon:'sports_soccer',color:'#5856D6'},{id:'cat_008',name:'Books',icon:'menu_book',color:'#8E8E93'}];
-    setLS(STORE.categories,cats);
-    const prods=[{id:'prod_001',cat_id:'cat_002',name:'Premium Cotton T-Shirt',price:599,original_price:999,stock:100,images:['https://picsum.photos/400/400?random=1'],rating:4.5,reviews:234},{id:'prod_002',cat_id:'cat_002',name:'Slim Fit Denim Jeans',price:1299,original_price:2499,stock:75,images:['https://picsum.photos/400/400?random=2'],rating:4.3,reviews:189},{id:'prod_003',cat_id:'cat_001',name:'Wireless Bluetooth Earbuds',price:2499,original_price:4999,stock:60,images:['https://picsum.photos/400/400?random=3'],rating:4.7,reviews:456},{id:'prod_004',cat_id:'cat_001',name:'Smart Watch Pro',price:5999,original_price:9999,stock:40,images:['https://picsum.photos/400/400?random=4'],rating:4.4,reviews:312},{id:'prod_005',cat_id:'cat_003',name:'Running Sneakers Air',price:3499,original_price:5499,stock:85,images:['https://picsum.photos/400/400?random=5'],rating:4.6,reviews:278},{id:'prod_006',cat_id:'cat_003',name:'Casual Loafers',price:1999,original_price:2999,stock:55,images:['https://picsum.photos/400/400?random=6'],rating:4.2,reviews:145},{id:'prod_007',cat_id:'cat_004',name:'Classic Leather Watch',price:4499,original_price:6999,stock:30,images:['https://picsum.photos/400/400?random=7'],rating:4.8,reviews:523},{id:'prod_008',cat_id:'cat_004',name:'Silver Chain Necklace',price:899,original_price:1499,stock:120,images:['https://picsum.photos/400/400?random=8'],rating:4.1,reviews:89},{id:'prod_009',cat_id:'cat_005',name:'Scented Candle Set',price:799,original_price:1299,stock:200,images:['https://picsum.photos/400/400?random=9'],rating:4.0,reviews:67},{id:'prod_010',cat_id:'cat_006',name:'Face Serum Vitamin C',price:549,original_price:899,stock:150,images:['https://picsum.photos/400/400?random=10'],rating:4.5,reviews:432},{id:'prod_011',cat_id:'cat_007',name:'Yoga Mat Premium',price:1499,original_price:2499,stock:90,images:['https://picsum.photos/400/400?random=11'],rating:4.3,reviews:198},{id:'prod_012',cat_id:'cat_008',name:'The Art of Living',price:299,original_price:499,stock:300,images:['https://picsum.photos/400/400?random=12'],rating:4.6,reviews:876},{id:'prod_013',cat_id:'cat_001',name:'USB-C Hub 7-in-1',price:1799,original_price:2999,stock:65,images:['https://picsum.photos/400/400?random=13'],rating:4.2,reviews:156},{id:'prod_014',cat_id:'cat_002',name:'Floral Summer Dress',price:1499,original_price:2499,stock:45,images:['https://picsum.photos/400/400?random=14'],rating:4.4,reviews:234},{id:'prod_015',cat_id:'cat_005',name:'Mini Plant Pot Set',price:449,original_price:699,stock:180,images:['https://picsum.photos/400/400?random=15'],rating:4.0,reviews:98},{id:'prod_016',cat_id:'cat_006',name:'Organic Lip Balm Trio',price:299,original_price:499,stock:250,images:['https://picsum.photos/400/400?random=16'],rating:4.3,reviews:567}];
-    setLS(STORE.products,prods);
-    if(!getLS(STORE.cart))setLS(STORE.cart,[]);
-    if(!getLS(STORE.coupons))setLS(STORE.coupons,[{code:'RAJA10',discount:10,minAmount:499},{code:'WELCOME50',discount:50,minAmount:999}]);
+function authGuard() {
+  const user = getCurrentUser();
+  if (!user) {
+    window.location.href = 'login.html?redirect=checkout.html';
+    return false;
   }
-  seedData();
+  return true;
+}
 
-  function showToast(msg,type='success'){
-    const c=document.getElementById('toastContainer');
-    const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;
-    c.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));
-    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3000);
+function formatDate(d) {
+  const date = new Date(d);
+  return date.toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+let appliedCoupon = null;
+
+function getAppliedCoupon() {
+  const code = sessionStorage.getItem('raja_checkout_coupon');
+  if (!code) return null;
+  const coupons = JSON.parse(localStorage.getItem('raja_coupons') || '[]');
+  return coupons.find(c => c.code === code) || null;
+}
+
+function renderCheckout() {
+  if (!authGuard()) return;
+
+  const user = getCurrentUser();
+  if (user) {
+    document.getElementById('addrName').value = user.name || '';
+    document.getElementById('addrPhone').value = user.phone || '';
+    document.getElementById('addrEmail').value = user.email || '';
+    document.getElementById('addrAddress').value = user.address || '';
+    document.getElementById('addrCity').value = user.city || '';
+    document.getElementById('addrProvince').value = user.province || '';
+    document.getElementById('addrPostal').value = '';
   }
 
-  function loadCartData(){
-    const cart=getLS(STORE.cart)||[];
-    if(cart.length===0){window.location.href='cart.html';return;}
-    let subtotal=0;
-    cart.forEach(i=>subtotal+=i.price*i.quantity);
-    const delivery=subtotal>=499?0:49;
-    couponDisc=0;
-    const c=getLS(STORE.coupons)||[];
-    const ac=sessionStorage.getItem('appliedCoupon');
-    if(ac){const found=c.find(x=>x.code===ac);if(found){if(found.discount<100)couponDisc=Math.round(subtotal*found.discount/100);else couponDisc=found.discount;}}
-    const total=subtotal+delivery-couponDisc;
-    document.getElementById('revSubtotal').textContent=`₹${subtotal.toLocaleString()}`;
-    document.getElementById('revDelivery').textContent=delivery===0?'FREE':`₹${delivery}`;
-    document.getElementById('revCoupon').textContent=couponDisc>0?`-₹${couponDisc}`:'-₹0';
-    document.getElementById('revTotal').textContent=`₹${Math.max(0,total).toLocaleString()}`;
-    document.getElementById('codAmount').textContent=Math.max(0,total).toLocaleString();
+  const cart = JSON.parse(localStorage.getItem('raja_cart') || '[]');
+  const subtotal = cart.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 1), 0);
 
-    const container=document.getElementById('reviewItems');
-    container.innerHTML=cart.map(item=>`
-      <div class="flex gap-3 p-3 rounded-xl bg-white border border-gray-100">
-        <div class="w-16 h-16 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0"><img src="${item.product_image}" alt="${item.product_name}" class="w-full h-full object-cover" loading="lazy"></div>
-        <div class="flex-1 min-w-0"><h4 class="text-sm font-bold line-clamp-1">${item.product_name}</h4><p class="text-xs text-gray-400">Qty: ${item.quantity}</p><span class="font-bold text-sm">₹${(item.price*item.quantity).toLocaleString()}</span></div>
+  appliedCoupon = getAppliedCoupon();
+  let discount = 0;
+  if (appliedCoupon) {
+    discount = Math.round(subtotal * appliedCoupon.discount / 100);
+  }
+
+  const delivery = subtotal >= 2000 ? 0 : 199;
+  const total = subtotal - discount + delivery;
+
+  const itemsContainer = document.getElementById('orderItems');
+  itemsContainer.innerHTML = cart.map(item => `
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-lg bg-gray-50 overflow-hidden flex-shrink-0">
+        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" onerror="this.src='https://picsum.photos/seed/cerror/400/500'">
       </div>
-    `).join('');
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-gray-800 truncate">${item.name}</p>
+        <p class="text-xs text-gray-400">Qty: ${item.quantity}</p>
+      </div>
+      <span class="text-sm font-bold brand-text price-tag">${formatPrice((item.price || 0) * (item.quantity || 1))}</span>
+    </div>
+  `).join('');
 
-    if(user){
-      if(user.name)document.getElementById('addrName').value=user.name;
-      if(user.phone)document.getElementById('addrPhone').value=user.phone;
-      if(user.address){
-        const a=user.address;
-        if(a.line1)document.getElementById('addrLine1').value=a.line1;
-        if(a.line2)document.getElementById('addrLine2').value=a.line2;
-        if(a.city)document.getElementById('addrCity').value=a.city;
-        if(a.state)document.getElementById('addrState').value=a.state;
-        if(a.pincode)document.getElementById('addrPincode').value=a.pincode;
-      }
+  document.getElementById('checkoutSubtotal').textContent = formatPrice(subtotal);
+  document.getElementById('checkoutDiscount').textContent = '- ' + formatPrice(discount);
+  document.getElementById('checkoutDelivery').textContent = delivery === 0 ? 'Free' : formatPrice(delivery);
+  document.getElementById('checkoutTotal').textContent = formatPrice(total);
+}
+
+function placeOrder() {
+  const name = document.getElementById('addrName').value.trim();
+  const phone = document.getElementById('addrPhone').value.trim();
+  const email = document.getElementById('addrEmail').value.trim();
+  const address = document.getElementById('addrAddress').value.trim();
+  const city = document.getElementById('addrCity').value.trim();
+  const province = document.getElementById('addrProvince').value;
+  const postal = document.getElementById('addrPostal').value.trim();
+
+  if (!name || !phone || !email || !address || !city || !province) {
+    alert('Please fill in all required fields.');
+    return;
+  }
+
+  const user = getCurrentUser();
+  if (!user) return;
+
+  const cart = JSON.parse(localStorage.getItem('raja_cart') || '[]');
+  if (cart.length === 0) {
+    alert('Your cart is empty.');
+    return;
+  }
+
+  const subtotal = cart.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 1), 0);
+  let discount = 0;
+  if (appliedCoupon) {
+    discount = Math.round(subtotal * appliedCoupon.discount / 100);
+    let coupons = JSON.parse(localStorage.getItem('raja_coupons') || '[]');
+    const idx = coupons.findIndex(c => c.code === appliedCoupon.code);
+    if (idx > -1) {
+      coupons[idx].used = (coupons[idx].used || 0) + 1;
+      localStorage.setItem('raja_coupons', JSON.stringify(coupons));
     }
   }
 
-  function goStep2(){
-    const fields=['addrName','addrPhone','addrLine1','addrCity','addrState','addrPincode'];
-    const labels=['Full Name','Mobile','Address','City','State','Pincode'];
-    const errs=[];
-    fields.forEach((f,i)=>{
-      const val=document.getElementById(f).value.trim();
-      if(!val)errs.push(`${labels[i]} is required`);
-    });
-    const phone=document.getElementById('addrPhone').value.trim();
-    if(phone&&!/^\d{10}$/.test(phone))errs.push('Mobile must be 10 digits');
-    const pc=document.getElementById('addrPincode').value.trim();
-    if(pc&&!/^\d{6}$/.test(pc))errs.push('Pincode must be 6 digits');
-    if(errs.length>0){document.getElementById('addrErrors').innerHTML=errs.map(e=>`<div class="mt-1">• ${e}</div>`).join('');return;}
-    document.getElementById('addrErrors').innerHTML='';
-    if(document.getElementById('saveAddr').checked&&user){
-      user.address={line1:document.getElementById('addrLine1').value.trim(),line2:document.getElementById('addrLine2').value.trim(),city:document.getElementById('addrCity').value.trim(),state:document.getElementById('addrState').value.trim(),pincode:document.getElementById('addrPincode').value.trim()};
-      user.name=document.getElementById('addrName').value.trim();
-      user.phone=document.getElementById('addrPhone').value.trim();
-      setLS(STORE.currentUser,user);
-      const users=getLS(STORE.users)||[];
-      const idx=users.findIndex(u=>u.email===user.email);
-      if(idx>=0){users[idx]=user;setLS(STORE.users,users);}
-    }
-    showStep(2);
-  }
+  const delivery = subtotal >= 2000 ? 0 : 199;
+  const total = subtotal - discount + delivery;
 
-  function goStep3(){showStep(3);}
+  const order = {
+    id: 'ORD-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4).toUpperCase(),
+    userId: user.id || user.email,
+    items: cart.map(item => ({ id: item.id, name: item.name, price: item.price, quantity: item.quantity, image: item.image })),
+    subtotal: subtotal,
+    discount: discount,
+    delivery: delivery,
+    total: total,
+    coupon: appliedCoupon ? appliedCoupon.code : null,
+    address: { name, phone, email, address, city, province, postal },
+    paymentMethod: 'COD',
+    status: 'placed',
+    date: new Date().toISOString(),
+    timeline: [
+      { stage: 'placed', label: 'Order Placed', date: new Date().toISOString(), completed: true },
+      { stage: 'confirmed', label: 'Confirmed', date: '', completed: false },
+      { stage: 'shipped', label: 'Shipped', date: '', completed: false },
+      { stage: 'outfordelivery', label: 'Out for Delivery', date: '', completed: false },
+      { stage: 'delivered', label: 'Delivered', date: '', completed: false }
+    ]
+  };
 
-  function showStep(n){
-    currentStep=n;
-    document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-    document.getElementById(`step${n}`).classList.add('active');
-    for(let i=1;i<=3;i++){
-      const dot=document.getElementById(`step${i}Dot`);
-      const line=document.getElementById(`step${i}Line`);
-      dot.className='step-dot';
-      dot.classList.remove('active','done');
-      if(line)line.className='step-line';
-      if(i<n){dot.classList.add('done');if(line)line.classList.add('done');}
-      else if(i===n){dot.classList.add('active');if(line)line.classList.add('done');}
-    }
-  }
+  let orders = JSON.parse(localStorage.getItem('raja_orders') || '[]');
+  orders.unshift(order);
+  localStorage.setItem('raja_orders', JSON.stringify(orders));
+  localStorage.setItem('raja_cart', JSON.stringify([]));
+  sessionStorage.removeItem('raja_checkout_coupon');
 
-  function placeOrder(){
-    const btn=document.getElementById('placeOrderBtn');
-    btn.innerHTML='<span class="material-symbols-rounded animate-spin">refresh</span> Placing Order...';
-    btn.disabled=true;
-    btn.style.opacity='0.7';
+  window.location.href = 'orders.html';
+}
 
-    const cart=getLS(STORE.cart)||[];
-    let subtotal=0;
-    cart.forEach(i=>subtotal+=i.price*i.quantity);
-    const delivery=subtotal>=499?0:49;
-    const total=subtotal+delivery-couponDisc;
-
-    const order={
-      id:'ORD-'+Date.now().toString(36).toUpperCase(),
-      user_id:user?user.email:'guest',
-      items:cart.map(i=>({product_id:i.product_id,name:i.product_name,quantity:i.quantity,price:i.price,image:i.product_image})),
-      address:{name:document.getElementById('addrName').value.trim(),phone:document.getElementById('addrPhone').value.trim(),line1:document.getElementById('addrLine1').value.trim(),line2:document.getElementById('addrLine2').value.trim(),city:document.getElementById('addrCity').value.trim(),state:document.getElementById('addrState').value.trim(),pincode:document.getElementById('addrPincode').value.trim()},
-      subtotal:subtotal,
-      discount:0,
-      delivery:delivery,
-      coupon_discount:couponDisc,
-      total:Math.max(0,total),
-      payment:'COD',
-      status:'Placed',
-      status_history:[{status:'Placed',timestamp:new Date().toISOString()}],
-      created_at:new Date().toISOString()
-    };
-
-    const orders=getLS(STORE.orders)||[];
-    orders.unshift(order);
-    setLS(STORE.orders,orders);
-    setLS(STORE.cart,[]);
-    sessionStorage.removeItem('appliedCoupon');
-
-    const notifs=getLS(STORE.notifications)||[];
-    notifs.unshift({id:'notif_'+Date.now(),type:'order',title:'Order Placed!',message:`Your order ${order.id} has been placed successfully.`,read:false,created_at:new Date().toISOString()});
-    setLS(STORE.notifications,notifs);
-
-    setTimeout(()=>{
-      showToast('Order placed successfully! 🎉','success');
-      setTimeout(()=>window.location.href='orders.html',800);
-    },1500);
-  }
-
-  loadCartData();
+window.addEventListener('DOMContentLoaded', renderCheckout);
 </script>
 </body>
 </html>
