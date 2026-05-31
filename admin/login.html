@@ -33,17 +33,17 @@
     <div class="space-y-4">
       <div>
         <label class="text-sm font-medium mb-1 block">Username</label>
-        <input type="text" id="adminUser" placeholder="admin" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-400">
+        <input type="text" id="adminUser" placeholder="admin" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400">
       </div>
       <div>
         <label class="text-sm font-medium mb-1 block">Password</label>
-        <input type="password" id="adminPass" placeholder="••••••••" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-400">
+        <input type="password" id="adminPass" placeholder="••••••••" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400">
       </div>
       <button onclick="adminLogin()" id="adminLoginBtn" class="w-full py-3 rounded-xl text-sm font-bold text-white btn-press flex items-center justify-center gap-2" style="background:var(--primary);">Login <span class="material-symbols-rounded">arrow_forward</span></button>
       <p id="adminError" class="text-xs text-center hidden" style="color:var(--error);"></p>
     </div>
     <div class="mt-4 text-center">
-      <a href="../index.html" class="text-xs text-gray-400 hover:text-green-500">&larr; Back to Store</a>
+      <a href="../index.html" class="text-xs text-gray-400 hover:text-orange-500">&larr; Back to Store</a>
     </div>
   </div>
 </div>
@@ -54,22 +54,15 @@
   document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
 
   const adminSessionKey='raja_admin_session';
-  if(localStorage.getItem(adminSessionKey)==='true'){window.location.href='dashboard.html';}
 
-  function seedAdmin(){
-    if(!localStorage.getItem('raja_admin')){
-      localStorage.setItem('raja_admin',JSON.stringify({username:'admin',password:'admin123'}));
-    }
-  }
-  seedAdmin();
+  if(localStorage.getItem(adminSessionKey)==='true'){window.location.href='dashboard.html';}
 
   function adminLogin(){
     const user=document.getElementById('adminUser').value.trim();
     const pass=document.getElementById('adminPass').value;
     const err=document.getElementById('adminError');
-    const admin=JSON.parse(localStorage.getItem('raja_admin'))||{username:'admin',password:'admin123'};
 
-    if(user===admin.username&&pass===admin.password){
+    if(user==='admin'&&pass==='admin123'){
       localStorage.setItem(adminSessionKey,'true');
       err.classList.add('hidden');
       document.getElementById('adminLoginBtn').innerHTML='<span class="material-symbols-rounded animate-spin">refresh</span> Logging in...';
