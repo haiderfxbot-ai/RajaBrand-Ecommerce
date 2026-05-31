@@ -183,7 +183,8 @@
   const products=getLS(STORE.products)||[];
   const categories=getLS(STORE.categories)||[];
   const params=new URLSearchParams(window.location.search);
-  const prodId=params.get('id')||'prod_001';
+  const prodId=params.get('id')||localStorage.getItem('raja_last_viewed_product')||'prod_001';
+  if(params.get('id'))localStorage.setItem('raja_last_viewed_product',params.get('id'));
   const product=products.find(p=>p.id===prodId);
   let qty=1;
   let currentImg=0;

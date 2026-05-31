@@ -47,6 +47,10 @@
     .toast.error{background:var(--error);}
     .toast.info{background:var(--info);}
     .toast.warning{background:var(--warning);}
+    .bottom-sheet{position:fixed;bottom:0;left:0;right:0;z-index:300;background:#fff;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .4s cubic-bezier(.32,.72,0,1);max-height:85vh;overflow-y:auto;}
+    .bottom-sheet.show{transform:translateY(0);}
+    .sheet-overlay{position:fixed;inset:0;z-index:299;background:rgba(0,0,0,.5);opacity:0;transition:opacity .3s;pointer-events:none;}
+    .sheet-overlay.show{opacity:1;pointer-events:auto;}
   </style>
 </head>
 <body class="select-none overflow-x-hidden">
@@ -242,6 +246,24 @@
   </section>
 </main>
 
+<div class="sheet-overlay" id="sheetOverlay" onclick="closeProfileSheet()"></div>
+<div class="bottom-sheet safe-bottom" id="profileSheet">
+  <div class="p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;">Complete Your Profile</h3>
+      <button onclick="closeProfileSheet()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center btn-press"><span class="material-symbols-rounded text-lg">close</span></button>
+    </div>
+    <p class="text-sm text-gray-500 mb-4">Add your details to personalize your experience.</p>
+    <div class="space-y-3">
+      <div><label class="text-sm font-medium mb-1 block">Full Name</label><input type="text" id="sheetName" placeholder="John Doe" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
+      <div><label class="text-sm font-medium mb-1 block">Phone Number</label><input type="tel" id="sheetPhone" placeholder="9876543210" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" maxlength="10"></div>
+      <div><label class="text-sm font-medium mb-1 block">Delivery Address</label><input type="text" id="sheetAddress" placeholder="Street, city, pincode" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400"></div>
+    </div>
+    <button onclick="saveProfileSheet()" class="w-full mt-4 py-3 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Save Details</button>
+    <button onclick="closeProfileSheet()" class="w-full mt-2 py-2 text-sm text-gray-400 btn-press">Skip for now</button>
+  </div>
+</div>
+
 <footer class="bg-white border-t border-gray-100 px-4 py-8 safe-bottom">
   <div class="max-w-4xl mx-auto">
     <div class="flex items-center gap-2 mb-4">
@@ -333,6 +355,49 @@
 
   seedData();
 
+  function goToProduct(id){
+    window.location.href=`product-detail.html?id=${id}`;
+  }
+
+  function showProfileSheet(){
+    const user=getLS(STORE.currentUser);
+    if(user){
+      document.getElementById('sheetName').value=user.name||'';
+      document.getElementById('sheetPhone').value=user.phone||'';
+      document.getElementById('sheetAddress').value=user.address?`${user.address.line1||''} ${user.address.city||''}`.trim():'';
+    }
+    document.getElementById('profileSheet').classList.add('show');
+    document.getElementById('sheetOverlay').classList.add('show');
+  }
+
+  function closeProfileSheet(){
+    document.getElementById('profileSheet').classList.remove('show');
+    document.getElementById('sheetOverlay').classList.remove('show');
+  }
+
+  function saveProfileSheet(){
+    const user=getLS(STORE.currentUser);
+    if(!user)return;
+    user.name=document.getElementById('sheetName').value.trim()||user.name;
+    user.phone=document.getElementById('sheetPhone').value.trim()||user.phone;
+    const addr=document.getElementById('sheetAddress').value.trim();
+    if(!user.address)user.address={line1:'',line2:'',city:'',state:'',pincode:''};
+    user.address.line1=addr;
+    setLS(STORE.currentUser,user);
+    const users=getLS(STORE.users)||[];
+    const idx=users.findIndex(u=>u.email===user.email);
+    if(idx>=0){users[idx]=user;setLS(STORE.users,users);}
+    closeProfileSheet();
+    showToast('Profile updated!','success');
+    window.location.href='index.html';
+  }
+
+  const urlParams=new URLSearchParams(window.location.search);
+  if(urlParams.get('google_signin')==='true'){
+    history.replaceState(null,'',window.location.pathname);
+    setTimeout(()=>showProfileSheet(),600);
+  }
+
   const user = getLS(STORE.currentUser);
   if(user){
     document.getElementById('drawerAvatar').textContent = user.name.charAt(0).toUpperCase();
@@ -393,7 +458,7 @@
     const isNew=p.tags.includes('new');
     const isSale=p.tags.includes('sale');
     if(isHorizontal){
-      return `<div class="product-card min-w-[200px] w-[200px] card-hover">
+      return `<div class="product-card min-w-[200px] w-[200px] card-hover" onclick="goToProduct('${p.id}')">
         <div class="relative aspect-[4/3] overflow-hidden bg-gray-50">
           <img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy">
           <div class="absolute top-2 left-2 flex gap-1">
@@ -415,7 +480,7 @@
         </div>
       </div>`;
     }
-    return `<div class="product-card card-hover">
+    return `<div class="product-card card-hover" onclick="goToProduct('${p.id}')">
       <div class="relative aspect-[4/3] overflow-hidden bg-gray-50">
         <img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy">
         <div class="absolute top-2 left-2 flex gap-1">
