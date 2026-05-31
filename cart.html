@@ -7,13 +7,18 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-  <link rel="stylesheet" href="assets/css/style.css">
   <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
-  <script src="assets/js/app.js"></script>
   <style>
+    * { font-family: 'Plus Jakarta Sans', sans-serif; scrollbar-width: none; }
+    *::-webkit-scrollbar { display: none; }
+    body { overflow-x: hidden; overflow-y: auto; background: #f8fafc; }
+    .brand-gradient { background: linear-gradient(135deg, #16A34A 0%, #15803D 100%); }
+    .brand-text { color: #16A34A; }
+    .brand-bg { background: #16A34A; }
+    .brand-light-bg { background: #DCFCE7; }
+    .price-tag { font-family: 'DM Sans', sans-serif; }
     .qty-btn { transition: all 0.15s; }
     .qty-btn:active { transform: scale(0.9); }
-    body { padding-bottom: 80px; }
   </style>
 </head>
 <body>
@@ -218,13 +223,11 @@ function removeCartItem(idx) {
   renderCart();
 }
 
-async function clearCart() {
-  const confirmed = await RajaModal.confirm('Are you sure you want to clear all items from your cart?', 'Clear Cart', 'Clear All', 'Keep Items');
-  if (confirmed) {
+function clearCart() {
+  if (confirm('Clear your cart?')) {
     localStorage.setItem('raja_cart', JSON.stringify([]));
     appliedCoupon = null;
     renderCart();
-    RajaToast.info('Cart cleared');
   }
 }
 

@@ -8,10 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
-  <link rel="stylesheet" href="assets/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script src="assets/js/app.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -21,7 +19,51 @@
       overflow-y: auto;
       min-height: 100vh;
     }
+    .otp-input {
+      width: 48px; height: 56px; text-align: center; font-size: 22px; font-weight: 700;
+      border: 2px solid #e2e8f0; border-radius: 12px; outline: none;
+      transition: all 0.2s ease; background: white;
+    }
+    .otp-input:focus {
+      border-color: #16A34A; box-shadow: 0 0 0 3px rgba(22,163,74,0.15);
+    }
+    .otp-input.filled { border-color: #16A34A; background: #f0fdf4; }
+    .otp-input.error { border-color: #ef4444; animation: shake 0.3s ease; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+    .countdown-svg { transform: rotate(-90deg); }
+    .countdown-circle { stroke: #16A34A; fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+    .countdown-bg { stroke: #e2e8f0; fill: none; stroke-width: 4; }
     .attempt-bar { height: 4px; border-radius: 4px; transition: width 0.5s ease; background: #16A34A; }
+    .btn-primary {
+      background: linear-gradient(135deg, #16A34A, #15803D);
+      color: white; border: none; border-radius: 14px;
+      min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center;
+    }
+    .btn-primary:active { transform: scale(0.95); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-secondary {
+      background: transparent; color: #16A34A; border: 2px solid #16A34A;
+      border-radius: 14px; min-height: 44px; padding: 0 20px; font-weight: 600; font-size: 14px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-secondary:active { transform: scale(0.95); }
+    .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      background: #1e293b; color: white; padding: 12px 24px; border-radius: 12px;
+      font-size: 14px; font-weight: 500; z-index: 999;
+      opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { animation: spin 1s linear infinite; }
+    .otp-container { display: flex; gap: 8px; justify-content: center; }
     @media (max-width: 380px) {
       .otp-input { width: 42px; height: 50px; font-size: 18px; }
       .otp-container { gap: 6px; }
@@ -96,6 +138,9 @@
 
     </div>
   </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 
   <script>
     emailjs.init('y1nL04AHOFQQ7iffn');
@@ -299,7 +344,12 @@
     }
 
     // === TOAST ===
-    function showToast(msg) { RajaToast.info(msg); }
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
 
     // === INIT ===
     document.addEventListener('DOMContentLoaded', function() {

@@ -7,16 +7,23 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-  <link rel="stylesheet" href="assets/css/style.css">
   <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
-  <script src="assets/js/app.js"></script>
   <style>
+    * { font-family: 'Plus Jakarta Sans', sans-serif; scrollbar-width: none; }
+    *::-webkit-scrollbar { display: none; }
+    body { overflow-x: hidden; overflow-y: auto; padding-bottom: 100px; background: #f8fafc; }
+    .brand-gradient { background: linear-gradient(135deg, #16A34A 0%, #15803D 100%); }
+    .brand-text { color: #16A34A; }
+    .brand-bg { background: #16A34A; }
+    .brand-light-bg { background: #DCFCE7; }
+    .price-tag { font-family: 'DM Sans', sans-serif; }
     .rating-bar-bg { background: #e5e7eb; }
     .rating-bar-fill { background: #16A34A; }
+    .product-card { transition: all 0.2s ease; }
+    .product-card:active { transform: scale(0.98); }
     .qty-btn { transition: all 0.15s; }
     .qty-btn:active { transform: scale(0.9); }
     .collapsible { transition: max-height 0.3s ease; }
-    body { padding-bottom: 100px; }
   </style>
 </head>
 <body>
@@ -494,7 +501,7 @@ function shareProduct() {
     navigator.share({ title: currentProduct.name, text: 'Check out this product on Raja!', url: window.location.href });
   } else {
     navigator.clipboard.writeText(window.location.href).then(() => {
-      RajaToast.success('Link copied to clipboard!');
+      alert('Link copied to clipboard!');
     });
   }
 }

@@ -7,10 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
-   <link rel="stylesheet" href="assets/css/style.css">
-   <script src="https://cdn.tailwindcss.com"></script>
-   <script src="assets/js/app.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -22,6 +20,84 @@
       min-height: 100vh;
     }
     input, button, textarea { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .input-field {
+      width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0;
+      border-radius: 12px; font-size: 15px; outline: none;
+      transition: border-color 0.2s ease; background: white;
+    }
+    .input-field:focus { border-color: #16A34A; }
+    .input-group { position: relative; }
+    .input-group .eye-btn { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .input-group .eye-btn svg { width: 22px; height: 22px; }
+    .input-group .input-field { padding-right: 44px; }
+    .floating-label {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      font-size: 15px; color: #94a3b8; transition: all 0.2s ease; pointer-events: none;
+      background: white; padding: 0 4px;
+    }
+    .input-field:focus + .floating-label,
+    .input-field:not(:placeholder-shown) + .floating-label {
+      top: 0; font-size: 11px; color: #16A34A;
+    }
+    textarea.input-field { resize: vertical; min-height: 80px; }
+    textarea.input-field + .floating-label { top: 16px; transform: none; }
+    textarea.input-field:focus + .floating-label,
+    textarea.input-field:not(:placeholder-shown) + .floating-label {
+      top: -8px; font-size: 11px;
+    }
+    .strength-bar { height: 4px; border-radius: 4px; transition: all 0.3s ease; }
+    .strength-bar.weak { width: 25%; background: #ef4444; }
+    .strength-bar.fair { width: 50%; background: #f97316; }
+    .strength-bar.good { width: 75%; background: #eab308; }
+    .strength-bar.strong { width: 100%; background: #16A34A; }
+    .strength-text { font-size: 11px; font-weight: 600; transition: all 0.3s ease; }
+    .btn-primary {
+      background: linear-gradient(135deg, #16A34A, #15803D);
+      color: white; border: none; border-radius: 14px;
+      min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center;
+    }
+    .btn-primary:active { transform: scale(0.95); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-outline {
+      background: transparent; color: #16A34A; border: 2px solid #16A34A;
+      border-radius: 14px; min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-outline:active { transform: scale(0.95); }
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white; border: none; border-radius: 14px;
+      min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center;
+    }
+    .btn-danger:active { transform: scale(0.95); }
+    .btn-secondary {
+      background: #f1f5f9; color: #475569; border: none;
+      border-radius: 14px; min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
+      cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
+      width: 100%; display: flex; align-items: center; justify-content: center;
+    }
+    .btn-secondary:active { transform: scale(0.95); }
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;
+      display: none; align-items: center; justify-content: center; padding: 24px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: white; border-radius: 20px; padding: 28px 24px;
+      max-width: 340px; width: 100%; text-align: center;
+    }
+    .toast {
+      position: fixed; bottom: 130px; left: 50%; transform: translateX(-50%);
+      background: #1e293b; color: white; padding: 12px 24px; border-radius: 12px;
+      font-size: 14px; font-weight: 500; z-index: 999;
+      opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
     .avatar-circle {
       width: 72px; height: 72px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
@@ -57,6 +133,8 @@
     .nav-item .nav-label { font-size: 10px; font-weight: 500; }
     .hidden-panel { display: none; }
     .hidden-panel.open { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { animation: spin 1s linear infinite; }
     @media (max-width: 400px) {
       .container-inner { padding-left: 16px; padding-right: 16px; }
     }
@@ -250,6 +328,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 
   <!-- Bottom Navigation -->
   <nav class="nav-bottom">
@@ -503,7 +584,12 @@
     }
 
     // === TOAST ===
-    function showToast(msg) { RajaToast.info(msg); }
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
 
     // === INIT ===
     document.addEventListener('DOMContentLoaded', loadProfile);
