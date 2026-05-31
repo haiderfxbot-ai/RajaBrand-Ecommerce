@@ -420,7 +420,7 @@
         await emailjs.send('service_94ybwiy', 'template_5e0vk2h', {
           to_name: name,
           to_email: email,
-          otp: generatedOTP,
+          otp_code: generatedOTP,
           from_name: 'Raja Brand'
         });
         showToast('OTP sent to ' + email);

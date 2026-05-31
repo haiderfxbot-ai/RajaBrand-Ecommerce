@@ -237,7 +237,7 @@
         await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
           to_name: pending.name,
           to_email: pending.email,
-          otp: generatedOTP,
+          otp_code: generatedOTP,
           from_name: 'Raja Brand'
         });
         showToast('OTP sent to ' + pending.email);
