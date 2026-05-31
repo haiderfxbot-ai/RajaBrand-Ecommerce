@@ -10,30 +10,129 @@
   <style>
     :root{--primary:#16A34A;--primary-dark:#15803D;--primary-light:#DCFCE7;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
-    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:40px;overflow-x:hidden;overflow-y:auto;}
     h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
     .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+    .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
+    ::-webkit-scrollbar{display:none;}
+    .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px);}
     .btn-press:active{transform:scale(0.96);}
+    .sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--secondary);color:#fff;padding-top:64px;transform:translateX(-100%);transition:transform .3s;z-index:40;}
+    .sidebar.open{transform:translateX(0);}
+    @media(min-width:768px){.sidebar{transform:translateX(0);}body{padding-left:240px;}}
+    .bottom-sheet{position:fixed;bottom:0;left:0;right:0;z-index:300;background:#fff;border-radius:20px 20px 0 0;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);max-height:90vh;overflow-y:auto;}
+    .bottom-sheet.show{transform:translateY(0);}
+    .sheet-overlay{position:fixed;inset:0;z-index:299;background:rgba(0,0,0,.5);opacity:0;transition:opacity .3s;pointer-events:none;}
+    .sheet-overlay.show{opacity:1;pointer-events:auto;}
+    .collapse-sec{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+    .collapse-sec.open{max-height:1000px;}
+    .strength-bar{height:4px;border-radius:2px;transition:all .3s;}
   </style>
 </head>
 <body>
-<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+<div class="sidebar" id="sidebar">
+  <div class="p-5 border-b border-white/10">
+    <div class="flex items-center gap-2"><span class="text-xl font-extrabold" style="color:var(--primary);font-family:'Plus Jakarta Sans',sans-serif;">RAJA</span><span class="text-sm font-light text-white/60">Admin</span></div>
+  </div>
+  <nav class="p-3 space-y-1">
+    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">dashboard</span> Dashboard</a>
+    <a href="products.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">inventory_2</span> Products</a>
+    <a href="categories.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">category</span> Categories</a>
+    <a href="orders.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">receipt_long</span> Orders</a>
+    <a href="users.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium" style="background:rgba(22,163,74,0.2);color:var(--primary);"><span class="material-symbols-rounded icon-fill text-lg">group</span> Users</a>
+    <a href="settings.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">settings</span> Settings</a>
+    <hr class="border-white/10 my-3">
+    <a href="../index.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/40 hover:bg-white/5"><span class="material-symbols-rounded text-lg">store</span> View Store</a>
+    <button onclick="adminLogout()" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10 w-full"><span class="material-symbols-rounded text-lg">logout</span> Logout</button>
+  </nav>
+</div>
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100" style="z-index:45;">
   <div class="flex items-center justify-between px-4 h-16 safe-top">
-    <a href="dashboard.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></a>
+    <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press md:hidden"><span class="material-symbols-rounded text-gray-700 text-2xl">menu</span></button>
     <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">Users</span>
-    <div class="w-10"></div>
+    <div class="flex items-center gap-2"><span class="text-sm text-gray-500" id="userCount"></span></div>
   </div>
 </header>
 
-<div class="px-4 py-3">
-  <input type="text" id="searchUsers" placeholder="Search users..." class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" oninput="renderUsers()">
+<main class="p-4">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4" id="statsRow"></div>
+
+  <input type="text" id="searchUsers" placeholder="Search by name, email, phone..." class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 text-sm outline-none focus:border-green-500 mb-4" oninput="renderUsers()">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm" id="usersTable">
+        <thead><tr class="bg-gray-50 text-gray-500 text-xs font-semibold"><th class="text-left py-3 px-3">User</th><th class="text-left py-3 px-2">Contact</th><th class="text-center py-3 px-2">Orders</th><th class="text-center py-3 px-2">Provider</th><th class="text-center py-3 px-2">Action</th></tr></thead>
+        <tbody id="usersList"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<div class="sheet-overlay" id="sheetOverlay" onclick="closeUserSheet()"></div>
+<div class="bottom-sheet safe-bottom" id="userSheet">
+  <div class="p-5">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;" id="sheetTitle">Edit User</h3>
+      <button onclick="closeUserSheet()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center btn-press"><span class="material-symbols-rounded text-lg">close</span></button>
+    </div>
+    <div class="space-y-3">
+      <div>
+        <label class="text-sm font-medium mb-1 block">Full Name</label>
+        <input type="text" id="eName" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-500">
+      </div>
+      <div>
+        <label class="text-sm font-medium mb-1 block">Email Address</label>
+        <input type="email" id="eEmail" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-500">
+      </div>
+      <div>
+        <label class="text-sm font-medium mb-1 block">Phone Number</label>
+        <input type="tel" id="ePhone" placeholder="03XXXXXXXXX" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-500" maxlength="11">
+      </div>
+      <div>
+        <label class="text-sm font-medium mb-1 block">Address</label>
+        <input type="text" id="eAddr1" placeholder="Line 1" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm mb-2 focus:outline-none focus:border-green-500">
+        <input type="text" id="eAddr2" placeholder="Line 2" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm mb-2 focus:outline-none focus:border-green-500">
+        <div class="grid grid-cols-2 gap-2 mb-2">
+          <input type="text" id="eCity" placeholder="City" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-500">
+          <input type="text" id="eState" placeholder="State/Province" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-500">
+        </div>
+        <input type="text" id="ePincode" placeholder="Postal Code" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-500" maxlength="6">
+      </div>
+      <div class="border-t border-gray-100 pt-3">
+        <button onclick="toggleSection('changePassSec')" class="flex items-center justify-between w-full text-sm font-semibold text-gray-600">
+          Change Password <span class="material-symbols-rounded text-base transition-transform" id="cpArrow">expand_more</span>
+        </button>
+        <div class="collapse-sec" id="changePassSec">
+          <div class="mt-3 space-y-2">
+            <input type="password" id="eNewPass" placeholder="New Password" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-500" oninput="checkStrength('eNewPass','cpBar','cpLabel')">
+            <div class="strength-bar" id="cpBar"></div>
+            <p class="text-xs text-gray-400" id="cpLabel"></p>
+            <input type="password" id="eConfirmPass" placeholder="Confirm New Password" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-500">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex gap-3 mt-5">
+      <button onclick="deleteUser()" class="flex-1 py-3 rounded-xl text-sm font-bold btn-press border-2" style="color:var(--error);border-color:var(--error);" id="deleteUserBtn">Delete User</button>
+      <button onclick="saveUser()" class="flex-1 py-3 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Save Changes</button>
+    </div>
+  </div>
 </div>
 
-<div class="px-4 overflow-x-auto">
-  <table class="w-full text-sm">
-    <thead><tr class="text-gray-400 border-b border-gray-100"><th class="text-left py-2 pr-2">Name</th><th class="text-left py-2 px-2">Email</th><th class="text-center py-2 px-2">Orders</th><th class="text-center py-2">Action</th></tr></thead>
-    <tbody id="usersList"></tbody>
-  </table>
+<div id="confirmDialog" class="fixed inset-0 z-50 hidden items-center justify-center p-5" style="background:rgba(0,0,0,0.5);">
+  <div class="bg-white rounded-3xl p-6 w-full max-w-xs text-center shadow-2xl">
+    <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center" style="background:#FEE2E2;">
+      <span class="material-symbols-rounded" style="color:var(--error);font-size:28px;">warning</span>
+    </div>
+    <h3 class="font-bold text-lg mb-2" id="confirmTitle">Confirm</h3>
+    <p class="text-sm text-gray-500 mb-5" id="confirmMsg">Are you sure?</p>
+    <div class="flex gap-3">
+      <button onclick="closeConfirm()" class="flex-1 py-3 rounded-2xl border-2 border-gray-200 font-semibold text-sm text-gray-600">Cancel</button>
+      <button onclick="executeConfirm()" class="flex-1 py-3 rounded-2xl font-bold text-white text-sm" style="background:var(--error);" id="confirmActionBtn">Delete</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -43,26 +142,177 @@
 
   if(localStorage.getItem('raja_admin_session')!=='true')window.location.href='login.html';
 
-  const STORE={users:'raja_users',orders:'raja_orders'};
+  const STORE={users:'raja_users',orders:'raja_orders',currentUser:'raja_current_user'};
   function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+  let editingUserEmail=null;
+  let pendingDeleteEmail=null;
+
+  function adminLogout(){localStorage.removeItem('raja_admin_session');window.location.href='login.html';}
+  function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
+
+  function showToast(msg,type='success'){
+    const c=document.getElementById('toastContainer')||(()=>{const t=document.createElement('div');t.id='toastContainer';t.style.cssText='position:fixed;top:20px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px';document.body.appendChild(t);return t;})();
+    const t=document.createElement('div');t.className=`px-4 py-3 rounded-xl text-sm font-medium text-white shadow-lg transform translate-x-full transition-transform duration-300 ${type==='error'?'bg-red-500':type==='warning'?'bg-yellow-500':'bg-green-500'}`;t.textContent=msg;
+    c.appendChild(t);requestAnimationFrame(()=>t.classList.remove('translate-x-full'));
+    setTimeout(()=>{t.classList.add('translate-x-full');setTimeout(()=>t.remove(),300);},3000);
+  }
+
+  function checkStrength(inputId,barId,labelId){
+    const p=document.getElementById(inputId).value;
+    const bar=document.getElementById(barId);
+    const label=document.getElementById(labelId);
+    if(!bar||!label)return;
+    if(!p){bar.style.width='0%';label.textContent='';return;}
+    let score=0;
+    if(p.length>=6)score++;if(p.length>=10)score++;
+    if(/[A-Z]/.test(p))score++;if(/[0-9]/.test(p))score++;
+    if(/[^A-Za-z0-9]/.test(p))score++;
+    const map=['0%','25%','50%','75%','100%'];
+    const cols=['','#EF4444','#F59E0B','#EAB308','#22C55E','#22C55E'];
+    const texts=['','Weak','Fair','Good','Strong','Very Strong'];
+    bar.style.width=map[Math.min(score,5)];bar.style.background=cols[Math.min(score,5)];label.textContent=texts[Math.min(score,5)];
+  }
+
+  function toggleSection(id){
+    const sec=document.getElementById(id);
+    const arrow=document.getElementById(id.replace('changePassSec','cp').replace('Sec','')+'Arrow');
+    sec.classList.toggle('open');
+    if(arrow)arrow.style.transform=sec.classList.contains('open')?'rotate(180deg)':'rotate(0)';
+  }
 
   function renderUsers(){
     const search=document.getElementById('searchUsers').value.toLowerCase();
     let users=getLS(STORE.users)||[];
     const orders=getLS(STORE.orders)||[];
-    if(search)users=users.filter(u=>u.name?.toLowerCase().includes(search)||u.email?.toLowerCase().includes(search));
+    if(search)users=users.filter(u=>(u.name||'').toLowerCase().includes(search)||(u.email||'').toLowerCase().includes(search)||(u.phone||'').includes(search));
+    document.getElementById('userCount').textContent=users.length+' users';
     const list=document.getElementById('usersList');
-    if(users.length===0){list.innerHTML='<tr><td colspan="4" class="text-center py-8 text-gray-400">No users found</td></tr>';return;}
+    if(users.length===0){list.innerHTML='<tr><td colspan="5" class="text-center py-10 text-gray-400 text-sm">No users found</td></tr>';return;}
     list.innerHTML=users.map(u=>{
       const userOrders=orders.filter(o=>o.user_id===u.email);
-      return `<tr class="border-b border-gray-50"><td class="py-3 pr-2"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold" style="background:var(--primary);">${(u.name||'U').charAt(0).toUpperCase()}</div><span class="text-sm font-medium">${u.name||'N/A'}</span></div></td><td class="py-3 px-2 text-xs text-gray-500">${u.email||''}</td><td class="py-3 px-2 text-center font-medium">${userOrders.length}</td><td class="py-3 text-center"><button onclick="viewUserOrders('${u.email}')" class="text-orange-500 text-xs font-medium">View Orders</button></td></tr>`;
+      const provider=u.provider||'email';
+      const avatar=(u.name||'U').charAt(0).toUpperCase();
+      return `<tr class="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+        <td class="py-3 px-3"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style="background:var(--primary);">${avatar}</div><div><p class="font-semibold text-sm">${u.name||'N/A'}</p><p class="text-xs text-gray-400">${u.email||''}</p></div></div></td>
+        <td class="py-3 px-2"><p class="text-xs font-medium">${u.phone||'—'}</p><p class="text-xs text-gray-400">${u.address?.city||''} ${u.address?.state||''}</p></td>
+        <td class="py-3 px-2 text-center"><span class="text-sm font-bold">${userOrders.length}</span></td>
+        <td class="py-3 px-2 text-center"><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium ${provider==='google'?'bg-blue-50 text-blue-600':'bg-green-50 text-green-600'}"><span class="material-symbols-rounded text-xs">${provider==='google'?'verified':'mail'}</span> ${provider}</span></td>
+        <td class="py-3 px-2 text-center"><button onclick="openUserSheet('${u.email}')" class="px-3 py-1.5 rounded-lg text-xs font-semibold btn-press" style="color:var(--primary);background:var(--primary-light);">Edit</button></td>
+      </tr>`;
     }).join('');
   }
 
-  function viewUserOrders(email){
-    const userOrders=(getLS(STORE.orders)||[]).filter(o=>o.user_id===email);
-    if(userOrders.length===0){alert('No orders for this user.');return;}
-    alert(userOrders.map(o=>`${o.id} — Rs.${o.total} — ${o.status}`).join('\n'));
+  function openUserSheet(email){
+    const users=getLS(STORE.users)||[];
+    const user=users.find(u=>u.email===email);
+    if(!user){showToast('User not found','error');return;}
+    editingUserEmail=email;
+    document.getElementById('eName').value=user.name||'';
+    document.getElementById('eEmail').value=user.email||'';
+    document.getElementById('ePhone').value=user.phone||'';
+    document.getElementById('eAddr1').value=user.address?.line1||'';
+    document.getElementById('eAddr2').value=user.address?.line2||'';
+    document.getElementById('eCity').value=user.address?.city||'';
+    document.getElementById('eState').value=user.address?.state||'';
+    document.getElementById('ePincode').value=user.address?.pincode||'';
+    document.getElementById('eNewPass').value='';
+    document.getElementById('eConfirmPass').value='';
+    document.getElementById('cpBar').style.width='0%';
+    document.getElementById('cpLabel').textContent='';
+    document.getElementById('deleteUserBtn').style.display='block';
+
+    const provider=user.provider||'email';
+    document.getElementById('eEmail').disabled=provider==='google';
+    document.getElementById('eEmail').style.background=provider==='google'?'#f5f5f5':'';
+
+    document.getElementById('sheetTitle').textContent='Edit — '+(user.name||'User');
+    document.getElementById('userSheet').classList.add('show');
+    document.getElementById('sheetOverlay').classList.add('show');
+  }
+
+  function closeUserSheet(){
+    document.getElementById('userSheet').classList.remove('show');
+    document.getElementById('sheetOverlay').classList.remove('show');
+    editingUserEmail=null;
+  }
+
+  function saveUser(){
+    if(!editingUserEmail){showToast('No user selected','error');return;}
+    const users=getLS(STORE.users)||[];
+    const idx=users.findIndex(u=>u.email===editingUserEmail);
+    if(idx<0){showToast('User not found','error');return;}
+
+    const newEmail=document.getElementById('eEmail').value.trim();
+    if(editingUserEmail!==newEmail&&users.find(u=>u.email===newEmail&&u.email!==editingUserEmail)){
+      showToast('Email already in use by another user','error');return;
+    }
+
+    users[idx].name=document.getElementById('eName').value.trim()||users[idx].name;
+    users[idx].email=newEmail||users[idx].email;
+    users[idx].phone=document.getElementById('ePhone').value.trim()||users[idx].phone;
+    if(!users[idx].address)users[idx].address={};
+    users[idx].address.line1=document.getElementById('eAddr1').value.trim();
+    users[idx].address.line2=document.getElementById('eAddr2').value.trim();
+    users[idx].address.city=document.getElementById('eCity').value.trim();
+    users[idx].address.state=document.getElementById('eState').value.trim();
+    users[idx].address.pincode=document.getElementById('ePincode').value.trim();
+
+    const newPass=document.getElementById('eNewPass').value;
+    const confirmPass=document.getElementById('eConfirmPass').value;
+    if(newPass||confirmPass){
+      if(newPass!==confirmPass){showToast('Passwords do not match','error');return;}
+      if(newPass.length<6){showToast('Password must be at least 6 characters','error');return;}
+      users[idx].password=newPass;
+    }
+
+    setLS(STORE.users,users);
+
+    const currentUser=getLS(STORE.currentUser);
+    if(currentUser&&currentUser.email===editingUserEmail){
+      currentUser.name=users[idx].name;
+      currentUser.email=users[idx].email;
+      currentUser.phone=users[idx].phone;
+      currentUser.address=users[idx].address;
+      setLS(STORE.currentUser,currentUser);
+    }
+
+    showToast('User updated successfully!');
+    closeUserSheet();
+    renderUsers();
+  }
+
+  function deleteUser(){
+    if(!editingUserEmail)return;
+    const users=getLS(STORE.users)||[];
+    const user=users.find(u=>u.email===editingUserEmail);
+    pendingDeleteEmail=editingUserEmail;
+    document.getElementById('confirmTitle').textContent='Delete User?';
+    document.getElementById('confirmMsg').textContent=`Are you sure you want to permanently delete "${user?user.name:'this user'}"? This action cannot be undone.`;
+    document.getElementById('confirmDialog').classList.remove('hidden');
+    document.getElementById('confirmDialog').classList.add('flex');
+  }
+
+  function closeConfirm(){
+    document.getElementById('confirmDialog').classList.add('hidden');
+    document.getElementById('confirmDialog').classList.remove('flex');
+    pendingDeleteEmail=null;
+  }
+
+  function executeConfirm(){
+    if(!pendingDeleteEmail){closeConfirm();return;}
+    const users=getLS(STORE.users)||[];
+    const filtered=users.filter(u=>u.email!==pendingDeleteEmail);
+    setLS(STORE.users,filtered);
+    const currentUser=getLS(STORE.currentUser);
+    if(currentUser&&currentUser.email===pendingDeleteEmail){
+      localStorage.removeItem(STORE.currentUser);
+    }
+    showToast('User deleted permanently');
+    closeConfirm();
+    closeUserSheet();
+    renderUsers();
   }
 
   renderUsers();
