@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
-    :root{--primary:#16A34A;--primary-dark:#15803D;--primary-light:#DCFCE7;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    :root{--primary:#FF6B35;--primary-dark:#E65A2E;--primary-light:#FFF0E0;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
     body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:80px;min-height:100vh;overflow-x:hidden;overflow-y:auto;}
     h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
@@ -86,7 +86,7 @@
     const iconMap={order:'shopping_bag',offer:'local_offer',system:'settings'};
     const colorMap={order:'var(--primary)',offer:'var(--warning)',system:'var(--info)'};
     list.innerHTML=notifs.map((n,i)=>`
-      <div class="notif-item flex gap-3 p-4 rounded-xl cursor-pointer ${n.read?'bg-white':'bg-green-50 border border-green-100'} shadow-sm border ${n.read?'border-gray-50':'border-green-100'}" onclick="markRead('${n.id}')">
+      <div class="notif-item flex gap-3 p-4 rounded-xl cursor-pointer ${n.read?'bg-white':'bg-orange-50 border border-orange-100'} shadow-sm border ${n.read?'border-gray-50':'border-orange-100'}" onclick="markRead('${n.id}')">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:${n.read?'#f5f5f5':colorMap[n.type]+'20'};color:${n.read?'#999':colorMap[n.type]};">
           <span class="material-symbols-rounded text-xl ${n.read?'':'icon-fill'}">${iconMap[n.type]||'notifications'}</span>
         </div>

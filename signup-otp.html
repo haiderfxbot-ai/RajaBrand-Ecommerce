@@ -25,9 +25,9 @@
       transition: all 0.2s ease; background: white;
     }
     .otp-input:focus {
-      border-color: #16A34A; box-shadow: 0 0 0 3px rgba(22,163,74,0.15);
+      border-color: #FF6B35; box-shadow: 0 0 0 3px rgba(22,163,74,0.15);
     }
-    .otp-input.filled { border-color: #16A34A; background: #f0fdf4; }
+    .otp-input.filled { border-color: #FF6B35; background: #f0fdf4; }
     .otp-input.error { border-color: #ef4444; animation: shake 0.3s ease; }
     @keyframes shake {
       0%,100% { transform: translateX(0); }
@@ -35,11 +35,11 @@
       75% { transform: translateX(4px); }
     }
     .countdown-svg { transform: rotate(-90deg); }
-    .countdown-circle { stroke: #16A34A; fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+    .countdown-circle { stroke: #FF6B35; fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
     .countdown-bg { stroke: #e2e8f0; fill: none; stroke-width: 4; }
-    .attempt-bar { height: 4px; border-radius: 4px; transition: width 0.5s ease; background: #16A34A; }
+    .attempt-bar { height: 4px; border-radius: 4px; transition: width 0.5s ease; background: #FF6B35; }
     .btn-primary {
-      background: linear-gradient(135deg, #16A34A, #15803D);
+      background: linear-gradient(135deg, #FF6B35, #E65A2E);
       color: white; border: none; border-radius: 14px;
       min-height: 52px; padding: 0 24px; font-weight: 600; font-size: 15px;
       cursor: pointer; touch-action: manipulation; transition: all 0.2s ease;
@@ -48,7 +48,7 @@
     .btn-primary:active { transform: scale(0.95); }
     .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
     .btn-secondary {
-      background: transparent; color: #16A34A; border: 2px solid #16A34A;
+      background: transparent; color: #FF6B35; border: 2px solid #FF6B35;
       border-radius: 14px; min-height: 44px; padding: 0 20px; font-weight: 600; font-size: 14px;
       cursor: pointer; touch-action: manipulation; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     }
@@ -77,7 +77,7 @@
 
       <!-- Header -->
       <div class="text-center mb-8">
-        <div class="w-14 h-14 bg-gradient-to-br from-green-600 to-green-700 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-200">
+        <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-700 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-200">
           <span class="material-symbols-rounded text-white text-3xl">lock</span>
         </div>
         <h1 class="text-2xl font-bold text-gray-900" style="font-family:'DM Sans',sans-serif;">Verify OTP</h1>
@@ -130,7 +130,7 @@
         </button>
 
         <p class="text-center mt-4">
-          <a href="login.html" class="text-sm text-gray-500 hover:text-green-600">
+          <a href="login.html" class="text-sm text-gray-500 hover:text-orange-500">
             <span class="material-symbols-rounded align-middle text-base">arrow_back</span> Back to Login
           </a>
         </p>

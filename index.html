@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Raja - Shop Pakistan's Best</title>
+  <title>Raja - Pakistan's Premium Online Store</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -12,111 +12,130 @@
     * { font-family: 'Plus Jakarta Sans', sans-serif; scrollbar-width: none; }
     *::-webkit-scrollbar { display: none; }
     body { overflow-x: hidden; overflow-y: auto; padding-bottom: 80px; background: #f8fafc; }
-    .brand-gradient { background: linear-gradient(135deg, #16A34A 0%, #15803D 100%); }
-    .brand-text { color: #16A34A; }
-    .brand-bg { background: #16A34A; }
-    .brand-bg-dark { background: #15803D; }
-    .brand-light-bg { background: #DCFCE7; }
+    .brand-gradient { background: linear-gradient(135deg, #FF6B35 0%, #E65A2E 100%); }
+    .brand-text { color: #FF6B35; }
+    .brand-bg { background: #FF6B35; }
+    .brand-bg-dark { background: #E65A2E; }
+    .brand-light-bg { background: #FFF0E0; }
     .price-tag { font-family: 'DM Sans', sans-serif; }
-    .slide { flex: 0 0 100%; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-    .marquee-content { display: inline-block; white-space: nowrap; animation: marquee 25s linear infinite; }
+    .slide { flex: 0 0 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+    .marquee-content { display: inline-block; white-space: nowrap; animation: marquee 30s linear infinite; }
     @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    .product-card { transition: all 0.2s ease; }
-    .product-card:active { transform: scale(0.98); }
+    .product-card { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+    .product-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+    .product-card:active { transform: scale(0.97); }
     .cat-chip { transition: all 0.2s; }
+    .cat-chip:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,107,53,0.12); }
     .cat-chip:active { transform: scale(0.95); }
     .bottom-sheet { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     .drawer { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .badge-dot { position: absolute; top: 2px; right: 2px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; }
-    .countdown-item { background: #1E293B; color: white; border-radius: 8px; padding: 4px 8px; min-width: 40px; text-align: center; }
+    .countdown-item { background: #1E293B; color: white; border-radius: 10px; padding: 6px 10px; min-width: 44px; text-align: center; font-weight: 600; }
+    .hero-gradient-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,107,53,0.92) 0%, rgba(230,90,46,0.88) 100%); }
+    .hero-pattern { position: absolute; inset: 0; opacity: 0.06; background-image: radial-gradient(circle at 25% 25%, white 1px, transparent 1px), radial-gradient(circle at 75% 75%, white 1px, transparent 1px); background-size: 40px 40px; }
+    .section-title { position: relative; display: inline-block; }
+    .section-title::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 40px; height: 3px; background: #FF6B35; border-radius: 2px; }
+    .float-animation { animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    .glass-card { background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); }
+    .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .brand-shadow { box-shadow: 0 4px 20px rgba(255,107,53,0.2); }
+    .card-shadow { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .card-shadow:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
 
 <div id="app">
   <!-- Header -->
-  <header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-b border-gray-100/80">
     <div class="flex items-center justify-between px-4 h-14">
-      <button onclick="toggleDrawer()" class="p-2 -ml-2 rounded-lg hover:bg-gray-50">
+      <button onclick="toggleDrawer()" class="p-2 -ml-2 rounded-xl hover:bg-orange-50 transition-colors">
         <span class="material-symbols-rounded text-gray-700 text-2xl">menu</span>
       </button>
       <a href="index.html" class="flex items-center gap-2">
-        <span class="material-symbols-rounded brand-text text-2xl">store</span>
-        <span class="text-xl font-extrabold text-gray-900">Raja</span>
+        <div class="w-8 h-8 brand-gradient rounded-lg flex items-center justify-center">
+          <span class="material-symbols-rounded text-white text-lg">store</span>
+        </div>
+        <span class="text-xl font-extrabold text-gray-900 tracking-tight">Raja</span>
       </a>
       <div class="flex items-center gap-1">
-        <a href="search.html" class="p-2 rounded-lg hover:bg-gray-50">
+        <a href="search.html" class="p-2 rounded-xl hover:bg-orange-50 transition-colors">
           <span class="material-symbols-rounded text-gray-600 text-2xl">search</span>
         </a>
-        <a href="wishlist.html" class="p-2 rounded-lg hover:bg-gray-50">
+        <a href="wishlist.html" class="p-2 rounded-xl hover:bg-orange-50 transition-colors">
           <span class="material-symbols-rounded text-gray-600 text-2xl">favorite</span>
         </a>
-        <a href="cart.html" class="p-2 rounded-lg hover:bg-gray-50 relative" id="cartHeaderBtn">
+        <a href="cart.html" class="p-2 rounded-xl hover:bg-orange-50 transition-colors relative" id="cartHeaderBtn">
           <span class="material-symbols-rounded text-gray-600 text-2xl">shopping_bag</span>
-          <span id="cartBadge" class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center hidden">0</span>
+          <span id="cartBadge" class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center hidden shadow">0</span>
         </a>
       </div>
     </div>
   </header>
 
   <!-- Side Drawer -->
-  <div id="drawerOverlay" class="fixed inset-0 bg-black/50 z-[60] hidden" onclick="toggleDrawer()"></div>
+  <div id="drawerOverlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] hidden transition-opacity" onclick="toggleDrawer()"></div>
   <div id="drawer" class="drawer fixed top-0 left-0 bottom-0 w-72 bg-white z-[70] shadow-2xl -translate-x-full">
     <div class="flex flex-col h-full">
-      <div class="brand-gradient p-6">
-        <div class="flex items-center justify-between mb-4">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-              <span class="material-symbols-rounded text-white text-2xl">store</span>
+      <div class="brand-gradient p-6 relative overflow-hidden">
+        <div class="hero-pattern"></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+                <span class="material-symbols-rounded text-white text-2xl">store</span>
+              </div>
+              <div>
+                <p class="text-white font-bold text-lg" id="drawerUserName">Guest</p>
+                <p class="text-white/70 text-sm" id="drawerUserEmail">Sign in to your account</p>
+              </div>
             </div>
-            <div>
-              <p class="text-white font-bold text-lg" id="drawerUserName">Guest</p>
-              <p class="text-white/70 text-sm" id="drawerUserEmail">Sign in to your account</p>
-            </div>
+            <button onclick="toggleDrawer()" class="text-white/80 hover:text-white transition-colors">
+              <span class="material-symbols-rounded">close</span>
+            </button>
           </div>
-          <button onclick="toggleDrawer()" class="text-white/80 hover:text-white">
-            <span class="material-symbols-rounded">close</span>
-          </button>
+          <a href="profile.html" class="block text-center py-2.5 rounded-xl bg-white/20 text-white font-medium text-sm hover:bg-white/30 transition-all backdrop-blur-sm">View Profile</a>
         </div>
-        <a href="profile.html" class="block text-center py-2 rounded-lg bg-white/20 text-white font-medium text-sm hover:bg-white/30">View Profile</a>
       </div>
       <nav class="flex-1 py-2 overflow-y-auto">
-        <a href="index.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+        <a href="index.html" class="flex items-center gap-3 px-6 py-3.5 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium transition-colors">
           <span class="material-symbols-rounded">home</span> Home
         </a>
-        <a href="product.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+        <a href="product.html" class="flex items-center gap-3 px-6 py-3.5 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium transition-colors">
           <span class="material-symbols-rounded">grid_view</span> Products
         </a>
-        <a href="product.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+        <a href="product.html" class="flex items-center gap-3 px-6 py-3.5 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium transition-colors">
           <span class="material-symbols-rounded">category</span> Categories
         </a>
-        <a href="orders.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+        <a href="orders.html" class="flex items-center gap-3 px-6 py-3.5 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium transition-colors">
           <span class="material-symbols-rounded">receipt_long</span> Orders
         </a>
-        <a href="wishlist.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+        <a href="wishlist.html" class="flex items-center gap-3 px-6 py-3.5 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium transition-colors">
           <span class="material-symbols-rounded">favorite</span> Wishlist
         </a>
         <hr class="mx-6 my-2 border-gray-100">
-        <a href="cart.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+        <a href="cart.html" class="flex items-center gap-3 px-6 py-3.5 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium transition-colors">
           <span class="material-symbols-rounded">shopping_bag</span> Cart
         </a>
-        <a href="search.html" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+        <a href="search.html" class="flex items-center gap-3 px-6 py-3.5 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium transition-colors">
           <span class="material-symbols-rounded">search</span> Search
         </a>
         <hr class="mx-6 my-2 border-gray-100">
-        <a href="#" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+        <a href="support.html" class="flex items-center gap-3 px-6 py-3.5 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium transition-colors">
           <span class="material-symbols-rounded">support_agent</span> Support
         </a>
-        <a href="#" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium">
+        <a href="about.html" class="flex items-center gap-3 px-6 py-3.5 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium transition-colors">
           <span class="material-symbols-rounded">info</span> About Us
         </a>
         <hr class="mx-6 my-2 border-gray-100">
-        <button id="drawerLoginBtn" onclick="handleAuthAction()" class="flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium w-full text-left">
+        <button id="drawerLoginBtn" onclick="handleAuthAction()" class="flex items-center gap-3 px-6 py-3.5 text-gray-700 hover:bg-brand-light-bg hover:brand-text font-medium w-full text-left transition-colors">
           <span class="material-symbols-rounded">login</span> <span id="drawerAuthText">Login</span>
         </button>
       </nav>
-      <div class="p-4 border-t border-gray-100">
-        <p class="text-xs text-gray-400 text-center">Raja v1.0 - Shop Pakistan</p>
+      <div class="p-4 border-t border-gray-100 bg-gray-50/50">
+        <p class="text-xs text-gray-400 text-center">Raja v1.0 — Shop Pakistan</p>
       </div>
     </div>
   </div>
@@ -125,233 +144,283 @@
   <main class="pt-14">
     <!-- Hero Carousel -->
     <div class="relative overflow-hidden" id="heroCarousel">
-      <div class="flex transition-transform duration-500 ease-out" id="carouselTrack">
+      <div class="flex transition-transform duration-600 ease-out" id="carouselTrack" style="transition-duration:600ms">
         <div class="slide min-w-full">
-          <div class="relative h-52 bg-gradient-to-r from-orange-500 to-red-500 flex items-center px-6">
-            <div class="z-10">
-              <p class="text-white/80 text-sm font-medium">Summer Sale 2024</p>
-              <h2 class="text-white text-3xl font-extrabold mt-1">Up to 60% Off</h2>
-              <p class="text-white/80 mt-1">On Lawn Collection</p>
-              <a href="product.html?cat=womens-fashion" class="inline-block mt-3 bg-white text-orange-600 px-5 py-2 rounded-full font-bold text-sm">Shop Now</a>
-            </div>
-            <div class="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
-              <span class="material-symbols-rounded text-white text-8xl">checkroom</span>
+          <div class="relative h-56 md:h-72 flex items-center px-6 overflow-hidden">
+            <div class="hero-gradient-overlay"></div>
+            <div class="hero-pattern"></div>
+            <div class="relative z-10 flex items-center w-full">
+              <div class="flex-1">
+                <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white/90 text-xs font-semibold mb-3">Summer Sale 2024</span>
+                <h2 class="text-white text-3xl md:text-4xl font-extrabold leading-tight">Up to <span class="text-yellow-300">60% Off</span></h2>
+                <p class="text-white/80 mt-1.5 text-sm md:text-base">On Premium Lawn Collection</p>
+                <a href="product.html?cat=womens-fashion" class="inline-flex items-center gap-1.5 mt-4 bg-white text-orange-600 px-6 py-2.5 rounded-full font-bold text-sm hover:shadow-lg hover:shadow-white/20 transition-all">Shop Now <span class="material-symbols-rounded text-lg">arrow_forward</span></a>
+              </div>
+              <div class="hidden sm:block flex-shrink-0 float-animation">
+                <span class="material-symbols-rounded text-white/15 text-9xl">checkroom</span>
+              </div>
             </div>
           </div>
         </div>
         <div class="slide min-w-full">
-          <div class="relative h-52 brand-gradient flex items-center px-6">
-            <div class="z-10">
-              <p class="text-white/80 text-sm font-medium">Electronics Deals</p>
-              <h2 class="text-white text-3xl font-extrabold mt-1">Smartphones</h2>
-              <p class="text-white/80 mt-1">Latest Samsung & Huawei</p>
-              <a href="product.html?cat=electronics" class="inline-block mt-3 bg-white text-green-700 px-5 py-2 rounded-full font-bold text-sm">Explore</a>
-            </div>
-            <div class="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
-              <span class="material-symbols-rounded text-white text-8xl">smartphone</span>
+          <div class="relative h-56 md:h-72 flex items-center px-6 overflow-hidden">
+            <div class="hero-gradient-overlay" style="background:linear-gradient(135deg,rgba(255,107,53,0.92) 0%,rgba(200,80,40,0.88) 100%)"></div>
+            <div class="hero-pattern"></div>
+            <div class="relative z-10 flex items-center w-full">
+              <div class="flex-1">
+                <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white/90 text-xs font-semibold mb-3">Electronics Deals</span>
+                <h2 class="text-white text-3xl md:text-4xl font-extrabold leading-tight">Latest <span class="text-yellow-300">Smartphones</span></h2>
+                <p class="text-white/80 mt-1.5 text-sm md:text-base">Samsung, Huawei & More</p>
+                <a href="product.html?cat=electronics" class="inline-flex items-center gap-1.5 mt-4 bg-white text-orange-600 px-6 py-2.5 rounded-full font-bold text-sm hover:shadow-lg hover:shadow-white/20 transition-all">Explore <span class="material-symbols-rounded text-lg">arrow_forward</span></a>
+              </div>
+              <div class="hidden sm:block flex-shrink-0 float-animation">
+                <span class="material-symbols-rounded text-white/15 text-9xl">smartphone</span>
+              </div>
             </div>
           </div>
         </div>
         <div class="slide min-w-full">
-          <div class="relative h-52 bg-gradient-to-r from-purple-600 to-pink-500 flex items-center px-6">
-            <div class="z-10">
-              <p class="text-white/80 text-sm font-medium">Footwear Fest</p>
-              <h2 class="text-white text-3xl font-extrabold mt-1">Servis & Khadim's</h2>
-              <p class="text-white/80 mt-1">Min 30% Off</p>
-              <a href="product.html?cat=footwear" class="inline-block mt-3 bg-white text-purple-600 px-5 py-2 rounded-full font-bold text-sm">Shop Now</a>
-            </div>
-            <div class="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">
-              <span class="material-symbols-rounded text-white text-8xl">footwear</span>
+          <div class="relative h-56 md:h-72 flex items-center px-6 overflow-hidden">
+            <div class="hero-gradient-overlay" style="background:linear-gradient(135deg,rgba(147,51,234,0.92) 0%,rgba(236,72,153,0.88) 100%)"></div>
+            <div class="hero-pattern"></div>
+            <div class="relative z-10 flex items-center w-full">
+              <div class="flex-1">
+                <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white/90 text-xs font-semibold mb-3">Footwear Fest</span>
+                <h2 class="text-white text-3xl md:text-4xl font-extrabold leading-tight">Min <span class="text-yellow-300">30% Off</span></h2>
+                <p class="text-white/80 mt-1.5 text-sm md:text-base">Servis, Khadim's & Metro</p>
+                <a href="product.html?cat=footwear" class="inline-flex items-center gap-1.5 mt-4 bg-white text-purple-600 px-6 py-2.5 rounded-full font-bold text-sm hover:shadow-lg hover:shadow-white/20 transition-all">Shop Now <span class="material-symbols-rounded text-lg">arrow_forward</span></a>
+              </div>
+              <div class="hidden sm:block flex-shrink-0 float-animation">
+                <span class="material-symbols-rounded text-white/15 text-9xl">footprint</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <!-- Dots -->
-      <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="carouselDots"></div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" id="carouselDots"></div>
       <!-- Navigation -->
-      <button onclick="prevSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center shadow z-10">
+      <button onclick="prevSlide()" class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm rounded-full w-9 h-9 flex items-center justify-center shadow-lg z-10 hover:bg-white transition-all">
         <span class="material-symbols-rounded text-gray-700 text-lg">chevron_left</span>
       </button>
-      <button onclick="nextSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full w-8 h-8 flex items-center justify-center shadow z-10">
+      <button onclick="nextSlide()" class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm rounded-full w-9 h-9 flex items-center justify-center shadow-lg z-10 hover:bg-white transition-all">
         <span class="material-symbols-rounded text-gray-700 text-lg">chevron_right</span>
       </button>
     </div>
 
     <!-- Marquee Offers -->
-    <div class="bg-[#1E293B] text-white py-2 overflow-hidden">
-      <div class="marquee-content">
-        <span class="mx-6">🔥 Free Shipping on orders over Rs. 2,000</span>
-        <span class="mx-6">🎉 Use code RAJA10 for 10% off</span>
-        <span class="mx-6">🚚 Easy Returns within 7 days</span>
-        <span class="mx-6">💳 Cash on Delivery Available</span>
-        <span class="mx-6">🔥 Free Shipping on orders over Rs. 2,000</span>
-        <span class="mx-6">🎉 Use code RAJA10 for 10% off</span>
-        <span class="mx-6">🚚 Easy Returns within 7 days</span>
-        <span class="mx-6">💳 Cash on Delivery Available</span>
+    <div class="bg-[#1E293B] text-white py-2.5 overflow-hidden">
+      <div class="marquee-content flex items-center">
+        <span class="mx-8 flex items-center gap-1.5"><span class="text-orange-400">🔥</span> Free Shipping on orders over Rs. 2,000</span>
+        <span class="mx-8 flex items-center gap-1.5"><span class="text-orange-400">🎉</span> Use code RAJA10 for 10% off</span>
+        <span class="mx-8 flex items-center gap-1.5"><span class="text-orange-400">🚚</span> Easy Returns within 7 days</span>
+        <span class="mx-8 flex items-center gap-1.5"><span class="text-orange-400">💳</span> Cash on Delivery Available</span>
+        <span class="mx-8 flex items-center gap-1.5"><span class="text-orange-400">🔥</span> Free Shipping on orders over Rs. 2,000</span>
+        <span class="mx-8 flex items-center gap-1.5"><span class="text-orange-400">🎉</span> Use code RAJA10 for 10% off</span>
+        <span class="mx-8 flex items-center gap-1.5"><span class="text-orange-400">🚚</span> Easy Returns within 7 days</span>
+        <span class="mx-8 flex items-center gap-1.5"><span class="text-orange-400">💳</span> Cash on Delivery Available</span>
       </div>
     </div>
 
     <!-- Categories Row -->
-    <section class="px-4 mt-5">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-lg font-bold text-gray-900">Categories</h2>
-        <a href="product.html" class="text-sm brand-text font-medium">See All</a>
+    <section class="px-4 mt-6 fade-in" id="secCategories">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-lg font-extrabold text-gray-900 section-title">Categories</h2>
+        </div>
+        <a href="product.html" class="text-sm brand-text font-semibold flex items-center gap-0.5">See All <span class="material-symbols-rounded text-base">arrow_forward</span></a>
       </div>
-      <div class="flex gap-3 overflow-x-auto pb-2" id="categoriesRow"></div>
+      <div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4" id="categoriesRow"></div>
     </section>
 
     <!-- Flash Sale -->
-    <section class="px-4 mt-6">
-      <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2">
-          <h2 class="text-lg font-bold text-gray-900">Flash Sale</h2>
-          <div class="flex items-center gap-1" id="flashCountdown">
-            <div class="countdown-item"><span id="hours">00</span><span class="text-[9px] block opacity-70">hrs</span></div>
-            <span class="text-[#1E293B] font-bold">:</span>
-            <div class="countdown-item"><span id="minutes">00</span><span class="text-[9px] block opacity-70">min</span></div>
-            <span class="text-[#1E293B] font-bold">:</span>
-            <div class="countdown-item"><span id="seconds">00</span><span class="text-[9px] block opacity-70">sec</span></div>
+    <section class="px-4 mt-6 fade-in" id="secFlashSale">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-rounded text-red-500 text-2xl">local_fire_department</span>
+            <h2 class="text-lg font-extrabold text-gray-900">Flash Sale</h2>
+          </div>
+          <div class="flex items-center gap-1.5 bg-gray-900 rounded-xl px-2.5 py-1.5" id="flashCountdown">
+            <div class="countdown-item flex flex-col items-center leading-tight"><span id="hours" class="text-sm">00</span><span class="text-[8px] opacity-70 font-medium">hrs</span></div>
+            <span class="text-white/60 font-bold text-sm">:</span>
+            <div class="countdown-item flex flex-col items-center leading-tight"><span id="minutes" class="text-sm">00</span><span class="text-[8px] opacity-70 font-medium">min</span></div>
+            <span class="text-white/60 font-bold text-sm">:</span>
+            <div class="countdown-item flex flex-col items-center leading-tight"><span id="seconds" class="text-sm">00</span><span class="text-[8px] opacity-70 font-medium">sec</span></div>
           </div>
         </div>
-        <a href="product.html" class="text-sm brand-text font-medium">View All</a>
+        <a href="product.html" class="text-sm brand-text font-semibold flex-shrink-0">View All</a>
       </div>
-      <div class="flex gap-3 overflow-x-auto pb-2" id="flashSaleRow"></div>
+      <div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4" id="flashSaleRow"></div>
     </section>
 
     <!-- Featured Products -->
-    <section class="px-4 mt-6">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-lg font-bold text-gray-900">Featured Products</h2>
-        <a href="product.html" class="text-sm brand-text font-medium">See All</a>
+    <section class="px-4 mt-6 fade-in" id="secFeatured">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-extrabold text-gray-900 section-title">Featured Products</h2>
+        <a href="product.html" class="text-sm brand-text font-semibold flex items-center gap-0.5">See All <span class="material-symbols-rounded text-base">arrow_forward</span></a>
       </div>
-      <div class="grid grid-cols-2 gap-3" id="featuredGrid"></div>
+      <div class="grid grid-cols-2 gap-3.5" id="featuredGrid"></div>
     </section>
 
     <!-- Promo Banner -->
-    <section class="px-4 mt-6">
-      <div class="brand-gradient rounded-2xl p-5 relative overflow-hidden">
+    <section class="px-4 mt-6 fade-in" id="secPromo">
+      <div class="brand-gradient rounded-2xl p-6 relative overflow-hidden">
+        <div class="hero-pattern"></div>
         <div class="relative z-10">
-          <span class="text-white/70 text-xs font-semibold tracking-wider uppercase">Limited Offer</span>
-          <h3 class="text-white text-xl font-extrabold mt-1">Get 10% OFF</h3>
-          <p class="text-white/80 text-sm mt-1">Use code <span class="font-bold text-white bg-white/20 px-2 py-0.5 rounded">RAJA10</span> on your first order</p>
-          <a href="product.html" class="inline-block mt-3 bg-white text-green-700 px-5 py-2 rounded-full font-bold text-sm">Shop Now</a>
+          <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white/90 text-xs font-semibold mb-3">Limited Offer</span>
+          <h3 class="text-white text-2xl font-extrabold">Get 10% OFF</h3>
+          <p class="text-white/80 text-sm mt-1.5">Use code <span class="font-bold text-white bg-white/20 px-3 py-1 rounded-lg">RAJA10</span> on your first order</p>
+          <a href="product.html" class="inline-flex items-center gap-1.5 mt-4 bg-white text-orange-600 px-6 py-2.5 rounded-full font-bold text-sm hover:shadow-lg hover:shadow-white/20 transition-all">Shop Now <span class="material-symbols-rounded text-lg">arrow_forward</span></a>
         </div>
-        <div class="absolute right-2 top-1/2 -translate-y-1/2 opacity-20">
-          <span class="material-symbols-rounded text-white text-8xl">confirmation_number</span>
+        <div class="absolute right-2 top-1/2 -translate-y-1/2 opacity-10">
+          <span class="material-symbols-rounded text-white text-9xl">confirmation_number</span>
         </div>
       </div>
     </section>
 
     <!-- New Arrivals -->
-    <section class="px-4 mt-6">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-lg font-bold text-gray-900">New Arrivals</h2>
-        <a href="product.html?sort=newest" class="text-sm brand-text font-medium">View All</a>
+    <section class="px-4 mt-6 fade-in" id="secNewArrivals">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-extrabold text-gray-900 section-title">New Arrivals</h2>
+        <a href="product.html?sort=newest" class="text-sm brand-text font-semibold flex items-center gap-0.5">View All <span class="material-symbols-rounded text-base">arrow_forward</span></a>
       </div>
-      <div class="flex gap-3 overflow-x-auto pb-2" id="newArrivalsRow"></div>
+      <div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4" id="newArrivalsRow"></div>
     </section>
 
-    <!-- Brand Logos -->
-    <section class="px-4 mt-6">
-      <h2 class="text-lg font-bold text-gray-900 mb-3">Top Brands</h2>
-      <div class="flex gap-4 overflow-x-auto pb-2">
-        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
-          <span class="font-extrabold text-sm text-gray-400">Khaadi</span>
+    <!-- Top Brands -->
+    <section class="px-4 mt-6 fade-in" id="secBrands">
+      <h2 class="text-lg font-extrabold text-gray-900 section-title mb-4">Top Brands</h2>
+      <div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4">
+        <div class="flex-shrink-0 w-28 h-20 bg-white rounded-xl border border-gray-100 flex items-center justify-center card-shadow">
+          <span class="font-extrabold text-sm text-gray-400 tracking-wider">Khaadi</span>
         </div>
-        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
-          <span class="font-extrabold text-sm text-gray-400">Sapphire</span>
+        <div class="flex-shrink-0 w-28 h-20 bg-white rounded-xl border border-gray-100 flex items-center justify-center card-shadow">
+          <span class="font-extrabold text-sm text-gray-400 tracking-wider">Sapphire</span>
         </div>
-        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
-          <span class="font-extrabold text-sm text-gray-400">Servis</span>
+        <div class="flex-shrink-0 w-28 h-20 bg-white rounded-xl border border-gray-100 flex items-center justify-center card-shadow">
+          <span class="font-extrabold text-sm text-gray-400 tracking-wider">Servis</span>
         </div>
-        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
-          <span class="font-extrabold text-sm text-gray-400">Samsung</span>
+        <div class="flex-shrink-0 w-28 h-20 bg-white rounded-xl border border-gray-100 flex items-center justify-center card-shadow">
+          <span class="font-extrabold text-sm text-gray-400 tracking-wider">Samsung</span>
         </div>
-        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
-          <span class="font-extrabold text-sm text-gray-400">J.</span>
+        <div class="flex-shrink-0 w-28 h-20 bg-white rounded-xl border border-gray-100 flex items-center justify-center card-shadow">
+          <span class="font-extrabold text-sm text-gray-400 tracking-wider">J.</span>
         </div>
-        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
-          <span class="font-extrabold text-sm text-gray-400">Gul Ahmed</span>
+        <div class="flex-shrink-0 w-28 h-20 bg-white rounded-xl border border-gray-100 flex items-center justify-center card-shadow">
+          <span class="font-extrabold text-sm text-gray-400 tracking-wider">Gul Ahmed</span>
         </div>
-        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
-          <span class="font-extrabold text-sm text-gray-400">Maria B</span>
+        <div class="flex-shrink-0 w-28 h-20 bg-white rounded-xl border border-gray-100 flex items-center justify-center card-shadow">
+          <span class="font-extrabold text-sm text-gray-400 tracking-wider">Maria B</span>
         </div>
-        <div class="flex-shrink-0 w-24 h-16 bg-white rounded-xl border border-gray-200 flex items-center justify-center">
-          <span class="font-extrabold text-sm text-gray-400">Outfitters</span>
+        <div class="flex-shrink-0 w-28 h-20 bg-white rounded-xl border border-gray-100 flex items-center justify-center card-shadow">
+          <span class="font-extrabold text-sm text-gray-400 tracking-wider">Outfitters</span>
         </div>
       </div>
     </section>
 
-    <!-- Features -->
-    <section class="px-4 mt-6">
-      <div class="grid grid-cols-3 gap-3">
-        <div class="text-center p-3 bg-white rounded-xl border border-gray-100">
-          <span class="material-symbols-rounded brand-text text-3xl">local_shipping</span>
-          <p class="text-xs text-gray-600 mt-1 font-medium">Free Shipping</p>
+    <!-- Why Choose Us -->
+    <section class="px-4 mt-6 fade-in" id="secFeatures">
+      <h2 class="text-lg font-extrabold text-gray-900 section-title mb-4">Why Choose Us</h2>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="p-4 bg-white rounded-xl border border-gray-100 card-shadow hover:card-shadow transition-all">
+          <div class="w-10 h-10 brand-light-bg rounded-xl flex items-center justify-center mb-3">
+            <span class="material-symbols-rounded brand-text text-xl">local_shipping</span>
+          </div>
+          <p class="text-sm font-bold text-gray-800">Free Shipping</p>
+          <p class="text-xs text-gray-500 mt-0.5">On orders over Rs. 2,000</p>
         </div>
-        <div class="text-center p-3 bg-white rounded-xl border border-gray-100">
-          <span class="material-symbols-rounded brand-text text-3xl">assignment_return</span>
-          <p class="text-xs text-gray-600 mt-1 font-medium">Easy Returns</p>
+        <div class="p-4 bg-white rounded-xl border border-gray-100 card-shadow hover:card-shadow transition-all">
+          <div class="w-10 h-10 brand-light-bg rounded-xl flex items-center justify-center mb-3">
+            <span class="material-symbols-rounded brand-text text-xl">assignment_return</span>
+          </div>
+          <p class="text-sm font-bold text-gray-800">Easy Returns</p>
+          <p class="text-xs text-gray-500 mt-0.5">Within 7 days of delivery</p>
         </div>
-        <div class="text-center p-3 bg-white rounded-xl border border-gray-100">
-          <span class="material-symbols-rounded brand-text text-3xl">security</span>
-          <p class="text-xs text-gray-600 mt-1 font-medium">Secure Payment</p>
+        <div class="p-4 bg-white rounded-xl border border-gray-100 card-shadow hover:card-shadow transition-all">
+          <div class="w-10 h-10 brand-light-bg rounded-xl flex items-center justify-center mb-3">
+            <span class="material-symbols-rounded brand-text text-xl">security</span>
+          </div>
+          <p class="text-sm font-bold text-gray-800">Secure Payment</p>
+          <p class="text-xs text-gray-500 mt-0.5">100% secure checkout</p>
+        </div>
+        <div class="p-4 bg-white rounded-xl border border-gray-100 card-shadow hover:card-shadow transition-all">
+          <div class="w-10 h-10 brand-light-bg rounded-xl flex items-center justify-center mb-3">
+            <span class="material-symbols-rounded brand-text text-xl">support_agent</span>
+          </div>
+          <p class="text-sm font-bold text-gray-800">24/7 Support</p>
+          <p class="text-xs text-gray-500 mt-0.5">We're here to help</p>
         </div>
       </div>
     </section>
 
     <!-- Footer -->
-    <footer class="mt-8 bg-[#1E293B] text-white px-4 py-6 rounded-t-3xl">
-      <div class="flex items-center gap-2 mb-4">
-        <span class="material-symbols-rounded brand-text text-2xl">store</span>
-        <span class="text-xl font-extrabold">Raja</span>
+    <footer class="mt-8 bg-[#1E293B] text-white px-6 py-8 rounded-t-3xl">
+      <div class="flex items-center gap-2.5 mb-4">
+        <div class="w-10 h-10 brand-gradient rounded-xl flex items-center justify-center">
+          <span class="material-symbols-rounded text-white text-xl">store</span>
+        </div>
+        <span class="text-2xl font-extrabold tracking-tight">Raja</span>
       </div>
-      <p class="text-gray-400 text-sm mb-4">Pakistan's favorite online shopping destination. Shop the best brands at the best prices.</p>
-      <div class="grid grid-cols-2 gap-4 mb-4">
+      <p class="text-gray-400 text-sm mb-6 leading-relaxed">Pakistan's favorite online shopping destination. Shop the best brands at the best prices, with fast delivery across the country.</p>
+      <div class="grid grid-cols-2 gap-6 mb-6">
         <div>
-          <h4 class="font-bold text-sm mb-2">Shop</h4>
-          <div class="space-y-1.5 text-sm text-gray-400">
-            <a href="product.html?cat=womens-fashion" class="block">Women's Fashion</a>
-            <a href="product.html?cat=mens-fashion" class="block">Men's Fashion</a>
-            <a href="product.html?cat=electronics" class="block">Electronics</a>
-            <a href="product.html?cat=footwear" class="block">Footwear</a>
+          <h4 class="font-bold text-sm mb-3 text-white/90">Shop</h4>
+          <div class="space-y-2 text-sm text-gray-400">
+            <a href="product.html?cat=womens-fashion" class="block hover:text-white transition-colors">Women's Fashion</a>
+            <a href="product.html?cat=mens-fashion" class="block hover:text-white transition-colors">Men's Fashion</a>
+            <a href="product.html?cat=electronics" class="block hover:text-white transition-colors">Electronics</a>
+            <a href="product.html?cat=footwear" class="block hover:text-white transition-colors">Footwear</a>
           </div>
         </div>
         <div>
-          <h4 class="font-bold text-sm mb-2">Help</h4>
-          <div class="space-y-1.5 text-sm text-gray-400">
-            <a href="#" class="block">Contact Us</a>
-            <a href="#" class="block">FAQs</a>
-            <a href="#" class="block">Shipping</a>
-            <a href="#" class="block">Returns</a>
+          <h4 class="font-bold text-sm mb-3 text-white/90">Help</h4>
+          <div class="space-y-2 text-sm text-gray-400">
+            <a href="support.html" class="block hover:text-white transition-colors">Contact Us</a>
+            <a href="#" class="block hover:text-white transition-colors">FAQs</a>
+            <a href="#" class="block hover:text-white transition-colors">Shipping</a>
+            <a href="#" class="block hover:text-white transition-colors">Returns</a>
           </div>
         </div>
       </div>
-      <hr class="border-gray-700 mb-4">
-      <p class="text-center text-sm text-gray-500">&copy; 2024 Raja. All rights reserved.</p>
+      <hr class="border-gray-700/60 mb-4">
+      <div class="flex items-center justify-between">
+        <p class="text-sm text-gray-500">&copy; 2024 Raja. All rights reserved.</p>
+        <div class="flex gap-3">
+          <span class="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center text-gray-400 hover:bg-orange-600 hover:text-white transition-all cursor-pointer">
+            <span class="material-symbols-rounded text-sm">facebook</span>
+          </span>
+          <span class="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center text-gray-400 hover:bg-orange-600 hover:text-white transition-all cursor-pointer">
+            <span class="material-symbols-rounded text-sm">instagram</span>
+          </span>
+          <span class="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center text-gray-400 hover:bg-orange-600 hover:text-white transition-all cursor-pointer">
+            <span class="material-symbols-rounded text-sm">youtube_searched_for</span>
+          </span>
+        </div>
+      </div>
     </footer>
   </main>
 
   <!-- Bottom Nav -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 px-2 pb-safe" style="padding-bottom: env(safe-area-inset-bottom, 0px);">
+  <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-200 z-50 px-2 pb-safe" style="padding-bottom: env(safe-area-inset-bottom, 0px);">
     <div class="flex items-center justify-around h-16">
-      <a href="index.html" class="flex flex-col items-center gap-0.5 brand-text">
+      <a href="index.html" class="flex flex-col items-center gap-0.5 brand-text relative">
         <span class="material-symbols-rounded text-2xl">home</span>
-        <span class="text-[10px] font-semibold">Home</span>
+        <span class="text-[10px] font-bold">Home</span>
       </a>
-      <a href="product.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+      <a href="product.html" class="flex flex-col items-center gap-0.5 text-gray-400 hover:brand-text transition-colors">
         <span class="material-symbols-rounded text-2xl">grid_view</span>
         <span class="text-[10px] font-medium">Products</span>
       </a>
-      <a href="search.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+      <a href="search.html" class="flex flex-col items-center gap-0.5 text-gray-400 hover:brand-text transition-colors">
         <span class="material-symbols-rounded text-2xl">search</span>
         <span class="text-[10px] font-medium">Search</span>
       </a>
-      <a href="wishlist.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+      <a href="wishlist.html" class="flex flex-col items-center gap-0.5 text-gray-400 hover:brand-text transition-colors">
         <span class="material-symbols-rounded text-2xl">favorite</span>
         <span class="text-[10px] font-medium">Wishlist</span>
       </a>
-      <a href="profile.html" class="flex flex-col items-center gap-0.5 text-gray-400">
+      <a href="profile.html" class="flex flex-col items-center gap-0.5 text-gray-400 hover:brand-text transition-colors">
         <span class="material-symbols-rounded text-2xl">person</span>
         <span class="text-[10px] font-medium">Profile</span>
       </a>
@@ -359,16 +428,16 @@
   </nav>
 
   <!-- Profile Completion Bottom Sheet -->
-  <div id="profileSheetOverlay" class="fixed inset-0 bg-black/50 z-[80] hidden" onclick="closeProfileSheet()"></div>
+  <div id="profileSheetOverlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[80] hidden transition-opacity" onclick="closeProfileSheet()"></div>
   <div id="profileSheet" class="bottom-sheet fixed bottom-0 left-0 right-0 bg-white z-[90] rounded-t-3xl shadow-2xl translate-y-full">
     <div class="p-6">
       <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4"></div>
       <div class="text-center mb-6">
-        <div class="w-20 h-20 bg-brand-light-bg rounded-full flex items-center justify-center mx-auto mb-3">
+        <div class="w-20 h-20 brand-light-bg rounded-full flex items-center justify-center mx-auto mb-3">
           <span class="material-symbols-rounded brand-text text-4xl">celebration</span>
         </div>
         <h3 class="text-xl font-bold text-gray-900">Welcome to Raja!</h3>
-        <p class="text-gray-500 mt-1">Complete your profile for a better experience</p>
+        <p class="text-gray-500 mt-1 text-sm">Complete your profile for a better experience</p>
       </div>
       <div class="space-y-3">
         <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
@@ -396,7 +465,7 @@
           <span class="material-symbols-rounded text-gray-300">chevron_right</span>
         </div>
       </div>
-      <button onclick="closeProfileSheet()" class="w-full mt-6 brand-gradient text-white py-3 rounded-xl font-bold">Let's Go Shopping</button>
+      <button onclick="closeProfileSheet()" class="w-full mt-6 brand-gradient text-white py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-orange-500/25 transition-all">Let's Go Shopping</button>
     </div>
   </div>
 </div>
@@ -442,7 +511,7 @@ function seedDataIfEmpty() {
       { id: 'womens-fashion', name: "Women's Fashion", icon: 'checkroom', count: 8 },
       { id: 'mens-fashion', name: "Men's Fashion", icon: 'hiking', count: 6 },
       { id: 'kids', name: 'Kids', icon: 'child_care', count: 4 },
-      { id: 'footwear', name: 'Footwear', icon: 'footwear', count: 5 },
+      { id: 'footwear', name: 'Footwear', icon: 'footprint', count: 5 },
       { id: 'electronics', name: 'Electronics', icon: 'smartphone', count: 6 },
       { id: 'home-kitchen', name: 'Home & Kitchen', icon: 'kitchen', count: 4 },
       { id: 'beauty', name: 'Beauty', icon: 'spa', count: 3 },
@@ -467,9 +536,9 @@ function seedDataIfEmpty() {
       { id: 'p12', name: 'Samsung Galaxy A14 128GB', category: 'electronics', price: 32999, originalPrice: 39999, rating: 4.4, reviews: 567, image: 'https://picsum.photos/seed/samsung1/400/500', images: ['https://picsum.photos/seed/samsung1/400/500', 'https://picsum.photos/seed/samsung1a/400/500'], isNew: false, isFlashSale: true, discount: 18, stock: 20, description: 'Samsung Galaxy A14 with 128GB storage. Features a 6.6" display and 50MP camera.', brand: 'Samsung', dateAdded: '2024-03-01' },
       { id: 'p13', name: 'Huawei Nova 12i 256GB', category: 'electronics', price: 45999, originalPrice: 52999, rating: 4.5, reviews: 345, image: 'https://picsum.photos/seed/huawei1/400/500', images: ['https://picsum.photos/seed/huawei1/400/500', 'https://picsum.photos/seed/huawei1a/400/500'], isNew: true, isFlashSale: false, discount: 13, stock: 15, description: 'Huawei Nova 12i with 256GB storage. 108MP camera and 40W fast charging.', brand: 'Huawei', dateAdded: '2024-05-05' },
       { id: 'p14', name: 'Dawlance Microwave Oven 28L', category: 'electronics', price: 18500, originalPrice: 22500, rating: 4.2, reviews: 189, image: 'https://picsum.photos/seed/dawlance1/400/500', images: ['https://picsum.photos/seed/dawlance1/400/500'], isNew: false, isFlashSale: true, discount: 18, stock: 12, description: 'Dawlance 28L microwave oven with multiple cooking modes and auto-defrost.', brand: 'Dawlance', dateAdded: '2024-02-15' },
-      { id: 'p15', name: 'Servis Cheetah Men's Sports Shoes', category: 'footwear', price: 2299, originalPrice: 2999, rating: 4.3, reviews: 678, image: 'https://picsum.photos/seed/servis1/400/500', images: ['https://picsum.photos/seed/servis1/400/500', 'https://picsum.photos/seed/servis1a/400/500'], isNew: false, isFlashSale: true, discount: 23, stock: 50, description: 'Servis Cheetah sports shoes. Comfortable and durable for daily wear and sports.', brand: 'Servis', dateAdded: '2024-04-05' },
-      { id: 'p16', name: 'Khadim's Women's Khussa - Gold Embroidered', category: 'footwear', price: 1899, originalPrice: 2499, rating: 4.4, reviews: 345, image: 'https://picsum.photos/seed/khadims1/400/500', images: ['https://picsum.photos/seed/khadims1/400/500'], isNew: true, isFlashSale: false, discount: 24, stock: 35, description: 'Beautiful gold embroidered khussa from Khadim\'s. Traditional design with modern comfort.', brand: 'Khadim\'s', dateAdded: '2024-05-12' },
-      { id: 'p17', name: 'Borjan Women's Heels - Elegance Collection', category: 'footwear', price: 3499, originalPrice: 4499, rating: 4.1, reviews: 156, image: 'https://picsum.photos/seed/borjan1/400/500', images: ['https://picsum.photos/seed/borjan1/400/500'], isNew: false, isFlashSale: false, discount: 22, stock: 20, description: 'Elegant heels from Borjan. Perfect for parties and formal events.', brand: 'Borjan', dateAdded: '2024-03-25' },
+      { id: 'p15', name: 'Servis Cheetah Men\'s Sports Shoes', category: 'footwear', price: 2299, originalPrice: 2999, rating: 4.3, reviews: 678, image: 'https://picsum.photos/seed/servis1/400/500', images: ['https://picsum.photos/seed/servis1/400/500', 'https://picsum.photos/seed/servis1a/400/500'], isNew: false, isFlashSale: true, discount: 23, stock: 50, description: 'Servis Cheetah sports shoes. Comfortable and durable for daily wear and sports.', brand: 'Servis', dateAdded: '2024-04-05' },
+      { id: 'p16', name: 'Khadim\'s Women\'s Khussa - Gold Embroidered', category: 'footwear', price: 1899, originalPrice: 2499, rating: 4.4, reviews: 345, image: 'https://picsum.photos/seed/khadims1/400/500', images: ['https://picsum.photos/seed/khadims1/400/500'], isNew: true, isFlashSale: false, discount: 24, stock: 35, description: 'Beautiful gold embroidered khussa from Khadim\'s. Traditional design with modern comfort.', brand: 'Khadim\'s', dateAdded: '2024-05-12' },
+      { id: 'p17', name: 'Borjan Women\'s Heels - Elegance Collection', category: 'footwear', price: 3499, originalPrice: 4499, rating: 4.1, reviews: 156, image: 'https://picsum.photos/seed/borjan1/400/500', images: ['https://picsum.photos/seed/borjan1/400/500'], isNew: false, isFlashSale: false, discount: 22, stock: 20, description: 'Elegant heels from Borjan. Perfect for parties and formal events.', brand: 'Borjan', dateAdded: '2024-03-25' },
       { id: 'p18', name: 'Metro Casual Shoes for Men', category: 'footwear', price: 2799, originalPrice: 3499, rating: 4.0, reviews: 234, image: 'https://picsum.photos/seed/metro1/400/500', images: ['https://picsum.photos/seed/metro1/400/500'], isNew: true, isFlashSale: true, discount: 20, stock: 40, description: 'Comfortable casual shoes from Metro. Lightweight and stylish for everyday use.', brand: 'Metro', dateAdded: '2024-05-08' },
       { id: 'p19', name: 'Kids Branded Kurta Shalwar Set - Blue', category: 'kids', price: 1299, originalPrice: 1799, rating: 4.5, reviews: 123, image: 'https://picsum.photos/seed/kids1/400/500', images: ['https://picsum.photos/seed/kids1/400/500'], isNew: false, isFlashSale: false, discount: 28, stock: 30, description: 'Colorful kurta shalwar set for kids. Comfortable fabric with beautiful design.', brand: 'Kids Collection', dateAdded: '2024-04-20' },
       { id: 'p20', name: 'Kids Winter Jacket - Hooded', category: 'kids', price: 1999, originalPrice: 2599, rating: 4.3, reviews: 89, image: 'https://picsum.photos/seed/kids2/400/500', images: ['https://picsum.photos/seed/kids2/400/500'], isNew: true, isFlashSale: false, discount: 23, stock: 20, description: 'Warm hooded winter jacket for kids. Soft inner lining and durable outer shell.', brand: 'Kids Collection', dateAdded: '2024-05-02' },
@@ -559,14 +628,14 @@ const track = document.getElementById('carouselTrack');
 function updateCarousel() {
   track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
   document.querySelectorAll('#carouselDots span').forEach((dot, i) => {
-    dot.className = 'w-2 h-2 rounded-full ' + (i === currentSlide ? 'bg-white' : 'bg-white/40');
+    dot.className = 'w-2.5 h-2.5 rounded-full transition-all duration-300 ' + (i === currentSlide ? 'bg-white scale-110' : 'bg-white/40');
   });
 }
 
 function nextSlide() { currentSlide = (currentSlide + 1) % slides.length; updateCarousel(); }
 function prevSlide() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateCarousel(); }
 
-let carouselInterval = setInterval(nextSlide, 4000);
+let carouselInterval = setInterval(nextSlide, 4500);
 
 // Touch swipe
 let touchStartX = 0;
@@ -577,8 +646,20 @@ carousel.addEventListener('touchend', e => {
   touchEndX = e.changedTouches[0].screenX;
   if (touchStartX - touchEndX > 50) nextSlide();
   else if (touchEndX - touchStartX > 50) prevSlide();
-  carouselInterval = setInterval(nextSlide, 4000);
+  carouselInterval = setInterval(nextSlide, 4500);
 });
+
+// ===== FADE IN ON SCROLL =====
+function observeFadeIn() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+}
 
 // ===== RENDER =====
 function renderPage() {
@@ -592,10 +673,10 @@ function renderPage() {
 
   // Carousel Dots
   const dotsContainer = document.getElementById('carouselDots');
-  dotsContainer.innerHTML = slides.length ? '' : '';
+  dotsContainer.innerHTML = '';
   for (let i = 0; i < slides.length; i++) {
     const dot = document.createElement('span');
-    dot.className = 'w-2 h-2 rounded-full ' + (i === 0 ? 'bg-white' : 'bg-white/40');
+    dot.className = 'w-2.5 h-2.5 rounded-full transition-all duration-300 ' + (i === 0 ? 'bg-white scale-110' : 'bg-white/40');
     dot.onclick = () => { currentSlide = i; updateCarousel(); };
     dotsContainer.appendChild(dot);
   }
@@ -603,7 +684,7 @@ function renderPage() {
   // Categories
   const catRow = document.getElementById('categoriesRow');
   catRow.innerHTML = categories.map(c => `
-    <div onclick="window.location.href='product.html?cat=${c.id}'" class="cat-chip flex-shrink-0 flex flex-col items-center gap-1.5 p-3 bg-white rounded-xl border border-gray-100 min-w-[80px] cursor-pointer hover:border-green-200">
+    <div onclick="window.location.href='product.html?cat=${c.id}'" class="cat-chip flex-shrink-0 flex flex-col items-center gap-1.5 p-3 bg-white rounded-xl border border-gray-100 w-[88px] cursor-pointer hover:border-orange-200 card-shadow">
       <div class="w-10 h-10 brand-light-bg rounded-full flex items-center justify-center">
         <span class="material-symbols-rounded brand-text text-xl">${c.icon}</span>
       </div>
@@ -647,20 +728,20 @@ function renderProductCard(p, wishlist) {
   const inWishlist = wishlist.includes(p.id);
   const discount = p.originalPrice ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
   return `
-    <div class="product-card flex-shrink-0 w-36 sm:w-40 bg-white rounded-xl border border-gray-100 overflow-hidden cursor-pointer" onclick="goToProduct('${p.id}')">
-      <div class="relative aspect-[4/5] bg-gray-50">
-        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://picsum.photos/seed/error${p.id}/400/500'">
-        ${discount > 0 ? `<div class="absolute top-2 left-2 brand-bg text-white text-[10px] font-bold px-1.5 py-0.5 rounded">-${discount}%</div>` : ''}
-        ${p.isNew ? `<div class="absolute top-2 right-2 bg-[#F59E0B] text-white text-[10px] font-bold px-1.5 py-0.5 rounded">NEW</div>` : ''}
-        <button onclick="event.stopPropagation(); toggleWishlist('${p.id}')" class="absolute bottom-2 right-2 w-7 h-7 bg-white/90 rounded-full flex items-center justify-center shadow">
+    <div class="product-card flex-shrink-0 w-36 sm:w-40 bg-white rounded-xl border border-gray-100 overflow-hidden cursor-pointer card-shadow" onclick="goToProduct('${p.id}')">
+      <div class="relative aspect-[4/5] bg-gray-50 overflow-hidden">
+        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" onerror="this.src='https://picsum.photos/seed/error${p.id}/400/500'">
+        ${discount > 0 ? `<div class="absolute top-2 left-2 brand-bg text-white text-[10px] font-bold px-2 py-0.5 rounded-md">-${discount}%</div>` : ''}
+        ${p.isNew ? `<div class="absolute top-2 right-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">NEW</div>` : ''}
+        <button onclick="event.stopPropagation(); toggleWishlist('${p.id}')" class="absolute bottom-2 right-2 w-7 h-7 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all">
           <span class="material-symbols-rounded text-lg ${inWishlist ? 'text-red-500' : 'text-gray-400'}" style="font-variation-settings:'FILL'${inWishlist ? '1' : '0'}">favorite</span>
         </button>
       </div>
       <div class="p-2.5">
         <p class="text-[11px] text-gray-400 font-medium truncate">${p.brand}</p>
         <h3 class="text-xs font-semibold text-gray-800 line-clamp-2 leading-tight mt-0.5">${p.name}</h3>
-        <div class="flex items-center gap-1 mt-1">
-          <span class="text-xs font-bold brand-text price-tag">${formatPrice(p.price)}</span>
+        <div class="flex items-center gap-1.5 mt-1.5">
+          <span class="text-xs font-extrabold brand-text price-tag">${formatPrice(p.price)}</span>
           ${p.originalPrice ? `<span class="text-[10px] text-gray-400 line-through price-tag">${formatPrice(p.originalPrice)}</span>` : ''}
         </div>
       </div>
@@ -692,6 +773,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 500);
   }
   renderPage();
+  observeFadeIn();
 });
 </script>
 </body>

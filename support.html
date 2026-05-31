@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--primary:#16A34A;--primary-dark:#15803D;--primary-light:#DCFCE7;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    :root{--primary:#FF6B35;--primary-dark:#E65A2E;--primary-light:#FFF0E0;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
     body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:80px;min-height:100vh;overflow-x:hidden;overflow-y:auto;}
     h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
@@ -52,7 +52,7 @@
 </nav>
 
 <div class="px-4 py-5">
-  <div class="p-5 rounded-2xl bg-white shadow-sm border border-gray-50 mb-6" style="background:linear-gradient(135deg,var(--primary) 0%,#15803D 100%);">
+  <div class="p-5 rounded-2xl bg-white shadow-sm border border-gray-50 mb-6" style="background:linear-gradient(135deg,var(--primary) 0%,#E65A2E 100%);">
     <h2 class="text-xl font-bold text-white" style="font-family:'Plus Jakarta Sans',sans-serif;">How can we help you?</h2>
     <p class="text-sm text-white/80 mt-1">We're here for you 24/7</p>
   </div>
@@ -87,10 +87,10 @@
   <h2 class="text-lg font-bold mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Contact Form</h2>
   <div class="p-5 rounded-xl bg-white shadow-sm border border-gray-50 mb-6">
     <div class="space-y-3">
-      <div><label class="text-sm font-medium mb-1 block">Your Name <span style="color:var(--error);">*</span></label><input type="text" id="ticketName" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-400"></div>
-      <div><label class="text-sm font-medium mb-1 block">Email <span style="color:var(--error);">*</span></label><input type="email" id="ticketEmail" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-400"></div>
-      <div><label class="text-sm font-medium mb-1 block">Subject <span style="color:var(--error);">*</span></label><input type="text" id="ticketSubject" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-400"></div>
-      <div><label class="text-sm font-medium mb-1 block">Message <span style="color:var(--error);">*</span></label><textarea id="ticketMsg" rows="4" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-green-400 resize-none"></textarea></div>
+      <div><label class="text-sm font-medium mb-1 block">Your Name <span style="color:var(--error);">*</span></label><input type="text" id="ticketName" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-500"></div>
+      <div><label class="text-sm font-medium mb-1 block">Email <span style="color:var(--error);">*</span></label><input type="email" id="ticketEmail" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-500"></div>
+      <div><label class="text-sm font-medium mb-1 block">Subject <span style="color:var(--error);">*</span></label><input type="text" id="ticketSubject" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-500"></div>
+      <div><label class="text-sm font-medium mb-1 block">Message <span style="color:var(--error);">*</span></label><textarea id="ticketMsg" rows="4" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-500 resize-none"></textarea></div>
       <button onclick="submitTicket()" class="w-full py-3 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Submit Ticket</button>
     </div>
   </div>

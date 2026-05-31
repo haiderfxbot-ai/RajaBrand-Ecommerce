@@ -12,10 +12,10 @@
     * { font-family: 'Plus Jakarta Sans', sans-serif; scrollbar-width: none; }
     *::-webkit-scrollbar { display: none; }
     body { overflow-x: hidden; overflow-y: auto; background: #f8fafc; }
-    .brand-gradient { background: linear-gradient(135deg, #16A34A 0%, #15803D 100%); }
-    .brand-text { color: #16A34A; }
-    .brand-bg { background: #16A34A; }
-    .brand-light-bg { background: #DCFCE7; }
+    .brand-gradient { background: linear-gradient(135deg, #FF6B35 0%, #E65A2E 100%); }
+    .brand-text { color: #FF6B35; }
+    .brand-bg { background: #FF6B35; }
+    .brand-light-bg { background: #FFF0E0; }
     .price-tag { font-family: 'DM Sans', sans-serif; }
     .qty-btn { transition: all 0.15s; }
     .qty-btn:active { transform: scale(0.9); }
@@ -53,7 +53,7 @@
     <div id="couponSection" class="hidden mt-4 bg-white rounded-xl border border-gray-100 p-4">
       <h3 class="font-bold text-sm text-gray-900 mb-2">Apply Coupon</h3>
       <div class="flex gap-2">
-        <input type="text" id="couponInput" placeholder="Enter coupon code" class="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm uppercase focus:outline-none focus:ring-2 focus:ring-green-200">
+        <input type="text" id="couponInput" placeholder="Enter coupon code" class="flex-1 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm uppercase focus:outline-none focus:ring-2 focus:ring-orange-200">
         <button onclick="applyCoupon()" class="brand-bg text-white px-4 py-2 rounded-lg text-sm font-medium">Apply</button>
       </div>
       <p id="couponMsg" class="text-sm mt-2 hidden"></p>
@@ -69,7 +69,7 @@
         </div>
         <div class="flex justify-between" id="discountRow">
           <span class="text-gray-500">Discount</span>
-          <span class="font-medium text-green-600" id="discountAmount">- Rs. 0</span>
+          <span class="font-medium text-orange-500" id="discountAmount">- Rs. 0</span>
         </div>
         <div class="flex justify-between">
           <span class="text-gray-500">Delivery</span>
@@ -270,7 +270,7 @@ function applyCoupon() {
 
   appliedCoupon = coupon;
   msg.textContent = 'Coupon applied! You saved ' + coupon.discount + '%!';
-  msg.className = 'text-sm mt-2 text-green-600';
+  msg.className = 'text-sm mt-2 text-orange-500';
   msg.classList.remove('hidden');
   document.getElementById('couponInput').value = code;
   updateSummary(cart);
