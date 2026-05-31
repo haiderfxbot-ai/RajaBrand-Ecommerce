@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" class="select-none overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Product Detail — Raja Brand</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <style>
+    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-bottom:100px;}
+    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
+    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+    .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
+    ::-webkit-scrollbar{display:none;}
+    .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px);}
+    .btn-press:active{transform:scale(0.96);}
+    .badge-pill{padding:2px 12px;border-radius:100px;font-size:11px;font-weight:600;}
+    .shimmer{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .toast{position:fixed;top:80px;right:16px;z-index:9999;padding:12px 20px;border-radius:12px;color:#fff;font-weight:500;box-shadow:0 4px 24px rgba(0,0,0,0.15);transform:translateX(120%);transition:transform .3s;max-width:320px;}
+    .toast.show{transform:translateX(0);}
+    .toast.success{background:var(--success);}
+    .toast.error{background:var(--error);}
+    .toast.info{background:var(--info);}
+    .toast.warning{background:var(--warning);}
+    .img-track{display:flex;transition:transform .35s cubic-bezier(.32,.72,0,1);}
+    .size-chip,.color-chip{cursor:pointer;transition:all .2s;}
+    .size-chip.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+    .color-chip.active{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary);}
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:500;display:none;align-items:center;justify-content:center;}
+    .lightbox.show{display:flex;}
+    .section-collapse{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+    .section-collapse.open{max-height:1000px;}
+  </style>
+</head>
+<body>
+<div id="toastContainer"></div>
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100/50">
+  <div class="flex items-center justify-between px-4 h-14">
+    <button onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></button>
+    <div class="flex gap-1">
+      <button onclick="shareProduct()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-600 text-2xl">share</span></button>
+      <a href="cart.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press relative"><span class="material-symbols-rounded text-gray-600 text-2xl">shopping_bag</span><span id="cartBadge" class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 hidden">0</span></a>
+    </div>
+  </div>
+</header>
+
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <button onclick="closeLightbox()" class="absolute top-14 right-4 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center btn-press"><span class="material-symbols-rounded text-white text-2xl">close</span></button>
+  <img id="lightboxImg" src="" alt="" class="max-w-full max-h-[90vh] object-contain p-4">
+</div>
+
+<main class="pb-24" id="productDetail" style="display:none;">
+  <div class="relative bg-white">
+    <div class="relative overflow-hidden" style="height:380px;">
+      <div class="img-track h-full" id="imgTrack"></div>
+      <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2" id="imgDots"></div>
+      <button onclick="openLightbox()" class="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow btn-press"><span class="material-symbols-rounded text-gray-700">zoom_in</span></button>
+    </div>
+  </div>
+
+  <div class="px-4 py-4 bg-white border-b border-gray-100">
+    <div class="flex items-center gap-2 text-xs text-gray-400 mb-2">
+      <a href="index.html" class="hover:text-orange-500">Home</a>
+      <span>/</span>
+      <a href="product.html" class="hover:text-orange-500" id="breadcrumbCat"></a>
+      <span>/</span>
+      <span class="text-gray-600" id="breadcrumbProd"></span>
+    </div>
+    <h1 class="text-xl font-bold leading-tight" id="prodName" style="font-family:'Plus Jakarta Sans',sans-serif;"></h1>
+    <div class="flex items-center gap-2 mt-2">
+      <div class="flex items-center gap-1"><span class="material-symbols-rounded text-sm" style="color:var(--warning);">star</span><span class="font-bold text-sm" id="prodRating"></span></div>
+      <span class="text-sm text-gray-400" id="prodReviews"></span>
+      <span class="text-xs px-2 py-0.5 rounded-full font-semibold" id="stockBadge"></span>
+    </div>
+    <div class="flex items-end gap-3 mt-3">
+      <span class="text-2xl font-extrabold" id="prodPrice" style="color:var(--on-surface);font-family:'Plus Jakarta Sans',sans-serif;"></span>
+      <span class="text-sm text-gray-400 line-through pb-0.5" id="prodOrigPrice"></span>
+      <span class="badge-pill bg-green-100 text-green-700 text-xs font-bold" id="prodDiscount"></span>
+    </div>
+  </div>
+
+  <div class="px-4 py-4 bg-white border-b border-gray-100" id="variantSection" style="display:none;">
+    <div class="mb-4">
+      <label class="text-sm font-bold mb-2 block">Size</label>
+      <div class="flex gap-2" id="sizeOptions"></div>
+    </div>
+    <div>
+      <label class="text-sm font-bold mb-2 block">Color</label>
+      <div class="flex gap-3" id="colorOptions"></div>
+    </div>
+  </div>
+
+  <div class="px-4 py-4 bg-white border-b border-gray-100">
+    <label class="text-sm font-bold mb-2 block">Quantity</label>
+    <div class="flex items-center gap-4">
+      <button onclick="changeQty(-1)" class="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center btn-press text-lg font-bold hover:bg-gray-50">−</button>
+      <span class="text-lg font-bold w-8 text-center" id="qtyDisplay">1</span>
+      <button onclick="changeQty(1)" class="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center btn-press text-lg font-bold hover:bg-gray-50">+</button>
+      <span class="text-xs text-gray-400" id="stockInfo"></span>
+    </div>
+  </div>
+
+  <div class="px-4 py-4 bg-white border-b border-gray-100 flex gap-3">
+    <button onclick="toggleWishlist()" class="flex items-center justify-center gap-1 px-5 py-3 rounded-xl border border-gray-200 text-sm font-medium btn-press flex-1" id="wishlistBtn"><span class="material-symbols-rounded" id="wishlistIcon">favorite</span> <span id="wishlistText">Wishlist</span></button>
+    <button onclick="addToCart()" class="flex-1 py-3 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);"><span class="material-symbols-rounded">shopping_bag</span> Add to Cart</button>
+  </div>
+
+  <div class="px-4 py-4 bg-white border-b border-gray-100">
+    <h3 class="text-sm font-bold mb-3">Delivery & Returns</h3>
+    <div class="flex gap-2 mb-3">
+      <input type="text" id="pincodeInput" placeholder="Enter pincode" class="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-orange-400" maxlength="6">
+      <button onclick="checkPincode()" class="px-4 py-2 rounded-lg text-sm font-medium btn-press text-white" style="background:var(--primary);">Check</button>
+    </div>
+    <p class="text-xs text-gray-500" id="deliveryMsg">Enter your pincode to check delivery estimate.</p>
+    <div class="flex items-center gap-2 mt-3 text-xs text-gray-500"><span class="material-symbols-rounded text-sm">local_shipping</span> Free Delivery on orders above ₹499</div>
+    <div class="flex items-center gap-2 mt-1 text-xs text-gray-500"><span class="material-symbols-rounded text-sm">autorenew</span> Easy 7-day returns & exchanges</div>
+  </div>
+
+  <div class="px-4 py-4 bg-white border-b border-gray-100">
+    <button onclick="toggleDesc()" class="flex items-center justify-between w-full text-sm font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;"><span>Description</span><span class="material-symbols-rounded transition-transform" id="descArrow">expand_more</span></button>
+    <div class="section-collapse" id="descSection">
+      <p class="text-sm text-gray-600 mt-3" id="prodDesc"></p>
+      <div class="mt-3 space-y-2 text-sm text-gray-600" id="featuresList"></div>
+    </div>
+  </div>
+
+  <div class="px-4 py-4 bg-white border-b border-gray-100">
+    <button onclick="toggleReviews()" class="flex items-center justify-between w-full text-sm font-bold" style="font-family:'Plus Jakarta Sans',sans-serif;"><span>Ratings & Reviews</span><span class="material-symbols-rounded transition-transform" id="revArrow">expand_more</span></button>
+    <div class="section-collapse" id="revSection">
+      <div class="mt-3" id="ratingBars"></div>
+      <div class="mt-4 space-y-3" id="reviewList"></div>
+      <button onclick="showToast('Review submitted! Thanks for your feedback.','success')" class="w-full mt-3 py-2.5 rounded-xl border border-gray-200 text-sm font-medium btn-press">Write a Review</button>
+    </div>
+  </div>
+
+  <div class="px-4 py-4">
+    <h3 class="text-sm font-bold mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Related Products</h3>
+    <div class="flex gap-4 overflow-x-auto pb-2" id="relatedScroll"></div>
+  </div>
+</main>
+
+<div id="skeletonLoading" class="px-4 pt-20">
+  <div class="shimmer w-full h-[380px] rounded-2xl mb-4"></div>
+  <div class="shimmer w-3/4 h-6 rounded-lg mb-2"></div>
+  <div class="shimmer w-1/2 h-4 rounded-lg mb-4"></div>
+  <div class="shimmer w-full h-12 rounded-xl mb-2"></div>
+  <div class="shimmer w-full h-12 rounded-xl"></div>
+</div>
+
+<div class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-100 px-4 py-3 safe-bottom flex gap-3 shadow-lg" id="bottomActions">
+  <button onclick="toggleWishlist()" class="w-12 h-12 rounded-xl border border-gray-200 flex items-center justify-center btn-press" id="wishlistBtnBottom"><span class="material-symbols-rounded text-xl" id="wishlistIconBottom">favorite</span></button>
+  <button onclick="addToCart()" class="flex-1 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Add to Cart • <span id="cartPrice">₹0</span></button>
+  <button onclick="buyNow()" class="flex-1 rounded-xl text-sm font-bold btn-press border-2" style="color:var(--primary);border-color:var(--primary);background:var(--primary-light);">Buy Now</button>
+</div>
+
+<script>
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  document.addEventListener('selectstart',e=>e.preventDefault());
+  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
+  document.querySelectorAll('img').forEach(img=>img.setAttribute('draggable','false'));
+
+  const STORE={users:'raja_users',currentUser:'raja_current_user',products:'raja_products',categories:'raja_categories',orders:'raja_orders',cart:'raja_cart',wishlist:'raja_wishlist',notifications:'raja_notifications',settings:'raja_settings',coupons:'raja_coupons',recentSearch:'raja_recent_search'};
+  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+  function seedData(){
+    if(getLS(STORE.products)&&getLS(STORE.products).length>0)return;
+    const cats=[{id:'cat_001',name:'Electronics',icon:'devices',color:'#007AFF'},{id:'cat_002',name:'Clothing',icon:'checkroom',color:'#FF6B35'},{id:'cat_003',name:'Shoes',icon:'footprint',color:'#34C759'},{id:'cat_004',name:'Accessories',icon:'watch',color:'#FF9500'},{id:'cat_005',name:'Home & Living',icon:'chair',color:'#AF52DE'},{id:'cat_006',name:'Beauty',icon:'spa',color:'#FF2D55'},{id:'cat_007',name:'Sports',icon:'sports_soccer',color:'#5856D6'},{id:'cat_008',name:'Books',icon:'menu_book',color:'#8E8E93'}];
+    setLS(STORE.categories,cats);
+    const prods=[{id:'prod_001',cat_id:'cat_002',name:'Premium Cotton T-Shirt',description:'Soft breathable cotton t-shirt.',price:599,original_price:999,discount:40,stock:100,images:['https://picsum.photos/400/400?random=1'],rating:4.5,reviews:234,tags:['featured','new'],created_at:'2026-05-01'},{id:'prod_002',cat_id:'cat_002',name:'Slim Fit Denim Jeans',description:'Modern slim fit jeans.',price:1299,original_price:2499,discount:48,stock:75,images:['https://picsum.photos/400/400?random=2'],rating:4.3,reviews:189,tags:['featured'],created_at:'2026-04-28'},{id:'prod_003',cat_id:'cat_001',name:'Wireless Bluetooth Earbuds',description:'High-quality wireless earbuds.',price:2499,original_price:4999,discount:50,stock:60,images:['https://picsum.photos/400/400?random=3'],rating:4.7,reviews:456,tags:['featured','new','sale'],created_at:'2026-05-10'},{id:'prod_004',cat_id:'cat_001',name:'Smart Watch Pro',description:'Advanced smartwatch.',price:5999,original_price:9999,discount:40,stock:40,images:['https://picsum.photos/400/400?random=4'],rating:4.4,reviews:312,tags:['featured'],created_at:'2026-03-15'},{id:'prod_005',cat_id:'cat_003',name:'Running Sneakers Air',description:'Lightweight running shoes.',price:3499,original_price:5499,discount:36,stock:85,images:['https://picsum.photos/400/400?random=5'],rating:4.6,reviews:278,tags:['featured','new'],created_at:'2026-05-20'},{id:'prod_006',cat_id:'cat_003',name:'Casual Loafers',description:'Stylish casual loafers.',price:1999,original_price:2999,discount:33,stock:55,images:['https://picsum.photos/400/400?random=6'],rating:4.2,reviews:145,tags:[],created_at:'2026-04-10'},{id:'prod_007',cat_id:'cat_004',name:'Classic Leather Watch',description:'Elegant analog watch.',price:4499,original_price:6999,discount:36,stock:30,images:['https://picsum.photos/400/400?random=7'],rating:4.8,reviews:523,tags:['featured'],created_at:'2026-02-20'},{id:'prod_008',cat_id:'cat_004',name:'Silver Chain Necklace',description:'Premium silver chain necklace.',price:899,original_price:1499,discount:40,stock:120,images:['https://picsum.photos/400/400?random=8'],rating:4.1,reviews:89,tags:['new'],created_at:'2026-05-15'},{id:'prod_009',cat_id:'cat_005',name:'Scented Candle Set',description:'Set of 3 soy wax candles.',price:799,original_price:1299,discount:38,stock:200,images:['https://picsum.photos/400/400?random=9'],rating:4.0,reviews:67,tags:['new'],created_at:'2026-05-18'},{id:'prod_010',cat_id:'cat_006',name:'Face Serum Vitamin C',description:'Brightening vitamin C serum.',price:549,original_price:899,discount:39,stock:150,images:['https://picsum.photos/400/400?random=10'],rating:4.5,reviews:432,tags:['featured'],created_at:'2026-04-05'},{id:'prod_011',cat_id:'cat_007',name:'Yoga Mat Premium',description:'Extra thick non-slip yoga mat.',price:1499,original_price:2499,discount:40,stock:90,images:['https://picsum.photos/400/400?random=11'],rating:4.3,reviews:198,tags:[],created_at:'2026-03-25'},{id:'prod_012',cat_id:'cat_008',name:'The Art of Living',description:'Bestselling self-improvement book.',price:299,original_price:499,discount:40,stock:300,images:['https://picsum.photos/400/400?random=12'],rating:4.6,reviews:876,tags:['featured'],created_at:'2026-01-10'},{id:'prod_013',cat_id:'cat_001',name:'USB-C Hub 7-in-1',description:'Multi-port adapter.',price:1799,original_price:2999,discount:40,stock:65,images:['https://picsum.photos/400/400?random=13'],rating:4.2,reviews:156,tags:['sale'],created_at:'2026-05-08'},{id:'prod_014',cat_id:'cat_002',name:'Floral Summer Dress',description:'Lightweight floral print dress.',price:1499,original_price:2499,discount:40,stock:45,images:['https://picsum.photos/400/400?random=14'],rating:4.4,reviews:234,tags:['new','featured'],created_at:'2026-05-22'},{id:'prod_015',cat_id:'cat_005',name:'Mini Plant Pot Set',description:'Set of 4 ceramic plant pots.',price:449,original_price:699,discount:36,stock:180,images:['https://picsum.photos/400/400?random=15'],rating:4.0,reviews:98,tags:['new'],created_at:'2026-05-12'},{id:'prod_016',cat_id:'cat_006',name:'Organic Lip Balm Trio',description:'Moisturizing organic lip balms.',price:299,original_price:499,discount:40,stock:250,images:['https://picsum.photos/400/400?random=16'],rating:4.3,reviews:567,tags:[],created_at:'2026-04-20'}];
+    setLS(STORE.products,prods);
+    if(!getLS(STORE.cart))setLS(STORE.cart,[]);
+    if(!getLS(STORE.wishlist))setLS(STORE.wishlist,[]);
+  }
+  seedData();
+
+  const products=getLS(STORE.products)||[];
+  const categories=getLS(STORE.categories)||[];
+  const params=new URLSearchParams(window.location.search);
+  const prodId=params.get('id')||'prod_001';
+  const product=products.find(p=>p.id===prodId);
+  let qty=1;
+  let currentImg=0;
+  const sampleReviews=[
+    {name:'Rahul S.',date:'12 Jan 2026',rating:5,text:'Excellent quality! Highly recommend.'},
+    {name:'Priya M.',date:'5 Mar 2026',rating:4,text:'Good product for the price. Delivery was fast.'},
+    {name:'Amit K.',date:'22 Feb 2026',rating:5,text:'Loved it! Will buy again.'}
+  ];
+
+  function updateCartBadge(){const c=getLS(STORE.cart)||[];const b=document.getElementById('cartBadge');if(c.length>0){b.textContent=c.length;b.classList.remove('hidden');}else b.classList.add('hidden');}
+  updateCartBadge();
+
+  function showToast(msg,type='success'){
+    const c=document.getElementById('toastContainer');
+    const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;
+    c.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));
+    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3000);
+  }
+
+  if(!product){document.getElementById('skeletonLoading').outerHTML='<div class="p-8 text-center text-gray-500">Product not found.</div>';}
+  else{
+    document.getElementById('skeletonLoading').style.display='none';
+    document.getElementById('productDetail').style.display='block';
+
+    const cat=categories.find(c=>c.id===product.cat_id)||{name:'General'};
+    document.getElementById('breadcrumbCat').textContent=cat.name;
+    document.getElementById('breadcrumbCat').href=`product.html?cat=${product.cat_id}`;
+    document.getElementById('breadcrumbProd').textContent=product.name;
+    document.getElementById('prodName').textContent=product.name;
+    document.getElementById('prodRating').textContent=product.rating;
+    document.getElementById('prodReviews').textContent=`(${product.reviews} reviews)`;
+    document.getElementById('prodPrice').textContent=`₹${product.price.toLocaleString()}`;
+    document.getElementById('prodOrigPrice').textContent=`₹${product.original_price.toLocaleString()}`;
+    document.getElementById('prodDiscount').textContent=`${product.discount}% OFF`;
+    document.getElementById('prodDesc').textContent=product.description;
+    document.getElementById('stockInfo').textContent=`${product.stock} in stock`;
+
+    const stockBadge=document.getElementById('stockBadge');
+    if(product.stock>0){stockBadge.textContent='In Stock ✓';stockBadge.style.background='#dcfce7';stockBadge.style.color='#166534';}
+    else{stockBadge.textContent='Out of Stock';stockBadge.style.background='#fee2e2';stockBadge.style.color='#991b1b';}
+
+    const track=document.getElementById('imgTrack');
+    const imgs=product.images.length>0?product.images:['https://picsum.photos/400/400?random='+Math.floor(Math.random()*100)];
+    imgs.forEach((src,i)=>{
+      track.innerHTML+=`<div class="min-w-full h-full flex items-center justify-center bg-gray-50"><img src="${src}" alt="${product.name}" class="w-full h-full object-cover" draggable="false"></div>`;
+      const dot=document.createElement('div');
+      dot.className=`w-2 h-2 rounded-full ${i===0?'bg-white':'bg-white/40'}`;
+      dot.style.transition='all .3s';
+      document.getElementById('imgDots').appendChild(dot);
+    });
+
+    let ti=0;
+    document.querySelector('.relative.overflow-hidden').addEventListener('touchstart',e=>{ti=e.touches[0].clientX;});
+    document.querySelector('.relative.overflow-hidden').addEventListener('touchend',e=>{
+      const diff=ti-e.changedTouches[0].clientX;
+      if(Math.abs(diff)>50){
+        if(diff>0&&currentImg<imgs.length-1)currentImg++;
+        else if(diff<0&&currentImg>0)currentImg--;
+        updateImg();
+      }
+    });
+
+    function updateImg(){
+      document.getElementById('imgTrack').style.transform=`translateX(-${currentImg*100}%)`;
+      document.querySelectorAll('#imgDots div').forEach((d,i)=>{d.style.background=i===currentImg?'#fff':'rgba(255,255,255,0.4)';});
+    }
+
+    const feat=['100% Authentic Product','Premium Quality Material','Easy 7-day Returns','Secure Payment'];
+    document.getElementById('featuresList').innerHTML=feat.map(f=>`<div class="flex items-center gap-2"><span class="material-symbols-rounded text-sm" style="color:var(--success);">check</span><span>${f}</span></div>`).join('');
+
+    const bars=document.getElementById('ratingBars');
+    const dist=[{star:5,pct:60},{star:4,pct:25},{star:3,pct:10},{star:2,pct:3},{star:1,pct:2}];
+    bars.innerHTML=dist.map(d=>`<div class="flex items-center gap-2 text-xs mb-1"><span class="w-8 text-right">${d.star}★</span><div class="flex-1 h-2 rounded-full bg-gray-100"><div class="h-full rounded-full" style="width:${d.pct}%;background:var(--warning);"></div></div><span class="w-8 text-left text-gray-400">${d.pct}%</span></div>`).join('');
+    document.getElementById('reviewList').innerHTML=sampleReviews.map(r=>`<div class="p-3 rounded-xl bg-gray-50"><div class="flex items-center justify-between"><span class="font-bold text-sm">${r.name}</span><span class="text-xs text-gray-400">${r.date}</span></div><div class="flex items-center gap-0.5 mt-1">${Array(r.rating).fill(0).map(()=>'<span class="material-symbols-rounded text-sm" style="color:var(--warning);">star</span>').join('')}</div><p class="text-sm text-gray-600 mt-1">${r.text}</p></div>`).join('');
+
+    document.getElementById('cartPrice').textContent=`₹${product.price}`;
+
+    const wl=getLS(STORE.wishlist)||[];
+    if(wl.includes(product.id)){document.getElementById('wishlistIcon').classList.add('icon-fill');document.getElementById('wishlistIcon').style.color='var(--error)';document.getElementById('wishlistIconBottom').classList.add('icon-fill');document.getElementById('wishlistIconBottom').style.color='var(--error)';document.getElementById('wishlistText').textContent='Remove';}
+
+    const related=products.filter(p=>p.cat_id===product.cat_id&&p.id!==product.id).slice(0,6);
+    const scroll=document.getElementById('relatedScroll');
+    related.forEach(p=>{
+      const rc=categories.find(c=>c.id===p.cat_id);
+      scroll.innerHTML+=`<a href="product-detail.html?id=${p.id}" class="min-w-[160px] bg-white rounded-xl overflow-hidden shadow-sm border border-gray-50">
+        <div class="aspect-[4/3] bg-gray-50"><img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy"></div>
+        <div class="p-2"><h4 class="text-xs font-bold line-clamp-2">${p.name}</h4><span class="text-sm font-bold">₹${p.price}</span></div>
+      </a>`;
+    });
+  }
+
+  function changeQty(delta){
+    qty=Math.max(1,Math.min(product.stock,qty+delta));
+    document.getElementById('qtyDisplay').textContent=qty;
+    document.getElementById('cartPrice').textContent=`₹${(product.price*qty).toLocaleString()}`;
+  }
+
+  function addToCart(){
+    const cart=getLS(STORE.cart)||[];
+    const ex=cart.find(i=>i.product_id===product.id);
+    if(ex)ex.quantity+=qty;
+    else cart.push({product_id:product.id,product_name:product.name,product_image:product.images[0],price:product.price,quantity:qty});
+    setLS(STORE.cart,cart);
+    updateCartBadge();
+    showToast(`${product.name} added to cart!`,'success');
+  }
+
+  function toggleWishlist(){
+    let w=getLS(STORE.wishlist)||[];
+    if(w.includes(product.id)){w=w.filter(i=>i!==product.id);showToast('Removed from wishlist','info');}
+    else{w.push(product.id);showToast('Added to wishlist!','success');}
+    setLS(STORE.wishlist,w);
+    const inW=w.includes(product.id);
+    document.getElementById('wishlistIcon').classList.toggle('icon-fill',inW);
+    document.getElementById('wishlistIcon').style.color=inW?'var(--error)':'';
+    document.getElementById('wishlistIconBottom').classList.toggle('icon-fill',inW);
+    document.getElementById('wishlistIconBottom').style.color=inW?'var(--error)':'';
+    document.getElementById('wishlistText').textContent=inW?'Remove':'Wishlist';
+  }
+
+  function buyNow(){
+    addToCart();
+    setTimeout(()=>window.location.href='checkout.html',500);
+  }
+
+  function checkPincode(){
+    const pc=document.getElementById('pincodeInput').value;
+    const msg=document.getElementById('deliveryMsg');
+    if(pc.length===6&&/^\d+$/.test(pc)){
+      msg.innerHTML='<span style="color:var(--success);">✓ Delivery available! Estimated 3-5 business days.</span>';
+    }else{
+      msg.innerHTML='<span style="color:var(--error);">Please enter a valid 6-digit pincode.</span>';
+    }
+  }
+
+  function openLightbox(){
+    document.getElementById('lightbox').classList.add('show');
+    document.getElementById('lightboxImg').src=product.images[currentImg]||product.images[0];
+  }
+  function closeLightbox(){document.getElementById('lightbox').classList.remove('show');}
+
+  function shareProduct(){
+    if(navigator.share)navigator.share({title:product.name,url:window.location.href});
+    else{showToast('Link copied to clipboard!','success');}
+  }
+
+  function toggleDesc(){
+    document.getElementById('descSection').classList.toggle('open');
+    document.getElementById('descArrow').style.transform=document.getElementById('descSection').classList.contains('open')?'rotate(180deg)':'rotate(0)';
+  }
+  function toggleReviews(){
+    document.getElementById('revSection').classList.toggle('open');
+    document.getElementById('revArrow').style.transform=document.getElementById('revSection').classList.contains('open')?'rotate(180deg)':'rotate(0)';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" class="select-none overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Search — Raja Brand</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <style>
+    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;min-height:100vh;}
+    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
+    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+    .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
+    ::-webkit-scrollbar{display:none;}
+    .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px);}
+    .btn-press:active{transform:scale(0.96);}
+    .product-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+    .badge-pill{padding:2px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+  </style>
+</head>
+<body>
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100/50">
+  <div class="flex items-center justify-between px-4 h-16 safe-top">
+    <button onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></button>
+    <div class="flex-1 mx-2 relative">
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-rounded text-gray-400 text-lg">search</span>
+      <input type="text" id="searchInput" placeholder="Search products..." class="w-full pl-9 pr-8 py-2.5 rounded-xl bg-gray-100 text-sm focus:outline-none focus:bg-white focus:border focus:border-orange-400" autofocus oninput="doSearch()">
+      <span id="clearSearch" class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-rounded text-gray-400 cursor-pointer hidden text-lg" onclick="clearSearch()">close</span>
+    </div>
+  </div>
+</header>
+
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white/92 backdrop-blur-xl border-t border-gray-100 safe-bottom" style="padding-bottom:env(safe-area-inset-bottom,4px);">
+  <div class="flex items-center justify-around h-16">
+    <a href="index.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">home</span><span class="text-[10px] text-gray-400">Home</span></a>
+    <a href="product.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">grid_view</span><span class="text-[10px] text-gray-400">Products</span></a>
+    <a href="search.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded icon-fill text-xl" style="color:var(--primary);">search</span><span class="text-[10px] font-medium" style="color:var(--primary);">Search</span></a>
+    <a href="wishlist.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">favorite</span><span class="text-[10px] text-gray-400">Wishlist</span></a>
+    <a href="profile.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">person</span><span class="text-[10px] text-gray-400">Profile</span></a>
+  </div>
+</nav>
+
+<div class="px-4 py-3">
+  <div id="recentSearches" class="mb-4"></div>
+  <div id="trendingSearches" class="mb-4"></div>
+  <div id="searchResults" class="grid grid-cols-2 gap-3"></div>
+  <div id="emptyState" class="hidden flex flex-col items-center justify-center py-12">
+    <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_t9v9vnzm.json" background="transparent" speed="1" style="width:160px;height:160px;" loop autoplay></lottie-player>
+    <p class="text-gray-500 mt-3 text-sm">No results found</p>
+    <p class="text-xs text-gray-400 mt-1">Try different keywords</p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  document.addEventListener('selectstart',e=>e.preventDefault());
+  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
+  document.querySelectorAll('img').forEach(img=>img.setAttribute('draggable','false'));
+
+  const STORE={products:'raja_products',categories:'raja_categories',cart:'raja_cart',wishlist:'raja_wishlist',recentSearch:'raja_recent_search'};
+  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+  function showToast(msg,type='success'){
+    const c=document.getElementById('toastContainer')||document.body;
+    const t=document.createElement('div');t.className='fixed top-20 right-4 z-50 px-4 py-2.5 rounded-xl text-white font-medium shadow-lg transition-all duration-300 translate-x-[120%]';t.textContent=msg;t.style.background=type==='success'?'var(--success)':type==='error'?'var(--error)':'var(--info)';
+    c.appendChild(t);requestAnimationFrame(()=>t.style.transform='translateX(0)');
+    setTimeout(()=>{t.style.transform='translateX(120%)';setTimeout(()=>t.remove(),300);},2500);
+  }
+
+  const products=getLS(STORE.products)||[];
+  const categories=getLS(STORE.categories)||[];
+
+  function doSearch(){
+    const q=document.getElementById('searchInput').value.trim().toLowerCase();
+    const grid=document.getElementById('searchResults');
+    const empty=document.getElementById('emptyState');
+    const clear=document.getElementById('clearSearch');
+    clear.classList.toggle('hidden',!q);
+
+    if(!q){
+      grid.innerHTML='';
+      empty.classList.add('hidden');
+      showRecentTrending();
+      return;
+    }
+
+    const results=products.filter(p=>p.name.toLowerCase().includes(q)||p.description.toLowerCase().includes(q)||(categories.find(c=>c.id===p.cat_id)||{}).name?.toLowerCase().includes(q));
+
+    if(results.length===0){
+      grid.innerHTML='';
+      empty.classList.remove('hidden');
+    }else{
+      empty.classList.add('hidden');
+      grid.innerHTML=results.map(p=>{
+        const cat=categories.find(c=>c.id===p.cat_id);
+        return `<a href="product-detail.html?id=${p.id}" class="product-card block">
+          <div class="relative aspect-[4/3] overflow-hidden bg-gray-50"><img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy"><div class="absolute top-2 left-2"><span class="badge-pill bg-red-500 text-white">${p.discount}%</span></div></div>
+          <div class="p-2"><span class="text-[10px] text-gray-400 uppercase">${cat?cat.name:''}</span><h3 class="text-xs font-bold line-clamp-2">${p.name}</h3><div class="flex items-center gap-1 mt-1"><span class="font-bold text-sm">₹${p.price}</span></div></div>
+        </a>`;
+      }).join('');
+      saveRecentSearch(q);
+    }
+    document.getElementById('recentSearches').innerHTML='';
+    document.getElementById('trendingSearches').innerHTML='';
+  }
+
+  function saveRecentSearch(q){
+    let recents=getLS(STORE.recentSearch)||[];
+    recents=recents.filter(r=>r!==q);
+    recents.unshift(q);
+    if(recents.length>8)recents=recents.slice(0,8);
+    setLS(STORE.recentSearch,recents);
+  }
+
+  function showRecentTrending(){
+    const recents=getLS(STORE.recentSearch)||[];
+    const rDiv=document.getElementById('recentSearches');
+    if(recents.length>0){
+      rDiv.innerHTML=`<div class="flex items-center justify-between mb-2"><h3 class="text-sm font-bold">Recent</h3><button onclick="clearRecent()" class="text-xs" style="color:var(--primary);">Clear</button></div><div class="flex flex-wrap gap-2">${recents.map(r=>`<button onclick="useSearch('${r}')" class="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-xs btn-press">${r}</button>`).join('')}</div>`;
+    }else rDiv.innerHTML='';
+
+    const trending=['T-Shirt','Sneakers','Earbuds','Watch','Jeans','Dress','Serum','Loafer'];
+    document.getElementById('trendingSearches').innerHTML=`<h3 class="text-sm font-bold mb-2">Trending</h3><div class="flex flex-wrap gap-2">${trending.map(t=>`<button onclick="useSearch('${t}')" class="px-3 py-1.5 rounded-lg bg-orange-50 border border-orange-100 text-xs btn-press" style="color:var(--primary);">${t}</button>`).join('')}</div>`;
+  }
+
+  function useSearch(q){
+    document.getElementById('searchInput').value=q;
+    doSearch();
+  }
+
+  function clearSearch(){
+    document.getElementById('searchInput').value='';
+    document.getElementById('clearSearch').classList.add('hidden');
+    doSearch();
+  }
+
+  function clearRecent(){
+    setLS(STORE.recentSearch,[]);
+    showRecentTrending();
+  }
+
+  showRecentTrending();
+</script>
+</body>
+</html>

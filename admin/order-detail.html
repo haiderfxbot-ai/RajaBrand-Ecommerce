@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" class="select-none overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Order Detail — Raja Brand Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;}
+    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
+    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+    .btn-press:active{transform:scale(0.96);}
+  </style>
+</head>
+<body>
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+  <div class="flex items-center justify-between px-4 h-16 safe-top">
+    <a href="orders.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></a>
+    <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">Order Detail</span>
+    <button onclick="window.print()" class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium btn-press"><span class="material-symbols-rounded text-sm">print</span> Print</button>
+  </div>
+</header>
+
+<div class="px-4 py-4" id="orderContent">
+  <p class="text-center text-gray-400 py-8" id="loadingOrder">Loading order...</p>
+</div>
+
+<script>
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  document.addEventListener('selectstart',e=>e.preventDefault());
+  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
+
+  if(localStorage.getItem('raja_admin_session')!=='true')window.location.href='login.html';
+
+  const STORE={orders:'raja_orders'};
+  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+  const params=new URLSearchParams(window.location.search);
+  const orderId=params.get('id');
+  const orders=getLS(STORE.orders)||[];
+  const order=orders.find(o=>o.id===orderId);
+  const content=document.getElementById('orderContent');
+
+  if(!order){
+    content.innerHTML='<p class="text-center text-gray-400 py-8">Order not found</p>';
+  }else{
+    content.innerHTML=`
+      <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mb-4">
+        <div class="flex items-center justify-between mb-3">
+          <div><span class="text-xs text-gray-400">Order ID</span><p class="font-bold font-mono">${order.id}</p></div>
+          <span class="px-3 py-1 rounded-full text-xs font-bold ${order.status==='Delivered'?'bg-green-100 text-green-700':order.status==='Cancelled'?'bg-red-100 text-red-700':order.status==='Dispatched'?'bg-orange-100 text-orange-700':'bg-blue-100 text-blue-700'}">${order.status}</span>
+        </div>
+        <p class="text-xs text-gray-400">${new Date(order.created_at).toLocaleString('en-IN')}</p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mb-4">
+        <h3 class="text-sm font-bold mb-2">Customer Details</h3>
+        <p class="text-sm">${order.address?.name||'N/A'}</p>
+        <p class="text-sm text-gray-500">${order.address?.phone||''}</p>
+        <p class="text-sm text-gray-500">${[order.address?.line1,order.address?.line2,order.address?.city,order.address?.state,order.address?.pincode].filter(Boolean).join(', ')}</p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mb-4">
+        <h3 class="text-sm font-bold mb-3">Order Items</h3>
+        ${(order.items||[]).map(item=>`
+          <div class="flex gap-3 py-2 border-b border-gray-50 last:border-0">
+            <div class="w-12 h-12 rounded-lg bg-gray-50 overflow-hidden flex-shrink-0"><img src="${item.image||'https://picsum.photos/100/100'}" class="w-full h-full object-cover"></div>
+            <div class="flex-1 min-w-0"><p class="text-sm font-medium line-clamp-1">${item.name}</p><p class="text-xs text-gray-400">Qty: ${item.quantity} × ₹${item.price.toLocaleString()}</p><span class="text-sm font-bold">₹${(item.price*item.quantity).toLocaleString()}</span></div>
+          </div>
+        `).join('')}
+        <div class="mt-3 space-y-1 text-sm border-t border-gray-100 pt-2">
+          <div class="flex justify-between"><span class="text-gray-500">Subtotal</span><span>₹${(order.subtotal||0).toLocaleString()}</span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Delivery</span><span>${order.delivery===0?'FREE':'₹'+order.delivery}</span></div>
+          ${order.coupon_discount?`<div class="flex justify-between"><span class="text-gray-500">Coupon</span><span style="color:var(--success);">-₹${order.coupon_discount}</span></div>`:''}
+          <div class="flex justify-between font-bold text-base pt-1 border-t border-gray-100"><span>Total</span><span>₹${(order.total||0).toLocaleString()}</span></div>
+          <p class="text-xs text-gray-400 mt-1">Payment: ${order.payment||'COD'}</p>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mb-4">
+        <h3 class="text-sm font-bold mb-2">Update Status</h3>
+        <div class="flex gap-2">
+          <select id="statusSelect" class="flex-1 px-3 py-2.5 rounded-xl border border-gray-200 text-sm">
+            <option value="Placed" ${order.status==='Placed'?'selected':''}>Placed</option>
+            <option value="Dispatched" ${order.status==='Dispatched'?'selected':''}>Dispatched</option>
+            <option value="Delivered" ${order.status==='Delivered'?'selected':''}>Delivered</option>
+            <option value="Cancelled" ${order.status==='Cancelled'?'selected':''}>Cancelled</option>
+          </select>
+          <button onclick="updateStatus()" class="px-5 py-2.5 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Update</button>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mb-4">
+        <h3 class="text-sm font-bold mb-3">Status Timeline</h3>
+        ${(order.status_history||[]).map(h=>`
+          <div class="flex items-start gap-3 pb-3 border-l-2 border-gray-200 pl-3 ml-1">
+            <div class="w-2 h-2 rounded-full bg-gray-300 mt-1.5 -ml-4"></div>
+            <div><p class="text-sm font-medium">${h.status}</p><p class="text-xs text-gray-400">${new Date(h.timestamp).toLocaleString('en-IN')}</p></div>
+          </div>
+        `).join('')||'<p class="text-sm text-gray-400">No history available</p>'}
+      </div>
+    `;
+  }
+
+  function updateStatus(){
+    const newStatus=document.getElementById('statusSelect').value;
+    if(!confirm(`Change status to "${newStatus}"?`))return;
+    const orders=getLS(STORE.orders)||[];
+    const idx=orders.findIndex(o=>o.id===orderId);
+    if(idx>=0){
+      orders[idx].status=newStatus;
+      if(!orders[idx].status_history)orders[idx].status_history=[];
+      orders[idx].status_history.push({status:newStatus,timestamp:new Date().toISOString()});
+      setLS(STORE.orders,orders);
+      location.reload();
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" class="select-none overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Settings — Raja Brand Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;}
+    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
+    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+    .btn-press:active{transform:scale(0.96);}
+    .toast{position:fixed;top:80px;right:16px;z-index:9999;padding:12px 20px;border-radius:12px;color:#fff;font-weight:500;box-shadow:0 4px 24px rgba(0,0,0,0.15);transform:translateX(120%);transition:transform .3s;max-width:320px;}
+    .toast.show{transform:translateX(0);}
+    .toast.success{background:var(--success);}
+    .toast.error{background:var(--error);}
+  </style>
+</head>
+<body>
+<div id="toastContainer"></div>
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+  <div class="flex items-center justify-between px-4 h-16 safe-top">
+    <a href="dashboard.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></a>
+    <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">Settings</span>
+    <div class="w-10"></div>
+  </div>
+</header>
+
+<div class="px-4 py-4 space-y-4">
+  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50">
+    <h3 class="text-sm font-bold mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Store Information</h3>
+    <div class="space-y-3">
+      <div><label class="text-sm font-medium mb-1 block">Store Name</label><input type="text" id="sName" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
+      <div><label class="text-sm font-medium mb-1 block">Store Logo URL</label><input type="text" id="sLogo" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
+      <div><label class="text-sm font-medium mb-1 block">Contact Email</label><input type="email" id="sEmail" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
+      <div><label class="text-sm font-medium mb-1 block">Contact Phone</label><input type="tel" id="sPhone" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
+      <div><label class="text-sm font-medium mb-1 block">Currency</label><input type="text" id="sCurrency" value="₹" disabled class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm bg-gray-50 text-gray-500"></div>
+      <button onclick="saveSettings()" class="w-full py-2.5 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Save Settings</button>
+    </div>
+  </div>
+
+  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50">
+    <h3 class="text-sm font-bold mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Admin Password</h3>
+    <div class="space-y-3">
+      <div><label class="text-sm font-medium mb-1 block">Current Password</label><input type="password" id="adminCurrPass" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
+      <div><label class="text-sm font-medium mb-1 block">New Password</label><input type="password" id="adminNewPass" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
+      <button onclick="changeAdminPass()" class="w-full py-2.5 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Update Password</button>
+    </div>
+  </div>
+
+  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50">
+    <h3 class="text-sm font-bold mb-3" style="font-family:'Plus Jakarta Sans',sans-serif;">Maintenance Mode</h3>
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-gray-500">Enable maintenance mode</p>
+      <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" id="maintenanceMode" class="sr-only peer" onchange="toggleMaintenance()"><div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-orange-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div></label>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  document.addEventListener('selectstart',e=>e.preventDefault());
+  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
+
+  if(localStorage.getItem('raja_admin_session')!=='true')window.location.href='login.html';
+
+  const STORE={settings:'raja_settings',users:'raja_users'};
+  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+  function showToast(msg,type='success'){
+    const c=document.getElementById('toastContainer');
+    const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;
+    c.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));
+    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3000);
+  }
+
+  function loadSettings(){
+    const s=getLS(STORE.settings)||{storeName:'Raja Brand',storeLogo:'',contactEmail:'support@rajabrand.in',contactPhone:'+91 98765 43210',currency:'₹',adminPassword:'admin123'};
+    document.getElementById('sName').value=s.storeName||'';
+    document.getElementById('sLogo').value=s.storeLogo||'';
+    document.getElementById('sEmail').value=s.contactEmail||'';
+    document.getElementById('sPhone').value=s.contactPhone||'';
+    document.getElementById('sCurrency').value=s.currency||'₹';
+    document.getElementById('maintenanceMode').checked=s.maintenance||false;
+  }
+
+  function saveSettings(){
+    const s=getLS(STORE.settings)||{};
+    s.storeName=document.getElementById('sName').value.trim();
+    s.storeLogo=document.getElementById('sLogo').value.trim();
+    s.contactEmail=document.getElementById('sEmail').value.trim();
+    s.contactPhone=document.getElementById('sPhone').value.trim();
+    s.currency='₹';
+    setLS(STORE.settings,s);
+    showToast('Settings saved!','success');
+  }
+
+  function changeAdminPass(){
+    const curr=document.getElementById('adminCurrPass').value;
+    const newp=document.getElementById('adminNewPass').value;
+    const s=getLS(STORE.settings)||{adminPassword:'admin123'};
+    if(curr!==s.adminPassword){showToast('Current password is incorrect','error');return;}
+    if(newp.length<6){showToast('New password must be at least 6 characters','error');return;}
+    s.adminPassword=newp;
+    setLS(STORE.settings,s);
+    document.getElementById('adminCurrPass').value='';
+    document.getElementById('adminNewPass').value='';
+    showToast('Admin password updated!','success');
+  }
+
+  function toggleMaintenance(){
+    const s=getLS(STORE.settings)||{};
+    s.maintenance=document.getElementById('maintenanceMode').checked;
+    setLS(STORE.settings,s);
+    showToast(s.maintenance?'Maintenance mode enabled':'Maintenance mode disabled',s.maintenance?'warning':'info');
+  }
+
+  loadSettings();
+</script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" class="select-none overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Manage Products — Raja Brand Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:100px;}
+    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
+    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+    ::-webkit-scrollbar{display:none;}
+    .btn-press:active{transform:scale(0.96);}
+    .toast{position:fixed;top:80px;right:16px;z-index:9999;padding:12px 20px;border-radius:12px;color:#fff;font-weight:500;box-shadow:0 4px 24px rgba(0,0,0,0.15);transform:translateX(120%);transition:transform .3s;max-width:320px;}
+    .toast.show{transform:translateX(0);}
+    .toast.success{background:var(--success);}
+    .toast.error{background:var(--error);}
+    .bs-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:300;opacity:0;visibility:hidden;transition:all .3s;}
+    .bs-overlay.show{opacity:1;visibility:visible;}
+    .bottom-sheet{position:fixed;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;z-index:301;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);max-height:90vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,16px);}
+    .bottom-sheet.show{transform:translateY(0);}
+    .bs-handle{width:36px;height:4px;border-radius:2px;background:#ddd;margin:8px auto 12px;}
+  </style>
+</head>
+<body>
+<div id="toastContainer"></div>
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+  <div class="flex items-center justify-between px-4 h-16 safe-top">
+    <a href="dashboard.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></a>
+    <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">Products</span>
+    <button onclick="openProductForm()" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);"><span class="material-symbols-rounded text-lg">add</span> Add</button>
+  </div>
+</header>
+
+<div class="px-4 py-3">
+  <div class="relative">
+    <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-rounded text-gray-400 text-lg">search</span>
+    <input type="text" id="searchProds" placeholder="Search products..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-orange-400" oninput="renderTable()">
+  </div>
+</div>
+
+<div class="px-4">
+  <select id="catFilter" class="px-3 py-2 rounded-lg border border-gray-200 text-sm" onchange="renderTable()"><option value="">All Categories</option></select>
+</div>
+
+<div class="px-4 py-3 overflow-x-auto">
+  <table class="w-full text-sm" id="productTable">
+    <thead><tr class="text-gray-400 border-b border-gray-100"><th class="text-left py-2 pr-2">Product</th><th class="text-right py-2 px-2">Price</th><th class="text-center py-2 px-2">Stock</th><th class="text-center py-2">Action</th></tr></thead>
+    <tbody id="productList"></tbody>
+  </table>
+  <p id="emptyProd" class="text-center text-gray-400 py-8 hidden">No products found</p>
+</div>
+
+<div class="fixed bottom-4 left-4 right-4 z-40">
+  <button onclick="openProductForm()" class="w-full py-3.5 rounded-xl text-sm font-bold text-white btn-press shadow-lg" style="background:var(--primary);box-shadow:0 4px 20px rgba(255,107,53,0.3);"><span class="material-symbols-rounded">add</span> Add New Product</button>
+</div>
+
+<div class="bs-overlay" id="formOverlay" onclick="closeForm()"></div>
+<div class="bottom-sheet" id="productForm">
+  <div class="bs-handle"></div>
+  <div class="px-5 pb-6">
+    <h3 class="text-lg font-bold mb-4" id="formTitle" style="font-family:'Plus Jakarta Sans',sans-serif;">Add Product</h3>
+    <div class="space-y-3">
+      <div><label class="text-sm font-medium mb-1 block">Category</label><select id="fCat" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></select></div>
+      <div><label class="text-sm font-medium mb-1 block">Name</label><input type="text" id="fName" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
+      <div><label class="text-sm font-medium mb-1 block">Description</label><textarea id="fDesc" rows="2" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm resize-none"></textarea></div>
+      <div class="grid grid-cols-2 gap-3"><div><label class="text-sm font-medium mb-1 block">Price (₹)</label><input type="number" id="fPrice" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div><div><label class="text-sm font-medium mb-1 block">Original Price (₹)</label><input type="number" id="fOrigPrice" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div></div>
+      <div class="grid grid-cols-2 gap-3"><div><label class="text-sm font-medium mb-1 block">Stock</label><input type="number" id="fStock" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div><div><label class="text-sm font-medium mb-1 block">Image URL</label><input type="text" id="fImage" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div></div>
+      <div><label class="text-sm font-medium mb-1 block">Tags (comma separated)</label><input type="text" id="fTags" placeholder="featured, new, sale" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
+      <input type="hidden" id="fEditId">
+      <button onclick="saveProduct()" class="w-full py-3 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  document.addEventListener('selectstart',e=>e.preventDefault());
+  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
+
+  if(localStorage.getItem('raja_admin_session')!=='true')window.location.href='login.html';
+
+  const STORE={products:'raja_products',categories:'raja_categories'};
+  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+  function showToast(msg,type='success'){
+    const c=document.getElementById('toastContainer');
+    const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;
+    c.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));
+    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3000);
+  }
+
+  const categories=getLS(STORE.categories)||[];
+  const catFilter=document.getElementById('catFilter');
+  const fCat=document.getElementById('fCat');
+  categories.forEach(c=>{
+    catFilter.innerHTML+=`<option value="${c.id}">${c.name}</option>`;
+    fCat.innerHTML+=`<option value="${c.id}">${c.name}</option>`;
+  });
+
+  function renderTable(){
+    const search=document.getElementById('searchProds').value.toLowerCase();
+    const cat=document.getElementById('catFilter').value;
+    let products=getLS(STORE.products)||[];
+    if(search)products=products.filter(p=>p.name.toLowerCase().includes(search));
+    if(cat)products=products.filter(p=>p.cat_id===cat);
+    const list=document.getElementById('productList');
+    const empty=document.getElementById('emptyProd');
+    if(products.length===0){list.innerHTML='';empty.classList.remove('hidden');return;}
+    empty.classList.add('hidden');
+    list.innerHTML=products.map(p=>{
+      const catName=(categories.find(c=>c.id===p.cat_id)||{}).name||'';
+      return `<tr class="border-b border-gray-50"><td class="py-3 pr-2"><div class="flex items-center gap-2"><div class="w-10 h-10 rounded-lg bg-gray-50 overflow-hidden flex-shrink-0"><img src="${p.images?.[0]||'https://picsum.photos/100/100'}" class="w-full h-full object-cover"></div><div class="min-w-0"><p class="text-sm font-medium line-clamp-1">${p.name}</p><p class="text-xs text-gray-400">${catName}</p></div></div></td><td class="py-3 px-2 text-right font-medium">₹${(p.price||0).toLocaleString()}</td><td class="py-3 px-2 text-center"><span class="${(p.stock||0)>10?'text-green-600':'text-red-500'} text-xs font-medium">${p.stock||0}</span></td><td class="py-3 text-center"><div class="flex items-center justify-center gap-1"><button onclick="editProduct('${p.id}')" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-50 btn-press" style="color:var(--info);"><span class="material-symbols-rounded text-lg">edit</span></button><button onclick="deleteProduct('${p.id}')" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-red-50 btn-press" style="color:var(--error);"><span class="material-symbols-rounded text-lg">delete</span></button></div></td></tr>`;
+    }).join('');
+  }
+
+  function openProductForm(editId){
+    document.getElementById('formOverlay').classList.add('show');
+    document.getElementById('productForm').classList.add('show');
+    if(editId){
+      const products=getLS(STORE.products)||[];
+      const p=products.find(x=>x.id===editId);
+      if(p){
+        document.getElementById('formTitle').textContent='Edit Product';
+        document.getElementById('fEditId').value=editId;
+        document.getElementById('fCat').value=p.cat_id;
+        document.getElementById('fName').value=p.name;
+        document.getElementById('fDesc').value=p.description||'';
+        document.getElementById('fPrice').value=p.price;
+        document.getElementById('fOrigPrice').value=p.original_price;
+        document.getElementById('fStock').value=p.stock;
+        document.getElementById('fImage').value=p.images?.[0]||'';
+        document.getElementById('fTags').value=(p.tags||[]).join(', ');
+        return;
+      }
+    }
+    document.getElementById('formTitle').textContent='Add Product';
+    document.getElementById('fEditId').value='';
+    document.getElementById('fCat').value=categories[0]?.id||'';
+    document.getElementById('fName').value='';
+    document.getElementById('fDesc').value='';
+    document.getElementById('fPrice').value='';
+    document.getElementById('fOrigPrice').value='';
+    document.getElementById('fStock').value='';
+    document.getElementById('fImage').value='';
+    document.getElementById('fTags').value='';
+  }
+
+  function closeForm(){
+    document.getElementById('formOverlay').classList.remove('show');
+    document.getElementById('productForm').classList.remove('show');
+  }
+
+  function saveProduct(){
+    const editId=document.getElementById('fEditId').value;
+    const cat_id=document.getElementById('fCat').value;
+    const name=document.getElementById('fName').value.trim();
+    const description=document.getElementById('fDesc').value.trim();
+    const price=parseInt(document.getElementById('fPrice').value);
+    const original_price=parseInt(document.getElementById('fOrigPrice').value);
+    const stock=parseInt(document.getElementById('fStock').value);
+    const image=document.getElementById('fImage').value.trim()||'https://picsum.photos/400/400?random='+Math.floor(Math.random()*100);
+    const tags=document.getElementById('fTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+    if(!name||!price){showToast('Name and Price are required','error');return;}
+    let products=getLS(STORE.products)||[];
+    if(editId){
+      const idx=products.findIndex(p=>p.id===editId);
+      if(idx>=0){products[idx]={...products[idx],cat_id,name,description,price,original_price,stock,images:[image],tags};}
+      showToast('Product updated!','success');
+    }else{
+      const id='prod_'+String(Date.now()).slice(-6);
+      products.push({id,cat_id,name,description,price,original_price,discount:original_price?Math.round((1-price/original_price)*100):0,stock,images:[image],rating:0,reviews:0,tags,created_at:new Date().toISOString().split('T')[0]});
+      showToast('Product added!','success');
+    }
+    setLS(STORE.products,products);
+    closeForm();
+    renderTable();
+  }
+
+  function editProduct(id){openProductForm(id);}
+  function deleteProduct(id){
+    if(!confirm('Delete this product?'))return;
+    let products=getLS(STORE.products)||[];
+    products=products.filter(p=>p.id!==id);
+    setLS(STORE.products,products);
+    renderTable();
+    showToast('Product deleted','info');
+  }
+
+  renderTable();
+</script>
+</body>
+</html>

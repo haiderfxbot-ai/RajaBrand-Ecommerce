@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" class="select-none overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Admin Dashboard — Raja Brand</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;}
+    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
+    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+    .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
+    ::-webkit-scrollbar{display:none;}
+    .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px);}
+    .btn-press:active{transform:scale(0.96);}
+    .card-hover{transition:all .3s ease;}
+    .card-hover:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.1);}
+    .sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--secondary);color:#fff;padding-top:64px;transform:translateX(-100%);transition:transform .3s;z-index:40;}
+    .sidebar.open{transform:translateX(0);}
+    @media(min-width:768px){.sidebar{transform:translateX(0);}body{padding-left:240px;}}
+  </style>
+</head>
+<body>
+<div class="sidebar" id="sidebar">
+  <div class="p-5 border-b border-white/10">
+    <div class="flex items-center gap-2"><span class="text-xl font-extrabold" style="color:var(--primary);font-family:'Plus Jakarta Sans',sans-serif;">RAJA</span><span class="text-sm font-light text-white/60">Admin</span></div>
+  </div>
+  <nav class="p-3 space-y-1">
+    <a href="dashboard.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium" style="background:rgba(255,107,53,0.2);color:var(--primary);"><span class="material-symbols-rounded icon-fill text-lg">dashboard</span> Dashboard</a>
+    <a href="products.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">inventory_2</span> Products</a>
+    <a href="categories.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">category</span> Categories</a>
+    <a href="orders.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">receipt_long</span> Orders</a>
+    <a href="users.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">group</span> Users</a>
+    <a href="settings.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:bg-white/5"><span class="material-symbols-rounded text-lg">settings</span> Settings</a>
+    <hr class="border-white/10 my-3">
+    <a href="../index.html" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/40 hover:bg-white/5"><span class="material-symbols-rounded text-lg">store</span> View Store</a>
+    <button onclick="adminLogout()" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10 w-full"><span class="material-symbols-rounded text-lg">logout</span> Logout</button>
+  </nav>
+</div>
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100" style="z-index:45;">
+  <div class="flex items-center justify-between px-4 h-16 safe-top">
+    <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press md:hidden"><span class="material-symbols-rounded text-gray-700 text-2xl">menu</span></button>
+    <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">Dashboard</span>
+    <button onclick="adminLogout()" class="text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-gray-100 btn-press" style="color:var(--error);">Logout</button>
+  </div>
+</header>
+
+<main class="p-4">
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-5" id="statsGrid"></div>
+
+  <div class="grid md:grid-cols-2 gap-4 mb-5">
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50">
+      <h3 class="text-sm font-bold mb-3">Revenue (Last 7 Days)</h3>
+      <div id="revenueChart" class="flex items-end gap-1.5" style="height:140px;"></div>
+    </div>
+    <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50">
+      <h3 class="text-sm font-bold mb-3">Order Status</h3>
+      <div id="donutChart" class="flex items-center justify-center" style="height:140px;"></div>
+    </div>
+  </div>
+
+  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50">
+    <h3 class="text-sm font-bold mb-3">Quick Actions</h3>
+    <div class="grid grid-cols-2 gap-3">
+      <a href="products.html" class="p-3 rounded-xl bg-orange-50 text-center btn-press"><span class="material-symbols-rounded" style="color:var(--primary);">add_box</span><p class="text-xs font-medium mt-1">Add Product</p></a>
+      <a href="categories.html" class="p-3 rounded-xl bg-blue-50 text-center btn-press"><span class="material-symbols-rounded" style="color:var(--info);">add_box</span><p class="text-xs font-medium mt-1">Add Category</p></a>
+      <a href="orders.html" class="p-3 rounded-xl bg-green-50 text-center btn-press"><span class="material-symbols-rounded" style="color:var(--success);">receipt_long</span><p class="text-xs font-medium mt-1">View Orders</p></a>
+      <a href="users.html" class="p-3 rounded-xl bg-purple-50 text-center btn-press"><span class="material-symbols-rounded" style="color:#AF52DE;">group</span><p class="text-xs font-medium mt-1">Manage Users</p></a>
+    </div>
+  </div>
+
+  <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 mt-4">
+    <div class="flex items-center justify-between mb-3"><h3 class="text-sm font-bold">Recent Orders</h3><a href="orders.html" class="text-xs" style="color:var(--primary);">View All</a></div>
+    <div id="recentOrdersTable" class="text-sm"></div>
+  </div>
+</main>
+
+<script>
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  document.addEventListener('selectstart',e=>e.preventDefault());
+  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
+
+  const adminSession='raja_admin_session';
+  if(localStorage.getItem(adminSession)!=='true')window.location.href='login.html';
+
+  const STORE={products:'raja_products',categories:'raja_categories',orders:'raja_orders',users:'raja_users',cart:'raja_cart',wishlist:'raja_wishlist',notifications:'raja_notifications',settings:'raja_settings',coupons:'raja_coupons'};
+  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+  function seedData(){
+    if(getLS(STORE.products)&&getLS(STORE.products).length>0)return;
+    const cats=[{id:'cat_001',name:'Electronics',icon:'devices',color:'#007AFF'},{id:'cat_002',name:'Clothing',icon:'checkroom',color:'#FF6B35'},{id:'cat_003',name:'Shoes',icon:'footprint',color:'#34C759'},{id:'cat_004',name:'Accessories',icon:'watch',color:'#FF9500'},{id:'cat_005',name:'Home & Living',icon:'chair',color:'#AF52DE'},{id:'cat_006',name:'Beauty',icon:'spa',color:'#FF2D55'}];
+    setLS(STORE.categories,cats);
+    const prods=[];for(let i=1;i<=16;i++){prods.push({id:'prod_'+String(i).padStart(3,'0'),cat_id:cats[i%cats.length].id,name:'Product '+i,description:'Description for product '+i,price:Math.floor(Math.random()*5000)+299,original_price:Math.floor(Math.random()*8000)+999,discount:Math.floor(Math.random()*50)+10,stock:Math.floor(Math.random()*200)+10,images:['https://picsum.photos/400/400?random='+i],rating:(Math.random()*2+3).toFixed(1),reviews:Math.floor(Math.random()*500)+10,tags:['featured'],created_at:new Date(Date.now()-Math.random()*30*86400000).toISOString().split('T')[0]});}
+    setLS(STORE.products,prods);
+    if(!getLS(STORE.orders))setLS(STORE.orders,[]);
+    if(!getLS(STORE.users))setLS(STORE.users,[]);
+    if(!getLS(STORE.settings))setLS(STORE.settings,{storeName:'Raja Brand',storeLogo:'',contactEmail:'support@rajabrand.in',contactPhone:'+91 98765 43210',currency:'₹',adminPassword:'admin123'});
+  }
+  seedData();
+
+  function adminLogout(){localStorage.removeItem(adminSession);window.location.href='login.html';}
+  function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
+
+  function loadDashboard(){
+    const orders=getLS(STORE.orders)||[];
+    const users=getLS(STORE.users)||[];
+    const products=getLS(STORE.products)||[];
+    const totalRevenue=orders.filter(o=>o.status==='Delivered').reduce((s,o)=>s+o.total,0);
+    const pendingOrders=orders.filter(o=>o.status==='Placed').length;
+    const cancelledOrders=orders.filter(o=>o.status==='Cancelled').length;
+
+    document.getElementById('statsGrid').innerHTML=`
+      <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 card-hover"><span class="material-symbols-rounded text-2xl" style="color:var(--primary);">shopping_bag</span><p class="text-2xl font-bold mt-2" style="font-family:'Plus Jakarta Sans',sans-serif;">${orders.length}</p><p class="text-xs text-gray-500">Total Orders</p></div>
+      <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 card-hover"><span class="material-symbols-rounded text-2xl" style="color:var(--success);">currency_rupee</span><p class="text-2xl font-bold mt-2" style="font-family:'Plus Jakarta Sans',sans-serif;">₹${totalRevenue.toLocaleString()}</p><p class="text-xs text-gray-500">Revenue</p></div>
+      <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 card-hover"><span class="material-symbols-rounded text-2xl" style="color:var(--info);">group</span><p class="text-2xl font-bold mt-2" style="font-family:'Plus Jakarta Sans',sans-serif;">${users.length}</p><p class="text-xs text-gray-500">Users</p></div>
+      <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 card-hover"><span class="material-symbols-rounded text-2xl" style="color:var(--warning);">inventory_2</span><p class="text-2xl font-bold mt-2" style="font-family:'Plus Jakarta Sans',sans-serif;">${products.length}</p><p class="text-xs text-gray-500">Products</p></div>
+      <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 card-hover"><span class="material-symbols-rounded text-2xl" style="color:var(--error);">hourglass_top</span><p class="text-2xl font-bold mt-2" style="font-family:'Plus Jakarta Sans',sans-serif;">${pendingOrders}</p><p class="text-xs text-gray-500">Pending</p></div>
+      <div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 card-hover"><span class="material-symbols-rounded text-2xl" style="color:#AF52DE;">cancel</span><p class="text-2xl font-bold mt-2" style="font-family:'Plus Jakarta Sans',sans-serif;">${cancelledOrders}</p><p class="text-xs text-gray-500">Cancelled</p></div>
+    `;
+
+    const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const values=days.map(()=>Math.floor(Math.random()*10000)+2000);
+    const max=Math.max(...values);
+    document.getElementById('revenueChart').innerHTML=values.map((v,i)=>`<div class="flex-1 flex flex-col items-end justify-end h-full"><div class="w-full rounded-t-md transition-all" style="height:${(v/max)*100}%;background:${i===values.length-1?'var(--primary)':'var(--primary-light)'};min-height:4px;"></div><span class="text-[8px] text-gray-400 mt-1">${days[i].slice(0,1)}</span></div>`).join('');
+
+    const statusCounts={Placed:orders.filter(o=>o.status==='Placed').length,Dispatched:orders.filter(o=>o.status==='Dispatched').length,Delivered:orders.filter(o=>o.status==='Delivered').length,Cancelled:orders.filter(o=>o.status==='Cancelled').length};
+    const total=Object.values(statusCounts).reduce((a,b)=>a+b,0)||1;
+    const statusColors={Placed:'#007AFF',Dispatched:'#FF9500',Delivered:'#34C759',Cancelled:'#FF3B30'};
+    let cumulative=0;
+    document.getElementById('donutChart').innerHTML=`<svg viewBox="0 0 42 42" class="w-32 h-32 -rotate-90"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#eee" stroke-width="3"/>${Object.entries(statusCounts).map(([k,v])=>{const pct=v/total;const dash=`${pct*100} ${(1-pct)*100}`;const rotate=cumulative*360;cumulative+=pct;return `<circle cx="21" cy="21" r="15.9" fill="none" stroke="${statusColors[k]||'#ccc'}" stroke-width="3" stroke-dasharray="${dash}" stroke-dashoffset="${-cumulative*100+100}" transform="rotate(${rotate} 21 21)"/>`;}).join('')}</svg>
+    <div class="flex flex-col gap-1 text-[10px] ml-2">${Object.entries(statusCounts).filter(([_,v])=>v>0).map(([k,v])=>`<div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full" style="background:${statusColors[k]||'#ccc'}"></span>${k}: ${v}</div>`).join('')}</div>`;
+
+    const recent=orders.slice(0,5);
+    const table=document.getElementById('recentOrdersTable');
+    if(recent.length===0)table.innerHTML='<p class="text-sm text-gray-400 text-center py-4">No orders yet</p>';
+    else table.innerHTML=`<div class="overflow-x-auto"><table class="w-full text-xs"><thead><tr class="text-gray-400 border-b border-gray-100"><th class="text-left py-2 px-1">ID</th><th class="text-left py-2 px-1">Customer</th><th class="text-right py-2 px-1">Amount</th><th class="text-center py-2 px-1">Status</th><th class="text-center py-2 px-1">Action</th></tr></thead><tbody>${recent.map(o=>`<tr class="border-b border-gray-50"><td class="py-2 px-1 font-mono">${o.id.slice(-8)}</td><td class="py-2 px-1">${o.address?.name||'N/A'}</td><td class="py-2 px-1 text-right font-medium">₹${o.total.toLocaleString()}</td><td class="py-2 px-1 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-medium ${o.status==='Delivered'?'bg-green-100 text-green-700':o.status==='Cancelled'?'bg-red-100 text-red-700':o.status==='Dispatched'?'bg-orange-100 text-orange-700':'bg-blue-100 text-blue-700'}">${o.status}</span></td><td class="py-2 px-1 text-center"><a href="order-detail.html?id=${o.id}" class="text-orange-500 font-medium">View</a></td></tr>`).join('')}</tbody></table></div>`;
+  }
+
+  loadDashboard();
+</script>
+</body>
+</html>

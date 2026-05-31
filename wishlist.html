@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" class="select-none overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Wishlist — Raja Brand</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <style>
+    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:72px;min-height:100vh;}
+    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
+    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+    .icon-fill{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;}
+    ::-webkit-scrollbar{display:none;}
+    .safe-bottom{padding-bottom:env(safe-area-inset-bottom,0px);}
+    .header-blur{background:rgba(255,255,255,0.85);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);}
+    .glass-nav{background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);}
+    .btn-press:active{transform:scale(0.96);}
+    .toast{position:fixed;top:80px;right:16px;z-index:9999;padding:12px 20px;border-radius:12px;color:#fff;font-weight:500;box-shadow:0 4px 24px rgba(0,0,0,0.15);transform:translateX(120%);transition:transform .3s;max-width:320px;}
+    .toast.show{transform:translateX(0);}
+    .toast.success{background:var(--success);}
+    .toast.error{background:var(--error);}
+    .toast.info{background:var(--info);}
+    .product-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:all .3s ease;}
+    .product-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.12);}
+    .badge-pill{padding:2px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+  </style>
+</head>
+<body>
+<div id="toastContainer"></div>
+
+<header class="fixed top-0 left-0 right-0 z-50 header-blur border-b border-gray-100/50">
+  <div class="flex items-center justify-between px-4 h-16 safe-top">
+    <button onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></button>
+    <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">My Wishlist</span>
+    <a href="cart.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press relative"><span class="material-symbols-rounded text-gray-700 text-2xl">shopping_bag</span><span id="cartBadge" class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 hidden">0</span></a>
+  </div>
+</header>
+
+<nav class="fixed bottom-0 left-0 right-0 z-50 glass-nav border-t border-gray-100 safe-bottom" style="padding-bottom:env(safe-area-inset-bottom,4px);">
+  <div class="flex items-center justify-around h-16">
+    <a href="index.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">home</span><span class="text-[10px] text-gray-400">Home</span></a>
+    <a href="product.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">grid_view</span><span class="text-[10px] text-gray-400">Products</span></a>
+    <a href="search.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">search</span><span class="text-[10px] text-gray-400">Search</span></a>
+    <a href="wishlist.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded icon-fill text-xl" style="color:var(--primary);">favorite</span><span class="text-[10px] font-medium" style="color:var(--primary);">Wishlist</span></a>
+    <a href="profile.html" class="flex flex-col items-center gap-0.5 min-w-[48px] py-1"><span class="material-symbols-rounded text-xl text-gray-400">person</span><span class="text-[10px] text-gray-400">Profile</span></a>
+  </div>
+</nav>
+
+<div class="px-4 py-4" id="wishlistContent">
+  <div id="emptyWishlist" class="hidden flex flex-col items-center justify-center py-16">
+    <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_t9v9vnzm.json" background="transparent" speed="1" style="width:180px;height:180px;" loop autoplay></lottie-player>
+    <p class="text-gray-500 mt-4 text-lg font-medium">Your wishlist is empty</p>
+    <p class="text-gray-400 text-sm mt-1">Save items you love!</p>
+    <a href="product.html" class="mt-6 px-8 py-3 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Discover Products</a>
+  </div>
+
+  <div id="wishlistCount" class="text-sm text-gray-500 mb-3"></div>
+  <div class="grid grid-cols-2 gap-3" id="wishlistGrid"></div>
+</div>
+
+<script>
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  document.addEventListener('selectstart',e=>e.preventDefault());
+  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
+  document.querySelectorAll('img').forEach(img=>img.setAttribute('draggable','false'));
+
+  const STORE={products:'raja_products',categories:'raja_categories',cart:'raja_cart',wishlist:'raja_wishlist'};
+  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+  function updateCartBadge(){const c=getLS(STORE.cart)||[];const b=document.getElementById('cartBadge');if(c.length>0){b.textContent=c.length;b.classList.remove('hidden');}else b.classList.add('hidden');}
+  updateCartBadge();
+
+  function showToast(msg,type='success'){
+    const c=document.getElementById('toastContainer');
+    const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;
+    c.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));
+    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3000);
+  }
+
+  function renderWishlist(){
+    const wl=getLS(STORE.wishlist)||[];
+    const products=getLS(STORE.products)||[];
+    const categories=getLS(STORE.categories)||[];
+    const wishlistProds=products.filter(p=>wl.includes(p.id));
+
+    const count=document.getElementById('wishlistCount');
+    const grid=document.getElementById('wishlistGrid');
+    const empty=document.getElementById('emptyWishlist');
+
+    if(wishlistProds.length===0){
+      grid.innerHTML='';
+      empty.classList.remove('hidden');
+      count.textContent='0 items in wishlist';
+      return;
+    }
+    empty.classList.add('hidden');
+    count.textContent=`${wishlistProds.length} item${wishlistProds.length>1?'s':''} in wishlist`;
+
+    grid.innerHTML=wishlistProds.map(p=>{
+      const cat=categories.find(c=>c.id===p.cat_id);
+      return `<div class="product-card">
+        <div class="relative aspect-[4/3] overflow-hidden bg-gray-50">
+          <img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-cover" loading="lazy">
+          <div class="absolute top-2 left-2"><span class="badge-pill bg-red-500 text-white">${p.discount}% OFF</span></div>
+          <button onclick="removeFromWishlist('${p.id}')" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow btn-press icon-fill" style="color:var(--error);"><span class="material-symbols-rounded text-lg">favorite</span></button>
+        </div>
+        <div class="p-3">
+          <span class="text-[10px] font-medium text-gray-400 uppercase">${cat?cat.name:''}</span>
+          <h3 class="text-sm font-bold mt-0.5 leading-tight line-clamp-2">${p.name}</h3>
+          <div class="flex items-center gap-2 mt-2"><span class="font-bold text-base">₹${p.price}</span><span class="text-xs text-gray-400 line-through">₹${p.original_price}</span></div>
+          <button onclick="addToCart('${p.id}')" class="w-full mt-2 py-2 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Add to Cart</button>
+          <a href="product-detail.html?id=${p.id}" class="block w-full mt-1 py-2 rounded-xl text-sm font-medium text-center border border-gray-200 btn-press">View Details</a>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function removeFromWishlist(id){
+    let w=getLS(STORE.wishlist)||[];
+    const prodName=(getLS(STORE.products)||[]).find(p=>p.id===id)?.name;
+    w=w.filter(i=>i!==id);
+    setLS(STORE.wishlist,w);
+    renderWishlist();
+    showToast(`Removed from wishlist`,'info');
+  }
+
+  function addToCart(id){
+    const cart=getLS(STORE.cart)||[];
+    const p=(getLS(STORE.products)||[]).find(x=>x.id===id);
+    if(!p)return;
+    const ex=cart.find(i=>i.product_id===id);
+    if(ex)ex.quantity+=1;
+    else cart.push({product_id:id,product_name:p.name,product_image:p.images[0],price:p.price,quantity:1});
+    setLS(STORE.cart,cart);
+    updateCartBadge();
+    showToast(`${p.name} added to cart!`,'success');
+  }
+
+  renderWishlist();
+</script>
+</body>
+</html>

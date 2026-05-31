@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" class="select-none overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Manage Categories — Raja Brand Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#FF6B35;--primary-dark:#E55A25;--primary-light:#FFE0D6;--secondary:#1A1A2E;--surface:#FFFFFF;--surface-variant:#F8F9FA;--on-surface:#1C1C1E;--outline:#E0E0E0;--success:#34C759;--warning:#FF9500;--error:#FF3B30;--info:#007AFF;}
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;}
+    body{background:var(--surface-variant);color:var(--on-surface);font-size:14px;line-height:1.6;padding-top:64px;padding-bottom:100px;}
+    h1,h2,h3,h4,h5,h6{font-family:'Plus Jakarta Sans',sans-serif;}
+    .material-symbols-rounded{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+    ::-webkit-scrollbar{display:none;}
+    .btn-press:active{transform:scale(0.96);}
+    .toast{position:fixed;top:80px;right:16px;z-index:9999;padding:12px 20px;border-radius:12px;color:#fff;font-weight:500;box-shadow:0 4px 24px rgba(0,0,0,0.15);transform:translateX(120%);transition:transform .3s;max-width:320px;}
+    .toast.show{transform:translateX(0);}
+    .toast.success{background:var(--success);}
+    .toast.error{background:var(--error);}
+    .bs-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:300;opacity:0;visibility:hidden;transition:all .3s;}
+    .bs-overlay.show{opacity:1;visibility:visible;}
+    .bottom-sheet{position:fixed;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;z-index:301;transform:translateY(100%);transition:transform .35s;max-height:80vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,16px);}
+    .bottom-sheet.show{transform:translateY(0);}
+    .bs-handle{width:36px;height:4px;border-radius:2px;background:#ddd;margin:8px auto 12px;}
+  </style>
+</head>
+<body>
+<div id="toastContainer"></div>
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+  <div class="flex items-center justify-between px-4 h-16 safe-top">
+    <a href="dashboard.html" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 btn-press"><span class="material-symbols-rounded text-gray-700 text-2xl">arrow_back</span></a>
+    <span class="font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">Categories</span>
+    <button onclick="openCatForm()" class="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);"><span class="material-symbols-rounded text-lg">add</span> Add</button>
+  </div>
+</header>
+
+<div class="px-4 py-4">
+  <div class="grid grid-cols-2 gap-3" id="catGrid"></div>
+</div>
+
+<div class="fixed bottom-4 left-4 right-4 z-40">
+  <button onclick="openCatForm()" class="w-full py-3.5 rounded-xl text-sm font-bold text-white btn-press shadow-lg" style="background:var(--primary);">+ Add New Category</button>
+</div>
+
+<div class="bs-overlay" id="formOverlay" onclick="closeCatForm()"></div>
+<div class="bottom-sheet" id="catForm">
+  <div class="bs-handle"></div>
+  <div class="px-5 pb-6">
+    <h3 class="text-lg font-bold mb-4" id="catFormTitle" style="font-family:'Plus Jakarta Sans',sans-serif;">Add Category</h3>
+    <div class="space-y-3">
+      <div><label class="text-sm font-medium mb-1 block">Category Name</label><input type="text" id="fCatName" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
+      <div><label class="text-sm font-medium mb-1 block">Icon (Material Symbol name)</label><input type="text" id="fCatIcon" placeholder="devices, checkroom, etc." class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm"></div>
+      <div><label class="text-sm font-medium mb-1 block">Color (hex)</label><input type="color" id="fCatColor" value="#FF6B35" class="w-full h-10 rounded-xl border border-gray-200"></div>
+      <input type="hidden" id="fCatEditId">
+      <button onclick="saveCategory()" class="w-full py-3 rounded-xl text-sm font-bold text-white btn-press" style="background:var(--primary);">Save Category</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  document.addEventListener('selectstart',e=>e.preventDefault());
+  document.addEventListener('keydown',e=>{if(e.ctrlKey&&['u','s','a','c','p'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key==='F12')e.preventDefault();});
+
+  if(localStorage.getItem('raja_admin_session')!=='true')window.location.href='login.html';
+
+  const STORE={categories:'raja_categories',products:'raja_products'};
+  function getLS(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}}
+  function setLS(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+  function showToast(msg,type='success'){
+    const c=document.getElementById('toastContainer');
+    const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;
+    c.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));
+    setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3000);
+  }
+
+  function renderCats(){
+    const cats=getLS(STORE.categories)||[];
+    const products=getLS(STORE.products)||[];
+    const grid=document.getElementById('catGrid');
+    grid.innerHTML=cats.map(c=>{
+      const count=products.filter(p=>p.cat_id===c.id).length;
+      return `<div class="p-4 rounded-xl bg-white shadow-sm border border-gray-50 text-center">
+        <div class="w-12 h-12 rounded-2xl mx-auto flex items-center justify-center" style="background:${c.color}20;"><span class="material-symbols-rounded text-2xl" style="color:${c.color};">${c.icon||'category'}</span></div>
+        <h3 class="font-bold text-sm mt-2">${c.name}</h3>
+        <p class="text-xs text-gray-400">${count} products</p>
+        <div class="flex justify-center gap-1 mt-2">
+          <button onclick="editCat('${c.id}')" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-blue-50 btn-press" style="color:var(--info);"><span class="material-symbols-rounded text-sm">edit</span></button>
+          <button onclick="deleteCat('${c.id}')" class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-50 btn-press" style="color:var(--error);"><span class="material-symbols-rounded text-sm">delete</span></button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function openCatForm(editId){
+    document.getElementById('formOverlay').classList.add('show');
+    document.getElementById('catForm').classList.add('show');
+    if(editId){
+      const cats=getLS(STORE.categories)||[];
+      const c=cats.find(x=>x.id===editId);
+      if(c){
+        document.getElementById('catFormTitle').textContent='Edit Category';
+        document.getElementById('fCatEditId').value=editId;
+        document.getElementById('fCatName').value=c.name;
+        document.getElementById('fCatIcon').value=c.icon||'';
+        document.getElementById('fCatColor').value=c.color||'#FF6B35';
+        return;
+      }
+    }
+    document.getElementById('catFormTitle').textContent='Add Category';
+    document.getElementById('fCatEditId').value='';
+    document.getElementById('fCatName').value='';
+    document.getElementById('fCatIcon').value='';
+    document.getElementById('fCatColor').value='#FF6B35';
+  }
+
+  function closeCatForm(){
+    document.getElementById('formOverlay').classList.remove('show');
+    document.getElementById('catForm').classList.remove('show');
+  }
+
+  function saveCategory(){
+    const editId=document.getElementById('fCatEditId').value;
+    const name=document.getElementById('fCatName').value.trim();
+    const icon=document.getElementById('fCatIcon').value.trim();
+    const color=document.getElementById('fCatColor').value;
+    if(!name){showToast('Category name is required','error');return;}
+    let cats=getLS(STORE.categories)||[];
+    if(editId){
+      const idx=cats.findIndex(c=>c.id===editId);
+      if(idx>=0)cats[idx]={...cats[idx],name,icon,color};
+      showToast('Category updated!','success');
+    }else{
+      const id='cat_'+String(Date.now()).slice(-5);
+      cats.push({id,name,icon:icon||'category',color});
+      showToast('Category added!','success');
+    }
+    setLS(STORE.categories,cats);
+    closeCatForm();
+    renderCats();
+  }
+
+  function editCat(id){openCatForm(id);}
+  function deleteCat(id){
+    if(!confirm('Delete this category?'))return;
+    let cats=getLS(STORE.categories)||[];
+    cats=cats.filter(c=>c.id!==id);
+    setLS(STORE.categories,cats);
+    renderCats();
+    showToast('Category deleted','info');
+  }
+
+  renderCats();
+</script>
+</body>
+</html>
